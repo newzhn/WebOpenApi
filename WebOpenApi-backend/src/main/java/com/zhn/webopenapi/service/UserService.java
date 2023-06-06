@@ -9,8 +9,6 @@ import com.zhn.webopenapi.model.vo.UserVO;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
-import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
-
 /**
  * 用户服务
  *
@@ -38,15 +36,6 @@ public interface UserService extends IService<User> {
      * @return 脱敏后的用户信息
      */
     LoginUserVO userLogin(String userAccount, String userPassword, HttpServletRequest request);
-
-    /**
-     * 用户登录（微信开放平台）
-     *
-     * @param wxOAuth2UserInfo 从微信获取的用户信息
-     * @param request
-     * @return 脱敏后的用户信息
-     */
-    LoginUserVO userLoginByMpOpen(WxOAuth2UserInfo wxOAuth2UserInfo, HttpServletRequest request);
 
     /**
      * 获取当前登录用户
