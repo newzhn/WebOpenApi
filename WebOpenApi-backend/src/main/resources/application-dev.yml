@@ -1,6 +1,6 @@
 # 开发配置文件
 server:
-  port: 8800
+  port: 8888
 spring:
   config:
     import: optional:file:.env.dev[.properties]

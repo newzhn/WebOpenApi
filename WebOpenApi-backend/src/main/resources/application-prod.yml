@@ -1,6 +1,7 @@
+# 上线配置文件
 # 线上配置文件
 server:
-  port: 8101
+  port: 9999
 spring:
   config:
     import: optional:file:.env[.properties]

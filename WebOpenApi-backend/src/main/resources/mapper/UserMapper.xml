@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- @author <a href="https://github.com/liyupi">程序员鱼皮</a> -->
-<!-- @from <a href="https://yupi.icu">编程导航知识星球</a> -->
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zhn.webopenapi.mapper.UserMapper">
-    <resultMap id="BaseResultMap" type="com.zhn.webopenapi.model.entity.User">
-        <id property="id" column="id" jdbcType="BIGINT"/>
-        <result property="unionId" column="union_id" jdbcType="VARCHAR"/>
-        <result property="mpOpenId" column="mp_open_d" jdbcType="VARCHAR"/>
-        <result property="userName" column="user_name" jdbcType="VARCHAR"/>
-        <result property="userAvatar" column="user_avatar" jdbcType="VARCHAR"/>
-        <result property="userProfile" column="user_profile" jdbcType="VARCHAR"/>
-        <result property="userRole" column="user_role" jdbcType="VARCHAR"/>
-        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-        <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
+<mapper namespace="com.zhn.webopenapibackend.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.zhn.webopenapibackend.model.domain.User">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="userAccount" column="user_account" jdbcType="VARCHAR"/>
+            <result property="userPassword" column="user_password" jdbcType="VARCHAR"/>
+            <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+            <result property="userAvatar" column="user_avatar" jdbcType="VARCHAR"/>
+            <result property="userProfile" column="user_profile" jdbcType="VARCHAR"/>
+            <result property="email" column="email" jdbcType="VARCHAR"/>
+            <result property="qq" column="qq" jdbcType="VARCHAR"/>
+            <result property="userRole" column="user_role" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,union_id,mp_open_d,
+        id,user_account,user_password,
         user_name,user_avatar,user_profile,
-        user_role,create_time,update_time,is_delete
+        email,qq,user_role,
+        create_time,update_time,is_delete
     </sql>
 </mapper>
