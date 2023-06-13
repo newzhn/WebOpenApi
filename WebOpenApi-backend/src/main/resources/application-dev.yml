@@ -6,10 +6,18 @@ spring:
     import: optional:file:.env.dev[.properties]
   # 数据库配置
   datasource:
+    type: com.alibaba.druid.pool.DruidDataSource # 使用Druid数据源
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/${MYSQL_DATABASE}
     username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
+    druid:
+      # 连接池配置：大小，最小，最大
+      initial-size: 20
+      min-idle: 5
+      max-active: 40
+      # 连接等待超时时间
+      max-wait: 50000
   # Redis 配置
   redis:
     database: ${REDIS_DATABASE}
@@ -17,6 +25,12 @@ spring:
     port: 6379
     timeout: 5000
     password: ${REDIS_PASSWORD}
+    lettuce:
+      pool:
+        max-active: 32
+        max-idle: 16
+        min-idle: 8
+        time-between-eviction-runs: 10s
   # Elasticsearch 配置
 #  elasticsearch:
 #    uris: http://localhost:9200
