@@ -11,7 +11,7 @@ public interface UserConstant {
     /**
      * 用户登录态键
      */
-    String USER_LOGIN_STATE = "user_login";
+    String USER_LOGIN_KEY = "web_open_api:user_login:";
 
     //  region 权限
 
@@ -30,4 +30,13 @@ public interface UserConstant {
      */
     String BAN_ROLE = "ban";
 
+    /**
+     * qq头像API
+     */
+    String QQ_AVATAR_API = "https://q1.qlogo.cn/g?b=qq&nk=";
+
+    /**
+     * qq昵称API
+     */
+    String QQ_NICKNAME_API = "https://r.qzone.qq.com/fcg-bin/cgi_get_portrait.fcg?g_tk=1518561325&uins=";
 }
