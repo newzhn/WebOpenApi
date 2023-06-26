@@ -16,6 +16,7 @@ import com.zhn.webopenapibackend.utils.redis.RedisCache;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -52,5 +53,16 @@ public class LoginServiceImpl implements LoginService {
                 ,loginUser,1, TimeUnit.HOURS);
         //返回token
         return jwt;
+    }
+
+    @Override
+    public void logout() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+        if (loginUser == null) {
+            throw new RuntimeException("用户未登录");
+        }
+        String key = UserConstant.USER_LOGIN_KEY + loginUser.getUser().getId();
+        redisCache.deleteObject(key);
     }
 }

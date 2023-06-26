@@ -13,4 +13,9 @@ public interface LoginService {
      * @return
      */
     String login(LoginRequest request);
+
+    /**
+     * 登出服务
+     */
+    void logout();
 }

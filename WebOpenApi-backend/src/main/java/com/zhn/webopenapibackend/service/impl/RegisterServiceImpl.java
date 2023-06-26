@@ -5,6 +5,7 @@ import com.zhn.webopenapibackend.model.domain.User;
 import com.zhn.webopenapibackend.model.request.user.RegisterRequest;
 import com.zhn.webopenapibackend.service.RegisterService;
 import com.zhn.webopenapibackend.service.UserService;
+import com.zhn.webopenapibackend.utils.QQUtil;
 import com.zhn.webopenapibackend.utils.bean.BeanUtils;
 import com.zhn.webopenapibackend.utils.string.StringUtils;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -50,28 +51,11 @@ public class RegisterServiceImpl implements RegisterService {
         //默认角色为普通用户
         user.setUserRole(UserConstant.DEFAULT_ROLE);
         //根据QQ获取昵称和头像
-        setAvatarUrlAndNickname(user,restTemplate);
+        QQUtil.setAvatarUrlAndNickname(user,restTemplate);
         //创建用户
         if (!userService.save(user)) {
             return "系统出错，注册失败";
         }
         return "";
-    }
-
-    private void setAvatarUrlAndNickname(User user, RestTemplate restTemplate) {
-        String qq = user.getQq();
-        user.setUserAvatar(UserConstant.QQ_AVATAR_API + qq + "&s=100");
-        String nickname = "";
-        try {
-            restTemplate.setMessageConverters(Collections.singletonList(new StringHttpMessageConverter(Charset.forName("GBK"))));
-            String url = UserConstant.QQ_NICKNAME_API + qq;
-            String response = restTemplate.getForObject(url, String.class);
-            nickname = response.split(",")[6];
-            nickname = nickname.substring(1, nickname.length() - 1);
-        } catch (Exception e) {
-            //获取失败则昵称采用随机六位字符串
-            nickname = "user_" + StringUtils.randomString(6);
-        }
-        user.setUserName(nickname);
     }
 }

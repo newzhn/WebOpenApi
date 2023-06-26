@@ -16,6 +16,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 /**
 * @author zhanh
@@ -56,9 +59,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         User user = userMapper.selectOne(wrapper);
         ThrowUtils.throwIf(ObjectUtil.isNull(user),
                 HttpStatus.HTTP_NOT_FOUND,"用户信息不存在");
-        // TODO 查询用户权限信息
-
-        return new LoginUser(user);
+        return new LoginUser(user, Collections.singletonList(user.getUserRole()));
     }
 }
 

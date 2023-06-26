@@ -1,10 +1,10 @@
 package com.zhn.webopenapibackend.exception;
 
-import com.alibaba.druid.wall.violation.ErrorCode;
 import com.zhn.webopenapibackend.common.AjaxResult;
 import com.zhn.webopenapibackend.common.HttpStatus;
-import kotlin.Result;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -20,8 +20,23 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
     public AjaxResult businessExceptionHandler(BusinessException e) {
-        log.error("BusinessException", e);
+        log.error("业务逻辑出现异常！{}", e);
         return AjaxResult.error(e.getCode(),e.getMessage());
+    }
+
+    /** 添加校验参数异常处理 */
+    @ExceptionHandler(BindException.class)
+    public AjaxResult bindExceptionHandler(BindException e) {
+        log.error("参数校验出现了异常! {}", e);
+        return AjaxResult.error(HttpStatus.ERROR,e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
+    }
+
+    /**
+     * 全局异常会比自定义权限处理器先捕获到异常，所以要进行抛出
+     */
+    @ExceptionHandler(AccessDeniedException.class)
+    public void accessDeniedException(AccessDeniedException e) throws AccessDeniedException {
+        throw e;
     }
 
     @ExceptionHandler(RuntimeException.class)

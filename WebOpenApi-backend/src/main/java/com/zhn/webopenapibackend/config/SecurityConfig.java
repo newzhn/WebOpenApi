@@ -6,13 +6,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;
@@ -23,9 +26,14 @@ import javax.annotation.Resource;
  */
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled=true)
 public class SecurityConfig {
     @Resource
     private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+    @Resource
+    private AuthenticationEntryPoint authenticationEntryPoint;
+    @Resource
+    private AccessDeniedHandler accessDeniedHandler;
 
     /**
      * 加密方式
@@ -71,6 +79,12 @@ public class SecurityConfig {
                 .anyRequest().authenticated();
         //添加过滤器
         httpSecurity.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        //配置自定义异常处理器
+        httpSecurity.exceptionHandling()
+                //认证异常处理器
+                .authenticationEntryPoint(authenticationEntryPoint)
+                //授权异常处理器
+                .accessDeniedHandler(accessDeniedHandler);
         return httpSecurity.build();
     }
 
