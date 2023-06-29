@@ -8,6 +8,8 @@ import com.zhn.webopenapibackend.model.request.api.InterfaceInfoQueryRequest;
 import com.zhn.webopenapibackend.model.request.api.InterfaceInfoUpdateRequest;
 import com.zhn.webopenapibackend.model.vo.InterfaceInfoVo;
 
+import java.util.List;
+
 /**
  * The interface Interface info service.
  *
@@ -23,15 +25,15 @@ public interface InterfaceInfoService extends IService<InterfaceInfo> {
      * @param request the request
      * @return the boolean
      */
-    boolean addUser(InterfaceInfoAddRequest request);
+    boolean addInterface(InterfaceInfoAddRequest request);
 
     /**
      * 删除接口（仅管理员）
      *
-     * @param id the id
+     * @param ids the ids
      * @return the boolean
      */
-    boolean deleteById(Long id);
+    boolean deleteByIds(List<Long> ids);
 
     /**
      * 修改接口（仅管理员）
@@ -39,7 +41,7 @@ public interface InterfaceInfoService extends IService<InterfaceInfo> {
      * @param request the request
      * @return the boolean
      */
-    boolean updateUser(InterfaceInfoUpdateRequest request);
+    boolean updateInterface(InterfaceInfoUpdateRequest request);
 
     /**
      * 查询接口信息

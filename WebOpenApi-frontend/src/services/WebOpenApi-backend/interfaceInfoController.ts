@@ -2,8 +2,8 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
-/** update PUT /api/interface */
-export async function updateUsingPUT2(
+/** updateInterface PUT /api/interface */
+export async function updateInterfaceUsingPUT(
   body: API.InterfaceInfoUpdateRequest,
   options?: { [key: string]: any },
 ) {
@@ -17,8 +17,8 @@ export async function updateUsingPUT2(
   });
 }
 
-/** add POST /api/interface */
-export async function addUsingPOST2(
+/** addInterface POST /api/interface */
+export async function addInterfaceUsingPOST(
   body: API.InterfaceInfoAddRequest,
   options?: { [key: string]: any },
 ) {
@@ -32,10 +32,24 @@ export async function addUsingPOST2(
   });
 }
 
-/** getInfo GET /api/interface/${param0} */
-export async function getInfoUsingGET2(
+/** deleteInterfaceByIds DELETE /api/interface/${param0} */
+export async function deleteInterfaceByIdsUsingDELETE(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.getInfoUsingGET2Params,
+  params: API.deleteInterfaceByIdsUsingDELETEParams,
+  options?: { [key: string]: any },
+) {
+  const { ids: param0, ...queryParams } = params;
+  return request<Record<string, any>>(`/api/interface/${param0}`, {
+    method: 'DELETE',
+    params: { ...queryParams },
+    ...(options || {}),
+  });
+}
+
+/** getInterfaceInfo GET /api/interface/${param0} */
+export async function getInterfaceInfoUsingGET(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getInterfaceInfoUsingGET1Params,
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
@@ -46,22 +60,8 @@ export async function getInfoUsingGET2(
   });
 }
 
-/** delete DELETE /api/interface/${param0} */
-export async function deleteUsingDELETE2(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.deleteUsingDELETE2Params,
-  options?: { [key: string]: any },
-) {
-  const { id: param0, ...queryParams } = params;
-  return request<Record<string, any>>(`/api/interface/${param0}`, {
-    method: 'DELETE',
-    params: { ...queryParams },
-    ...(options || {}),
-  });
-}
-
-/** getListVoByPage POST /api/interface/list/page/vo */
-export async function getListVoByPageUsingPOST2(
+/** getInterfaceListVoByPage POST /api/interface/list/page/vo */
+export async function getInterfaceListVoByPageUsingPOST(
   body: API.InterfaceInfoQueryRequest,
   options?: { [key: string]: any },
 ) {

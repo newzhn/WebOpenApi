@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
 
 /**
  * api接口
@@ -30,33 +31,33 @@ public class InterfaceInfoController {
 
     @PostMapping
     @PreAuthorize("hasRole('admin')")
-    public AjaxResult add(@Valid @RequestBody InterfaceInfoAddRequest request) {
-        boolean result = interfaceInfoService.addUser(request);
+    public AjaxResult addInterface(@Valid @RequestBody InterfaceInfoAddRequest request) {
+        boolean result = interfaceInfoService.addInterface(request);
         return AjaxResult.result(result);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{ids}")
     @PreAuthorize("hasRole('admin')")
-    public AjaxResult delete(@NotNull(message = "删除接口的Id不能为空") @PathVariable("id") Long id) {
-        boolean result = interfaceInfoService.deleteById(id);
+    public AjaxResult deleteInterfaceByIds(@NotNull(message = "删除接口的Id不能为空") @PathVariable("ids") Long[] ids) {
+        boolean result = interfaceInfoService.deleteByIds(Arrays.asList(ids));
         return AjaxResult.result(result);
     }
 
     @PutMapping
     @PreAuthorize("hasRole('admin')")
-    public AjaxResult update(@Valid @RequestBody InterfaceInfoUpdateRequest request) {
-        boolean result = interfaceInfoService.updateUser(request);
+    public AjaxResult updateInterface(@Valid @RequestBody InterfaceInfoUpdateRequest request) {
+        boolean result = interfaceInfoService.updateInterface(request);
         return AjaxResult.result(result);
     }
 
     @GetMapping("/{id}")
-    public AjaxResult getInfo(@NotNull(message = "查询接口的Id不能为空") @PathVariable("id") Long id) {
+    public AjaxResult getInterfaceInfo(@NotNull(message = "查询接口的Id不能为空") @PathVariable("id") Long id) {
         InterfaceInfoVo interfaceVo = interfaceInfoService.getVoById(id);
         return AjaxResult.success(interfaceVo);
     }
 
     @PostMapping("/list/page/vo")
-    public AjaxResult getListVoByPage(@RequestBody InterfaceInfoQueryRequest request) {
+    public AjaxResult getInterfaceListVoByPage(@RequestBody InterfaceInfoQueryRequest request) {
         Page<InterfaceInfoVo> page = interfaceInfoService.getVoPage(request);
         return AjaxResult.success(page);
     }

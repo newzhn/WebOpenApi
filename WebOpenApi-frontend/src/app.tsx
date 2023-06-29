@@ -7,7 +7,7 @@ import { history, Link } from '@umijs/max';
 import { requestConfig } from './requestConfig';
 import React from 'react';
 import { AvatarDropdown, AvatarName } from './components/RightContent/AvatarDropdown';
-import {getCurrentUserUsingGET1} from "@/services/WebOpenApi-backend/userController";
+import {getCurrentUserUsingGET} from "@/services/WebOpenApi-backend/userController";
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 
@@ -20,7 +20,7 @@ export async function getInitialState(): Promise<InitialState> {
     loginUser: undefined,
   }
   try {
-    const res = await getCurrentUserUsingGET1();
+    const res = await getCurrentUserUsingGET();
     if (res.data) {
       state.loginUser = res.data
     }
@@ -46,12 +46,12 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     },
     footerRender: () => <Footer />,
     onPageChange: () => {
-      //const { location } = history;
+      const { location } = history;
       // 如果没有登录，重定向到 login
-      // if (!initialState?.loginUser && location.pathname !== loginPath) {
-      //   console.log(123)
-      //   history.push(loginPath);
-      // }
+      if (!initialState?.loginUser && location.pathname !== loginPath) {
+        console.log(123)
+        history.push(loginPath);
+      }
     },
     layoutBgImgList: [
       {

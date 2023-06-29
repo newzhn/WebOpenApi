@@ -1,31 +1,31 @@
 declare namespace API {
-  type deleteUsingDELETE2Params = {
+  type deleteInterfaceByIdsUsingDELETEParams = {
+    /** ids */
+    ids: number[];
+  };
+
+  type deleteUserUsingDELETE1Params = {
     /** id */
     id: number;
   };
 
-  type deleteUsingDELETE3Params = {
+  type getInterfaceInfoUsingGET1Params = {
     /** id */
     id: number;
   };
 
-  type getInfoUsingGET2Params = {
-    /** id */
-    id: number;
-  };
-
-  type getInfoUsingGET3Params = {
+  type getUserInfoUsingGET1Params = {
     /** id */
     id: number;
   };
 
   type InterfaceInfoAddRequest = {
-    description?: string;
-    method?: string;
-    name?: string;
-    requestHeader?: string;
-    responseHeader?: string;
-    url?: string;
+    description: string;
+    method: string;
+    name: string;
+    requestHeader: string;
+    responseHeader: string;
+    url: string;
   };
 
   type InterfaceInfoQueryRequest = {
@@ -40,14 +40,14 @@ declare namespace API {
   };
 
   type InterfaceInfoUpdateRequest = {
-    description?: string;
-    id?: number;
-    method?: string;
-    name?: string;
-    requestHeader?: string;
-    responseHeader?: string;
-    status?: number;
-    url?: string;
+    description: string;
+    id: number;
+    method: string;
+    name: string;
+    requestHeader: string;
+    responseHeader: string;
+    status: number;
+    url: string;
   };
 
   type LoginRequest = {
@@ -98,7 +98,6 @@ declare namespace API {
     userProfile?: string;
     userRole?: string;
   };
-
 
   type User = {
     id?: number;

@@ -7,7 +7,7 @@ import type { MenuInfo } from 'rc-menu/lib/interface';
 import React, { useCallback } from 'react';
 import { flushSync } from 'react-dom';
 import HeaderDropdown from '../HeaderDropdown';
-import {logoutUsingGET1} from "@/services/WebOpenApi-backend/loginController";
+import {logoutUsingGET} from "@/services/WebOpenApi-backend/loginController";
 
 export type GlobalHeaderRightProps = {
   menu?: boolean;
@@ -25,7 +25,7 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
    * 退出登录，并且将当前的 url 保存
    */
   const loginOut = async () => {
-    await logoutUsingGET1();
+    await logoutUsingGET();
     localStorage.removeItem("Access-Token")
     const { search, pathname } = window.location;
     const urlParams = new URL(window.location.href).searchParams;

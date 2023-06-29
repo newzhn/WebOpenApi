@@ -19,7 +19,7 @@ import { history, useModel, Helmet } from '@umijs/max';
 import { Alert, message, Tabs } from 'antd';
 import Settings from '../../../../config/defaultSettings';
 import React, { useState } from 'react';
-import {loginUsingPOST1} from "@/services/WebOpenApi-backend/loginController";
+import {loginUsingPOST} from "@/services/WebOpenApi-backend/loginController";
 const ActionIcons = () => {
   const langClassName = useEmotionCss(({ token }) => {
     return {
@@ -90,7 +90,7 @@ const Login: React.FC = () => {
   const handleSubmit = async (values: API.LoginRequest) => {
     try {
       // 登录
-      const res = await loginUsingPOST1({
+      const res = await loginUsingPOST({
         ...values,
       });
       if (res.code === 200) {
@@ -106,9 +106,7 @@ const Login: React.FC = () => {
         return;
       }
     } catch (error) {
-      const defaultLoginFailureMessage = '登录失败，请重试！';
       console.log(error);
-      message.error(defaultLoginFailureMessage);
     }
   };
   const { status, type: loginType } = userLoginState;

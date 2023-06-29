@@ -62,10 +62,11 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         if (loginUser == null) {
             throw new BusinessException("用户未登录");
         }
-        //数据存在则将其存入Holder中
+        //数据存在则将其存入Holder中并更新登录时间
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        redisCache.expire(CacheConstant.USER_LOGIN,userId);
         //放行
         filterChain.doFilter(httpServletRequest,httpServletResponse);
     }

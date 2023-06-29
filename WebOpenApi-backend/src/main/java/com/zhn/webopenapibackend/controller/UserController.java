@@ -33,33 +33,33 @@ public class UserController {
 
     @PostMapping
     @PreAuthorize("hasRole('admin')")
-    public AjaxResult add(@Valid @RequestBody UserAddRequest request) {
+    public AjaxResult addUser(@Valid @RequestBody UserAddRequest request) {
         boolean result = userService.addUser(request);
         return AjaxResult.result(result);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('admin')")
-    public AjaxResult delete(@NotNull(message = "删除用户的Id不能为空") @PathVariable("id") Long id) {
+    public AjaxResult deleteUser(@NotNull(message = "删除用户的Id不能为空") @PathVariable("id") Long id) {
         boolean result = userService.deleteById(id);
         return AjaxResult.result(result);
     }
 
     @PutMapping
-    public AjaxResult update(@Valid @RequestBody UserUpdateRequest request) {
+    public AjaxResult updateUser(@Valid @RequestBody UserUpdateRequest request) {
         boolean result = userService.updateUser(request);
         return AjaxResult.result(result);
     }
 
     @GetMapping("/{id}")
-    public AjaxResult getInfo(@NotNull(message = "查询用户的Id不能为空") @PathVariable("id") Long id) {
+    public AjaxResult getUserInfo(@NotNull(message = "查询用户的Id不能为空") @PathVariable("id") Long id) {
         UserVo userVo = userService.getVoById(id);
         return AjaxResult.success(userVo);
     }
 
     @PostMapping("/list/page/vo")
     @PreAuthorize("hasRole('admin')")
-    public AjaxResult getListVoByPage(@RequestBody UserQueryRequest request) {
+    public AjaxResult getUserListVoByPage(@RequestBody UserQueryRequest request) {
         Page<UserVo> page = userService.getVoPage(request);
         return AjaxResult.success(page);
     }

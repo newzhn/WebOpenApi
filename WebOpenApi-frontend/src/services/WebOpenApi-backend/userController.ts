@@ -2,8 +2,8 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
-/** update PUT /api/user */
-export async function updateUsingPUT3(
+/** updateUser PUT /api/user */
+export async function updateUserUsingPUT(
   body: API.UserUpdateRequest,
   options?: { [key: string]: any },
 ) {
@@ -17,8 +17,11 @@ export async function updateUsingPUT3(
   });
 }
 
-/** add POST /api/user */
-export async function addUsingPOST3(body: API.UserAddRequest, options?: { [key: string]: any }) {
+/** addUser POST /api/user */
+export async function addUserUsingPOST(
+  body: API.UserAddRequest,
+  options?: { [key: string]: any },
+) {
   return request<Record<string, any>>('/api/user', {
     method: 'POST',
     headers: {
@@ -29,10 +32,10 @@ export async function addUsingPOST3(body: API.UserAddRequest, options?: { [key: 
   });
 }
 
-/** getInfo GET /api/user/${param0} */
-export async function getInfoUsingGET3(
+/** getUserInfo GET /api/user/${param0} */
+export async function getUserInfoUsingGET(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.getInfoUsingGET3Params,
+  params: API.getUserInfoUsingGET1Params,
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
@@ -43,10 +46,10 @@ export async function getInfoUsingGET3(
   });
 }
 
-/** delete DELETE /api/user/${param0} */
-export async function deleteUsingDELETE3(
+/** deleteUser DELETE /api/user/${param0} */
+export async function deleteUserUsingDELETE(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.deleteUsingDELETE3Params,
+  params: API.deleteUserUsingDELETE1Params,
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
@@ -58,15 +61,15 @@ export async function deleteUsingDELETE3(
 }
 
 /** getCurrentUser GET /api/user/current */
-export async function getCurrentUserUsingGET1(options?: { [key: string]: any }) {
+export async function getCurrentUserUsingGET(options?: { [key: string]: any }) {
   return request<Record<string, any>>('/api/user/current', {
     method: 'GET',
     ...(options || {}),
   });
 }
 
-/** getListVoByPage POST /api/user/list/page/vo */
-export async function getListVoByPageUsingPOST3(
+/** getUserListVoByPage POST /api/user/list/page/vo */
+export async function getUserListVoByPageUsingPOST(
   body: API.UserQueryRequest,
   options?: { [key: string]: any },
 ) {

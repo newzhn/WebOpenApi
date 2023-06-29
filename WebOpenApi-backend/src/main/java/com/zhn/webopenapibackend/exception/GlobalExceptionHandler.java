@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 全局异常会比自定义权限处理器先捕获到异常，所以要进行抛出
+     * 全局异常会比自定义认证和鉴权处理器先捕获到异常，所以要进行抛出
      */
     @ExceptionHandler(AccessDeniedException.class)
     public void accessDeniedExceptionHandler(AccessDeniedException e) throws AccessDeniedException {

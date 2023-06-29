@@ -56,6 +56,14 @@ public class RedisCache
         redisTemplate.opsForValue().set(key, value, timeout, timeUnit);
     }
 
+    public boolean expire(final CacheConstant constant, String keuSuffix)
+    {
+        String key = constant.getKeyPrefix() + keuSuffix;
+        long timeout = constant.getTtl();
+        TimeUnit timeUnit = constant.getUnit();
+        return expire(key, timeout, timeUnit);
+    }
+
     /**
      * 设置有效时间
      *

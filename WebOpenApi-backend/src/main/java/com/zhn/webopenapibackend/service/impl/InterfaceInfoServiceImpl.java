@@ -5,15 +5,22 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zhn.webopenapibackend.model.domain.InterfaceInfo;
+import com.zhn.webopenapibackend.model.domain.LoginUser;
 import com.zhn.webopenapibackend.model.request.api.InterfaceInfoAddRequest;
 import com.zhn.webopenapibackend.model.request.api.InterfaceInfoQueryRequest;
 import com.zhn.webopenapibackend.model.request.api.InterfaceInfoUpdateRequest;
 import com.zhn.webopenapibackend.model.vo.InterfaceInfoVo;
 import com.zhn.webopenapibackend.service.InterfaceInfoService;
 import com.zhn.webopenapibackend.mapper.InterfaceInfoMapper;
+import com.zhn.webopenapibackend.service.UserService;
 import com.zhn.webopenapibackend.utils.bean.BeanUtils;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -24,23 +31,33 @@ import java.util.stream.Collectors;
 @Service
 public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, InterfaceInfo>
     implements InterfaceInfoService{
+    @Resource
+    private InterfaceInfoMapper interfaceInfoMapper;
+    @Resource
+    private UserService userService;
 
     @Override
-    public boolean addUser(InterfaceInfoAddRequest request) {
+    public boolean addInterface(InterfaceInfoAddRequest request) {
         InterfaceInfo interfaceInfo = BeanUtils.copy(request, InterfaceInfo.class);
         // TODO 处理接口添加信息
+        LoginUser loginUser = userService.getCurrentUser();
+        interfaceInfo.setUserId(loginUser.getUser().getId());
+        interfaceInfo.setCreateBy(loginUser.getUsername());
         return this.save(interfaceInfo);
     }
 
     @Override
-    public boolean deleteById(Long id) {
-        return this.removeById(id);
+    public boolean deleteByIds(List<Long> ids) {
+        // TODO 进行删除前的一些处理
+        return this.removeByIds(ids);
     }
 
     @Override
-    public boolean updateUser(InterfaceInfoUpdateRequest request) {
+    public boolean updateInterface(InterfaceInfoUpdateRequest request) {
         InterfaceInfo interfaceInfo = BeanUtils.copy(request, InterfaceInfo.class);
         // TODO 处理接口修改数据，删除对应缓存
+        LoginUser loginUser = userService.getCurrentUser();
+        interfaceInfo.setUpdateBy(loginUser.getUsername());
         return this.updateById(interfaceInfo);
     }
 
