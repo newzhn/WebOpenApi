@@ -1,10 +1,20 @@
 package com.zhn.webopenapibackend.service.impl;
 
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zhn.webopenapibackend.model.domain.InterfaceInfo;
+import com.zhn.webopenapibackend.model.request.api.InterfaceInfoAddRequest;
+import com.zhn.webopenapibackend.model.request.api.InterfaceInfoQueryRequest;
+import com.zhn.webopenapibackend.model.request.api.InterfaceInfoUpdateRequest;
+import com.zhn.webopenapibackend.model.vo.InterfaceInfoVo;
 import com.zhn.webopenapibackend.service.InterfaceInfoService;
 import com.zhn.webopenapibackend.mapper.InterfaceInfoMapper;
+import com.zhn.webopenapibackend.utils.bean.BeanUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.stream.Collectors;
 
 /**
 * @author zhanh
@@ -15,6 +25,58 @@ import org.springframework.stereotype.Service;
 public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, InterfaceInfo>
     implements InterfaceInfoService{
 
+    @Override
+    public boolean addUser(InterfaceInfoAddRequest request) {
+        InterfaceInfo interfaceInfo = BeanUtils.copy(request, InterfaceInfo.class);
+        // TODO 处理接口添加信息
+        return this.save(interfaceInfo);
+    }
+
+    @Override
+    public boolean deleteById(Long id) {
+        return this.removeById(id);
+    }
+
+    @Override
+    public boolean updateUser(InterfaceInfoUpdateRequest request) {
+        InterfaceInfo interfaceInfo = BeanUtils.copy(request, InterfaceInfo.class);
+        // TODO 处理接口修改数据，删除对应缓存
+        return this.updateById(interfaceInfo);
+    }
+
+    @Override
+    public InterfaceInfoVo getVoById(Long id) {
+        // TODO 查询接口缓存
+        InterfaceInfo interfaceInfo = this.getById(id);
+        InterfaceInfoVo interfaceInfoVo = BeanUtils.copy(interfaceInfo, InterfaceInfoVo.class);
+        return interfaceInfoVo;
+    }
+
+    @Override
+    public Page<InterfaceInfoVo> getVoPage(InterfaceInfoQueryRequest request) {
+        // 拼接查询条件
+        LambdaQueryWrapper<InterfaceInfo> wrapper = new LambdaQueryWrapper<>();
+        if (StrUtil.isNotBlank(request.getName())) {
+            wrapper.eq(InterfaceInfo::getName,request.getName());
+        }
+        if (StrUtil.isNotBlank(request.getMethod())) {
+            wrapper.eq(InterfaceInfo::getMethod,request.getMethod());
+        }
+        if (StrUtil.isNotBlank(request.getUrl())) {
+            wrapper.like(InterfaceInfo::getUrl,request.getUrl());
+        }
+        if (request.getStatus() != null) {
+            wrapper.eq(InterfaceInfo::getStatus,request.getStatus());
+        }
+        wrapper.orderByDesc(InterfaceInfo::getCreateTime);
+        long current = request.getCurrent();
+        long pageSize = request.getPageSize();
+        Page<InterfaceInfo> interfaceInfoPage = this.page(new Page<>(current, pageSize), wrapper);
+        Page<InterfaceInfoVo> interfaceInfoVoPage = new Page<>(current, pageSize, interfaceInfoPage.getTotal());
+        interfaceInfoVoPage.setRecords(
+                BeanUtils.copyList(interfaceInfoPage.getRecords(),InterfaceInfoVo.class));
+        return interfaceInfoVoPage;
+    }
 }
 
 

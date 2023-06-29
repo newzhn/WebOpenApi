@@ -1,8 +1,14 @@
 package com.zhn.webopenapibackend.service;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zhn.webopenapibackend.model.domain.LoginUser;
 import com.zhn.webopenapibackend.model.domain.User;
+import com.zhn.webopenapibackend.model.request.user.UserAddRequest;
+import com.zhn.webopenapibackend.model.request.user.UserQueryRequest;
+import com.zhn.webopenapibackend.model.request.user.UserUpdateRequest;
+import com.zhn.webopenapibackend.model.vo.UserVo;
 
 /**
  * The interface User service.
@@ -35,4 +41,61 @@ public interface UserService extends IService<User> {
      * @return the boolean
      */
     boolean checkQQ(String qq);
+
+
+    /**
+     * 添加用户（仅管理员）
+     *
+     * @param request the request
+     * @return the boolean
+     */
+    boolean addUser(UserAddRequest request);
+
+    /**
+     * 删除用户（仅管理员）
+     *
+     * @param id the id
+     * @return the boolean
+     */
+    boolean deleteById(Long id);
+
+    /**
+     * 修改用户信息
+     *
+     * @param request the request
+     * @return the boolean
+     */
+    boolean updateUser(UserUpdateRequest request);
+
+    /**
+     * 查询用户Vo信息
+     *
+     * @param id the id
+     * @return the vo by id
+     */
+    UserVo getVoById(Long id);
+
+    /**
+     * 查询用户Vo分页信息
+     *
+     * @param request the request
+     * @return the vo page
+     */
+    Page<UserVo> getVoPage(UserQueryRequest request);
+
+
+    /**
+     * 获取当前登录用户信息
+     *
+     * @return the current user
+     */
+    LoginUser getCurrentUser();
+
+    /**
+     * 获取当前登录用户信息(根据Token)
+     *
+     * @param token the token
+     * @return the current user
+     */
+    LoginUser getCurrentUser(String token);
 }

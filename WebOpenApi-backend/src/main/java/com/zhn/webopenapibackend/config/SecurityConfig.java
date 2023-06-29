@@ -1,5 +1,6 @@
 package com.zhn.webopenapibackend.config;
 
+import com.zhn.webopenapibackend.constant.UserConstant;
 import com.zhn.webopenapibackend.filter.JwtAuthenticationTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -72,8 +73,9 @@ public class SecurityConfig {
                         "/webjars/**",
                         "/swagger-resources/**",
                         "/v2/api-docs",
-                        "/login",
-                        "/register"
+                        UserConstant.USER_LOGIN_URI,
+                        UserConstant.USER_REGISTER_URI,
+                        UserConstant.USER_VERIFICATION_CODE
                 ).anonymous()
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated();

@@ -31,6 +31,17 @@ spring:
         max-idle: 16
         min-idle: 8
         time-between-eviction-runs: 10s
+  # 配置邮件信息
+  mail:
+    host: ${EMAIL_HOST} # 邮箱服务器地址
+    username: ${EMAIL_USERNAME} # 发送者信箱
+    password: ${EMAIL_PASSWORD} # 授权码
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   # Elasticsearch 配置
 #  elasticsearch:
 #    uris: http://localhost:9200

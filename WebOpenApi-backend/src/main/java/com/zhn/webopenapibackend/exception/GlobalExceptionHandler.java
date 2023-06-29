@@ -4,6 +4,7 @@ import com.zhn.webopenapibackend.common.AjaxResult;
 import com.zhn.webopenapibackend.common.HttpStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -17,6 +18,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+    @ExceptionHandler(Exception.class)
+    public AjaxResult runtimeExceptionHandler(Exception e) {
+        log.error("Exception", e);
+        if (e.getCause() instanceof BusinessException) {
+            // 如果 cause 是 BusinessException 异常，则抛出该异常
+            throw (BusinessException) e.getCause();
+        }
+        return AjaxResult.error(HttpStatus.ERROR, "系统出现错误");
+    }
 
     @ExceptionHandler(BusinessException.class)
     public AjaxResult businessExceptionHandler(BusinessException e) {
@@ -35,13 +45,12 @@ public class GlobalExceptionHandler {
      * 全局异常会比自定义权限处理器先捕获到异常，所以要进行抛出
      */
     @ExceptionHandler(AccessDeniedException.class)
-    public void accessDeniedException(AccessDeniedException e) throws AccessDeniedException {
+    public void accessDeniedExceptionHandler(AccessDeniedException e) throws AccessDeniedException {
         throw e;
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public AjaxResult runtimeExceptionHandler(RuntimeException e) {
-        log.error("RuntimeException", e);
-        return AjaxResult.error(HttpStatus.ERROR, "系统错误");
+    @ExceptionHandler(AuthenticationException.class)
+    public void authenticationExceptionHandler(AuthenticationException e) throws AuthenticationException {
+        throw e;
     }
 }

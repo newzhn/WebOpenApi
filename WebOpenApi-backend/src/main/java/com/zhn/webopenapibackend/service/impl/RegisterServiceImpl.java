@@ -1,12 +1,16 @@
 package com.zhn.webopenapibackend.service.impl;
 
+import cn.hutool.core.util.RandomUtil;
+import com.zhn.webopenapibackend.constant.CacheConstant;
 import com.zhn.webopenapibackend.constant.UserConstant;
 import com.zhn.webopenapibackend.model.domain.User;
 import com.zhn.webopenapibackend.model.request.user.RegisterRequest;
+import com.zhn.webopenapibackend.service.EmailService;
 import com.zhn.webopenapibackend.service.RegisterService;
 import com.zhn.webopenapibackend.service.UserService;
 import com.zhn.webopenapibackend.utils.QQUtil;
 import com.zhn.webopenapibackend.utils.bean.BeanUtils;
+import com.zhn.webopenapibackend.utils.redis.RedisCache;
 import com.zhn.webopenapibackend.utils.string.StringUtils;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,9 +30,13 @@ public class RegisterServiceImpl implements RegisterService {
     @Resource
     private UserService userService;
     @Resource
+    private EmailService emailService;
+    @Resource
     private PasswordEncoder passwordEncoder;
     @Resource
     private RestTemplate restTemplate;
+    @Resource
+    private RedisCache redisCache;
 
     @Override
     public String register(RegisterRequest request) {
@@ -57,5 +65,15 @@ public class RegisterServiceImpl implements RegisterService {
             return "系统出错，注册失败";
         }
         return "";
+    }
+
+    @Override
+    public void sendCode(String email) {
+        //创建验证码
+        String code = RandomUtil.randomNumbers(6);
+        //保存验证码到Redis，设置有效期，用邮箱做key
+        redisCache.setCacheObject(CacheConstant.REGISTER_CODE,email,code);
+        //发送验证码
+        emailService.sendVerificationCode(email,code);
     }
 }

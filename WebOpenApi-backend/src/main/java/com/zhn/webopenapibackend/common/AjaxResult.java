@@ -20,7 +20,7 @@ public class AjaxResult extends HashMap<String, Object> {
     /**
      * 返回内容
      */
-    public static final String MSG_TAG = "message";
+    public static final String MSG_TAG = "msg";
 
     /**
      * 数据对象
@@ -57,6 +57,13 @@ public class AjaxResult extends HashMap<String, Object> {
         if (ObjUtil.isNotNull(data)) {
             super.put(DATA_TAG, data);
         }
+    }
+
+    /**
+     * 根据传入结果判断返回值
+     */
+    public static AjaxResult result(boolean result) {
+        return result ? success() : error();
     }
 
     /**

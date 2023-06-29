@@ -1,5 +1,6 @@
 package com.zhn.webopenapibackend.utils.redis;
 
+import com.zhn.webopenapibackend.constant.CacheConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundSetOperations;
 import org.springframework.data.redis.core.HashOperations;
@@ -16,6 +17,20 @@ public class RedisCache
 {
     @Autowired
     public RedisTemplate redisTemplate;
+
+    /**
+     * 缓存基本的对象，Integer、String、实体类等
+     * @param constant 缓存常量
+     * @param keySuffix key后缀
+     * @param value 缓存的值
+     */
+    public <T> void setCacheObject(final CacheConstant constant,final String keySuffix, final T value)
+    {
+        String key = constant.getKeyPrefix() + keySuffix;
+        long timeout = constant.getTtl();
+        TimeUnit timeUnit = constant.getUnit();
+        redisTemplate.opsForValue().set(key, value, timeout, timeUnit);
+    }
 
     /**
      * 缓存基本的对象，Integer、String、实体类等

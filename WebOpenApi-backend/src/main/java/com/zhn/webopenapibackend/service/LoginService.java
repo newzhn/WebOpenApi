@@ -2,6 +2,8 @@ package com.zhn.webopenapibackend.service;
 
 import com.zhn.webopenapibackend.model.request.user.LoginRequest;
 
+import java.util.Map;
+
 /**
  * @author zhn
  * @version 1.0
@@ -12,7 +14,7 @@ public interface LoginService {
      * @param request
      * @return
      */
-    String login(LoginRequest request);
+    Map<String,Object> login(LoginRequest request);
 
     /**
      * 登出服务

@@ -21,11 +21,6 @@ public class InterfaceInfoQueryRequest extends PageRequest implements Serializab
     private String name;
 
     /**
-     * 接口描述
-     */
-    private String description;
-
-    /**
      * 接口类型
      */
     private String method;

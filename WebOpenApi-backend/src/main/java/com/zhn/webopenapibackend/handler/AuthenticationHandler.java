@@ -24,7 +24,7 @@ public class AuthenticationHandler implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-        AjaxResult result = new AjaxResult(HttpStatus.UNAUTHORIZED, "认证失败请重新登录");
+        AjaxResult result = new AjaxResult(HttpStatus.UNAUTHORIZED, e.getMessage());
         String json = JSON.toJSONString(result);
         WebUtils.renderString(httpServletResponse, json);
     }

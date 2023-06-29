@@ -10,4 +10,6 @@ import com.zhn.webopenapibackend.model.request.user.RegisterRequest;
 public interface RegisterService {
 
     String register(RegisterRequest request);
+
+    void sendCode(String email);
 }

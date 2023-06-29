@@ -7,28 +7,37 @@ package com.zhn.webopenapibackend.constant;
  * @from <a href="https://yupi.icu">编程导航知识星球</a>
  */
 public interface UserConstant {
+    /**
+     * 登录接口URI
+     */
+    String USER_LOGIN_URI = "/login";
 
     /**
-     * 用户登录态键
+     * 注册接口URI
      */
-    String USER_LOGIN_KEY = "web_open_api:user_login:";
+    String USER_REGISTER_URI = "/register";
+
+    /**
+     * 注册验证码接口URI
+     */
+    String USER_VERIFICATION_CODE = "/sendCode";
 
     //  region 权限
 
     /**
      * 默认角色
      */
-    String DEFAULT_ROLE = "user";
+    String DEFAULT_ROLE = "ROLE_user";
 
     /**
      * 管理员角色
      */
-    String ADMIN_ROLE = "admin";
+    String ADMIN_ROLE = "ROLE_admin";
 
     /**
      * 被封号
      */
-    String BAN_ROLE = "ban";
+    String BAN_ROLE = "ROLE_ban";
 
     /**
      * qq头像API

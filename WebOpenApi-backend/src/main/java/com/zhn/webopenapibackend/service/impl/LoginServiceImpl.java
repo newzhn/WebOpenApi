@@ -4,6 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.http.HttpStatus;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.zhn.webopenapibackend.constant.CacheConstant;
 import com.zhn.webopenapibackend.constant.UserConstant;
 import com.zhn.webopenapibackend.exception.ThrowUtils;
 import com.zhn.webopenapibackend.model.domain.LoginUser;
@@ -23,6 +24,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -37,7 +40,7 @@ public class LoginServiceImpl implements LoginService {
     private RedisCache redisCache;
 
     @Override
-    public String login(LoginRequest request) {
+    public Map<String,Object> login(LoginRequest request) {
         // 将登陆信息封装成Authentication的实现类
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(request.getUserAccount(), request.getUserPassword());
@@ -49,10 +52,12 @@ public class LoginServiceImpl implements LoginService {
         String userId = loginUser.getUser().getId().toString();
         String jwt = JwtUtil.createJWT(userId);
         // 将登陆用户信息存入Redis
-        redisCache.setCacheObject(UserConstant.USER_LOGIN_KEY + userId
-                ,loginUser,1, TimeUnit.HOURS);
-        //返回token
-        return jwt;
+        redisCache.setCacheObject(CacheConstant.USER_LOGIN,userId,loginUser);
+        //返回token和登录用户信息
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("token",jwt);
+        map.put("loginUser",loginUser);
+        return map;
     }
 
     @Override
@@ -62,7 +67,7 @@ public class LoginServiceImpl implements LoginService {
         if (loginUser == null) {
             throw new RuntimeException("用户未登录");
         }
-        String key = UserConstant.USER_LOGIN_KEY + loginUser.getUser().getId();
+        String key = CacheConstant.USER_LOGIN.getKeyPrefix() + loginUser.getUser().getId();
         redisCache.deleteObject(key);
     }
 }

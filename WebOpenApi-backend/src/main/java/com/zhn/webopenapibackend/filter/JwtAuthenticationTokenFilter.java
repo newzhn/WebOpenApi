@@ -1,6 +1,6 @@
 package com.zhn.webopenapibackend.filter;
 
-import com.zhn.webopenapibackend.constant.UserConstant;
+import com.zhn.webopenapibackend.constant.CacheConstant;
 import com.zhn.webopenapibackend.exception.BusinessException;
 import com.zhn.webopenapibackend.model.domain.LoginUser;
 import com.zhn.webopenapibackend.utils.JwtUtil;
@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.zhn.webopenapibackend.constant.UserConstant.*;
+
 /**
  * Jwt认证过滤器
  * @author zhn
@@ -31,8 +33,16 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
+        //登录或注册接口则直接放行
+        String uri = httpServletRequest.getRequestURI();
+        uri = uri.substring(4);
+        if (USER_LOGIN_URI.equals(uri) || USER_REGISTER_URI.equals(uri)
+            || USER_VERIFICATION_CODE.equals(uri)) {
+            filterChain.doFilter(httpServletRequest,httpServletResponse);
+            return;
+        }
         //获取token
-        String token = httpServletRequest.getHeader("Authorization");
+        String token = httpServletRequest.getHeader("Access-Token");
         if (StringUtils.isEmpty(token)) {
             filterChain.doFilter(httpServletRequest,httpServletResponse);
             return;
@@ -47,7 +57,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             throw new BusinessException("非法的Token");
         }
         //Redis查询登录数据
-        String key = UserConstant.USER_LOGIN_KEY + userId;
+        String key = CacheConstant.USER_LOGIN.getKeyPrefix() + userId;
         LoginUser loginUser = redisCache.getCacheObject(key);
         if (loginUser == null) {
             throw new BusinessException("用户未登录");
