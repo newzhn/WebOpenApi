@@ -62,7 +62,7 @@ public class WebApiClient {
         HashMap<String, String> map = new HashMap<>();
         map.put("accessKey",accessKey);
         //随机数
-        map.put("nonce", RandomUtil.randomNumbers(100));
+        map.put("nonce", RandomUtil.randomNumbers(4));
         //时间戳
         map.put("timestamp",String.valueOf(System.currentTimeMillis() / 1000));
         //请求传参

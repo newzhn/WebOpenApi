@@ -11,11 +11,11 @@ import {Button, Drawer, message} from 'antd';
 import React, {useRef, useState} from 'react';
 import {
   addInterfaceUsingPOST, deleteInterfaceByIdsUsingDELETE,
-  getInterfaceListVoByPageUsingPOST,
+  getInterfaceListVoByPageUsingPOST, offlineInterfaceInfoUsingPUT, onlineInterfaceInfoUsingPUT,
   updateInterfaceUsingPUT
 } from "@/services/WebOpenApi-backend/interfaceInfoController";
-import CreateModal from "@/pages/InterfaceInfo/components/CreateModal";
-import UpdateModal from "@/pages/InterfaceInfo/components/UpdateModal";
+import CreateModal from "@/pages/Admin/InterfaceInfo/components/CreateModal";
+import UpdateModal from "@/pages/Admin/InterfaceInfo/components/UpdateModal";
 
 const InterfaceInfo: React.FC = () => {
   /**
@@ -132,6 +132,52 @@ const InterfaceInfo: React.FC = () => {
   };
 
   /**
+   *  online node
+   * @zh-CN 上线接口
+   *
+   * @param record
+   */
+  const handleOnline = async (record: API.IdRequest) => {
+    const hide = message.loading('正在上线中');
+    if (!record) return true;
+    try {
+      await onlineInterfaceInfoUsingPUT({
+        id: record.id
+      });
+      hide();
+      message.success('上线成功');
+      actionRef.current?.reload();
+      return true;
+    } catch (error) {
+      hide();
+      return false;
+    }
+  };
+
+  /**
+   *  offline node
+   * @zh-CN 下线接口
+   *
+   * @param record
+   */
+  const handleOffline = async (record: API.IdRequest) => {
+    const hide = message.loading('正在下线中');
+    if (!record) return true;
+    try {
+      await offlineInterfaceInfoUsingPUT({
+        id: record.id
+      });
+      hide();
+      message.success('下线成功');
+      actionRef.current?.reload();
+      return true;
+    } catch (error) {
+      hide();
+      return false;
+    }
+  };
+
+  /**
    * @en-US International configuration
    * @zh-CN 国际化配置
    * */
@@ -237,14 +283,32 @@ const InterfaceInfo: React.FC = () => {
         >
           修改
         </a>,
-        <a
-          key="danger"
+        record.status === 0 ? <a
+          key="config"
+          onClick={() => {
+            handleOnline(record);
+          }}
+        >
+          发布
+        </a> : null,
+        record.status === 1 ? <a
+          key="config"
+          onClick={() => {
+            handleOffline(record);
+          }}
+        >
+          下线
+        </a> : null,
+        <Button
+          type="text"
+          key="config"
+          danger
           onClick={() => {
             handleRemove([record]);
           }}
         >
           删除
-        </a>,
+        </Button>,
       ],
     },
   ];

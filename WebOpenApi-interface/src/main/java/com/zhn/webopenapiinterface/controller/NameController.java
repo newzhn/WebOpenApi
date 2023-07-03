@@ -36,13 +36,13 @@ public class NameController {
         if (!"zhn".equals(accessKey)) {
             return "认证失败";
         }
-        // TODO 可以对请求头中随机数和时间戳进行验证，随机数保证不会重放，时间戳进行定时清除后台保存的随即数
+        // TODO 可以对请求头中随机数和时间戳进行验证，随机数保证不会重放，时间戳进行定时清除后台保存的随机数
 
         //进行签名比对
         String genSign = SignUtil.genSign(body, "123");
         if (!genSign.equals(sign)) {
             return "认证失败";
         }
-        return "Post&Json 你的名字是：" + user.getName();
+        return user.getName();
     }
 }

@@ -4,18 +4,22 @@ declare namespace API {
     ids: number[];
   };
 
-  type deleteUserUsingDELETE1Params = {
+  type deleteUserUsingDELETEParams = {
     /** id */
     id: number;
   };
 
-  type getInterfaceInfoUsingGET1Params = {
+  type getInterfaceInfoUsingGETParams = {
     /** id */
     id: number;
   };
 
-  type getUserInfoUsingGET1Params = {
+  type getUserInfoUsingGETParams = {
     /** id */
+    id: number;
+  };
+
+  type IdRequest = {
     id: number;
   };
 
@@ -46,7 +50,6 @@ declare namespace API {
     name: string;
     requestHeader: string;
     responseHeader: string;
-    status: number;
     url: string;
   };
 
@@ -63,7 +66,7 @@ declare namespace API {
     verificationCode: string;
   };
 
-  type sendCodeUsingGET1Params = {
+  type sendCodeUsingGETParams = {
     /** email */
     email?: string;
   };

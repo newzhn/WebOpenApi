@@ -23,6 +23,8 @@ export async function getInitialState(): Promise<InitialState> {
     const res = await getCurrentUserUsingGET();
     if (res.data) {
       state.loginUser = res.data
+    } else {
+      history.push(loginPath);
     }
   } catch (error) {
     history.push(loginPath);
@@ -46,12 +48,12 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     },
     footerRender: () => <Footer />,
     onPageChange: () => {
-      const { location } = history;
+      //const { location } = history;
       // 如果没有登录，重定向到 login
-      if (!initialState?.loginUser && location.pathname !== loginPath) {
-        console.log(123)
-        history.push(loginPath);
-      }
+      // if (!initialState?.loginUser && location.pathname !== loginPath) {
+      //   console.log(123)
+      //   history.push(loginPath);
+      // }
     },
     layoutBgImgList: [
       {

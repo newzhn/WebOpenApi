@@ -1,11 +1,16 @@
 package com.zhn.webopenapibackend.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zhn.webopenapibackend.common.HttpStatus;
+import com.zhn.webopenapibackend.exception.ThrowUtils;
 import com.zhn.webopenapibackend.model.domain.InterfaceInfo;
 import com.zhn.webopenapibackend.model.domain.LoginUser;
+import com.zhn.webopenapibackend.model.eneum.InterfaceInfoStatusEnum;
+import com.zhn.webopenapibackend.model.request.IdRequest;
 import com.zhn.webopenapibackend.model.request.api.InterfaceInfoAddRequest;
 import com.zhn.webopenapibackend.model.request.api.InterfaceInfoQueryRequest;
 import com.zhn.webopenapibackend.model.request.api.InterfaceInfoUpdateRequest;
@@ -14,6 +19,8 @@ import com.zhn.webopenapibackend.service.InterfaceInfoService;
 import com.zhn.webopenapibackend.mapper.InterfaceInfoMapper;
 import com.zhn.webopenapibackend.service.UserService;
 import com.zhn.webopenapibackend.utils.bean.BeanUtils;
+import com.zhn.webopenapiclientsdk.client.WebApiClient;
+import com.zhn.webopenapiclientsdk.model.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,6 +42,8 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
     private InterfaceInfoMapper interfaceInfoMapper;
     @Resource
     private UserService userService;
+    @Resource
+    private WebApiClient webApiClient;
 
     @Override
     public boolean addInterface(InterfaceInfoAddRequest request) {
@@ -93,6 +102,36 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
         interfaceInfoVoPage.setRecords(
                 BeanUtils.copyList(interfaceInfoPage.getRecords(),InterfaceInfoVo.class));
         return interfaceInfoVoPage;
+    }
+
+    @Override
+    public void onlineInterfaceInfo(IdRequest request) {
+        //校验接口信息是否存在
+        Long id = request.getId();
+        InterfaceInfo interfaceInfo = this.getById(id);
+        ThrowUtils.throwIf(ObjectUtil.isNull(interfaceInfo),
+                HttpStatus.NOT_FOUND,"接口信息不存在");
+        //验证接口是否可用 TODO 此处客户端接口是写死的，后续优化
+        User user = new User();
+        user.setName("zhangsan");
+        String result = webApiClient.getNameByPostJson(user);
+        ThrowUtils.throwIf(!"zhangsan".equals(result),
+                HttpStatus.ERROR,"接口验证失败");
+        //上线接口
+        interfaceInfo.setStatus(InterfaceInfoStatusEnum.ONLINE.getStatus());
+        this.updateById(interfaceInfo);
+    }
+
+    @Override
+    public void offlineInterfaceInfo(IdRequest request) {
+        //校验接口信息是否存在
+        Long id = request.getId();
+        InterfaceInfo interfaceInfo = this.getById(id);
+        ThrowUtils.throwIf(ObjectUtil.isNull(interfaceInfo),
+                HttpStatus.NOT_FOUND,"接口信息不存在");
+        //下线接口
+        interfaceInfo.setStatus(InterfaceInfoStatusEnum.OFFLINE.getStatus());
+        this.updateById(interfaceInfo);
     }
 }
 

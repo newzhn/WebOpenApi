@@ -3,6 +3,7 @@ package com.zhn.webopenapibackend.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhn.webopenapibackend.model.domain.InterfaceInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zhn.webopenapibackend.model.request.IdRequest;
 import com.zhn.webopenapibackend.model.request.api.InterfaceInfoAddRequest;
 import com.zhn.webopenapibackend.model.request.api.InterfaceInfoQueryRequest;
 import com.zhn.webopenapibackend.model.request.api.InterfaceInfoUpdateRequest;
@@ -58,4 +59,18 @@ public interface InterfaceInfoService extends IService<InterfaceInfo> {
      * @return the vo page
      */
     Page<InterfaceInfoVo> getVoPage(InterfaceInfoQueryRequest request);
+
+    /**
+     * Online interface
+     *
+     * @param request the request
+     */
+    void onlineInterfaceInfo(IdRequest request);
+
+    /**
+     * Offline interface
+     *
+     * @param request the request
+     */
+    void offlineInterfaceInfo(IdRequest request);
 }

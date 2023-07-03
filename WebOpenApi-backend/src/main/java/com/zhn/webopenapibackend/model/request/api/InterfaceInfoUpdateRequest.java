@@ -2,7 +2,6 @@ package com.zhn.webopenapibackend.model.request.api;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -57,12 +56,6 @@ public class InterfaceInfoUpdateRequest implements Serializable {
      */
     @NotNull(message = "响应头不能为空")
     private String responseHeader;
-
-    /**
-     * 接口状态（0-关闭，1-开启）
-     */
-    @NotNull(message = "接口状态不能为空")
-    private Integer status;
 
     private static final long serialVersionUID = 1L;
 }
