@@ -1,10 +1,9 @@
-package com.zhn.webopenapibackend.constant;
+package com.zhn.webopenapibackend.model.eneum;
 
 import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static java.util.concurrent.TimeUnit.MINUTES;
-import static java.util.concurrent.TimeUnit.HOURS;
 
 /**
  * @author zhn
@@ -12,7 +11,7 @@ import static java.util.concurrent.TimeUnit.HOURS;
  * @date 2023/6/29 12:35
  * @blog www.zhnblog.icu
  */
-public enum CacheConstant {
+public enum CacheEnums {
     /**
      * 缓存key常量
      */
@@ -35,7 +34,7 @@ public enum CacheConstant {
      */
     private final TimeUnit unit;
 
-    CacheConstant(String keyPrefix, Long ttl, TimeUnit unit) {
+    CacheEnums(String keyPrefix, Long ttl, TimeUnit unit) {
         this.keyPrefix = keyPrefix;
         this.ttl = ttl;
         this.unit = unit;

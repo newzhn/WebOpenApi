@@ -33,13 +33,13 @@ public class NameController {
         String timestamp = request.getHeader("timestamp");
         String body = request.getHeader("body");
         String sign = request.getHeader("sign");
-        if (!"zhn".equals(accessKey)) {
+        if (!"f395fc296d5507b4d0ba8859468d3681".equals(accessKey)) {
             return "认证失败";
         }
         // TODO 可以对请求头中随机数和时间戳进行验证，随机数保证不会重放，时间戳进行定时清除后台保存的随机数
 
         //进行签名比对
-        String genSign = SignUtil.genSign(body, "123");
+        String genSign = SignUtil.genSign(body, "2eec75616f6a65a3590e59a05d650ef3");
         if (!genSign.equals(sign)) {
             return "认证失败";
         }

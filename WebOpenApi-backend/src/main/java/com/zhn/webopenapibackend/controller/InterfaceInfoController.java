@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhn.webopenapibackend.common.AjaxResult;
 import com.zhn.webopenapibackend.model.request.IdRequest;
 import com.zhn.webopenapibackend.model.request.api.InterfaceInfoAddRequest;
+import com.zhn.webopenapibackend.model.request.api.InterfaceInfoInvokeRequest;
 import com.zhn.webopenapibackend.model.request.api.InterfaceInfoQueryRequest;
 import com.zhn.webopenapibackend.model.request.api.InterfaceInfoUpdateRequest;
 import com.zhn.webopenapibackend.model.vo.InterfaceInfoVo;
@@ -115,5 +116,17 @@ public class InterfaceInfoController {
     public AjaxResult offlineInterfaceInfo(@Valid @RequestBody IdRequest request) {
         interfaceInfoService.offlineInterfaceInfo(request);
         return AjaxResult.success();
+    }
+
+    /**
+     * 接口调用
+     *
+     * @param request the request
+     * @return the ajax result
+     */
+    @PostMapping("/invoke")
+    public AjaxResult invokeInterfaceInfo(@Valid @RequestBody InterfaceInfoInvokeRequest request) {
+        Object result = interfaceInfoService.invokeInterfaceInfo(request);
+        return AjaxResult.success(result);
     }
 }

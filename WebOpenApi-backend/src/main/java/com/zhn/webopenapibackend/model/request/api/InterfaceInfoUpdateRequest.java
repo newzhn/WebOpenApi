@@ -2,6 +2,7 @@ package com.zhn.webopenapibackend.model.request.api;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -44,6 +45,12 @@ public class InterfaceInfoUpdateRequest implements Serializable {
      */
     @NotNull(message = "接口地址不能为空")
     private String url;
+
+    /**
+     * 请求参数
+     */
+    @NotBlank(message = "接口请求参数不能为空")
+    private String requestParams;
 
     /**
      * 请求头

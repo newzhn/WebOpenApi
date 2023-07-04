@@ -31,6 +31,7 @@ public class QQUtil {
         try {
             restTemplate.setMessageConverters(Collections.singletonList(new StringHttpMessageConverter(Charset.forName("GBK"))));
             String url = UserConstant.QQ_NICKNAME_API + qq;
+            // TODO 原QQ获取昵称url出现问题，后续修改替换
             String response = restTemplate.getForObject(url, String.class);
             nickname = response.split(",")[6];
             nickname = nickname.substring(1, nickname.length() - 1);

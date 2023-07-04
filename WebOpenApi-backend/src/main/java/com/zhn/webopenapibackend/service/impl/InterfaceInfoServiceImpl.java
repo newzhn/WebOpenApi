@@ -5,13 +5,16 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.gson.Gson;
 import com.zhn.webopenapibackend.common.HttpStatus;
+import com.zhn.webopenapibackend.exception.BusinessException;
 import com.zhn.webopenapibackend.exception.ThrowUtils;
 import com.zhn.webopenapibackend.model.domain.InterfaceInfo;
 import com.zhn.webopenapibackend.model.domain.LoginUser;
 import com.zhn.webopenapibackend.model.eneum.InterfaceInfoStatusEnum;
 import com.zhn.webopenapibackend.model.request.IdRequest;
 import com.zhn.webopenapibackend.model.request.api.InterfaceInfoAddRequest;
+import com.zhn.webopenapibackend.model.request.api.InterfaceInfoInvokeRequest;
 import com.zhn.webopenapibackend.model.request.api.InterfaceInfoQueryRequest;
 import com.zhn.webopenapibackend.model.request.api.InterfaceInfoUpdateRequest;
 import com.zhn.webopenapibackend.model.vo.InterfaceInfoVo;
@@ -114,7 +117,12 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
         //验证接口是否可用 TODO 此处客户端接口是写死的，后续优化
         User user = new User();
         user.setName("zhangsan");
-        String result = webApiClient.getNameByPostJson(user);
+        String result = null;
+        try {
+            result = webApiClient.getNameByPostJson(user);
+        } catch (Exception e) {
+            throw new BusinessException(HttpStatus.ERROR,"接口验证失败",e);
+        }
         ThrowUtils.throwIf(!"zhangsan".equals(result),
                 HttpStatus.ERROR,"接口验证失败");
         //上线接口
@@ -132,6 +140,37 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
         //下线接口
         interfaceInfo.setStatus(InterfaceInfoStatusEnum.OFFLINE.getStatus());
         this.updateById(interfaceInfo);
+    }
+
+    @Override
+    public Object invokeInterfaceInfo(InterfaceInfoInvokeRequest request) {
+        //校验接口信息是否存在
+        Long id = request.getId();
+        InterfaceInfo interfaceInfo = this.getById(id);
+        ThrowUtils.throwIf(ObjectUtil.isNull(interfaceInfo),
+                HttpStatus.NOT_FOUND,"接口信息不存在");
+        //校验接口是否正常
+        ThrowUtils.throwIf(InterfaceInfoStatusEnum.OFFLINE.getStatus().equals(interfaceInfo.getStatus()),
+                HttpStatus.ERROR,"接口未上线");
+        //取出传入参数进行转换
+        // TODO 开发阶段参数和调用的接口暂时写死，后续修改
+        String userRequestParams = request.getUserRequestParams();
+        Gson gson = new Gson();
+        User user = gson.fromJson(userRequestParams, User.class);
+        //获取当前登录用户ak、sk
+        LoginUser loginUser = userService.getCurrentUser();
+        String accessKey = loginUser.getUser().getAccessKey();
+        String secretKey = loginUser.getUser().getSecretKey();
+        //这里不能用引入的客户端，因为开发模式下ak、sk都是配置死的
+        WebApiClient client = new WebApiClient(accessKey, secretKey);
+        //调用接口
+        String result;
+        try {
+            result = client.getNameByPostJson(user);
+        } catch (Exception e) {
+            throw new BusinessException(HttpStatus.ERROR,"发生未知错误，接口调用失败",e);
+        }
+        return result;
     }
 }
 

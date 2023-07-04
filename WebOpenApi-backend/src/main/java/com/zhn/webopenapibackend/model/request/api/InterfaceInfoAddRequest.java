@@ -38,6 +38,12 @@ public class InterfaceInfoAddRequest implements Serializable {
     private String url;
 
     /**
+     * 请求参数
+     */
+    @NotBlank(message = "接口请求参数不能为空")
+    private String requestParams;
+
+    /**
      * 请求头
      */
     @NotBlank(message = "请求头不能为空")

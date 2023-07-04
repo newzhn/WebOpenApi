@@ -60,6 +60,21 @@ export async function getInterfaceInfoUsingGET(
   });
 }
 
+/** invokeInterfaceInfo POST /api/interface/invoke */
+export async function invokeInterfaceInfoUsingPOST(
+  body: API.InterfaceInfoInvokeRequest,
+  options?: { [key: string]: any },
+) {
+  return request<Record<string, any>>('/api/interface/invoke', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** getInterfaceListVoByPage POST /api/interface/list/page/vo */
 export async function getInterfaceListVoByPageUsingPOST(
   body: API.InterfaceInfoQueryRequest,

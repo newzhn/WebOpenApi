@@ -40,6 +40,11 @@ public class InterfaceInfoVo {
     private String url;
 
     /**
+     * 请求参数
+     */
+    private String requestParams;
+
+    /**
      * 请求头
      */
     private String requestHeader;
@@ -63,5 +68,10 @@ public class InterfaceInfoVo {
      * 创建时间
      */
     private Date createTime;
+
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
 
 }

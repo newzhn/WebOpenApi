@@ -1,7 +1,8 @@
 package com.zhn.webopenapibackend.service.impl;
 
 import cn.hutool.core.util.RandomUtil;
-import com.zhn.webopenapibackend.constant.CacheConstant;
+import cn.hutool.crypto.digest.DigestUtil;
+import com.zhn.webopenapibackend.model.eneum.CacheEnums;
 import com.zhn.webopenapibackend.constant.UserConstant;
 import com.zhn.webopenapibackend.model.domain.User;
 import com.zhn.webopenapibackend.model.request.user.RegisterRequest;
@@ -11,15 +12,13 @@ import com.zhn.webopenapibackend.service.UserService;
 import com.zhn.webopenapibackend.utils.QQUtil;
 import com.zhn.webopenapibackend.utils.bean.BeanUtils;
 import com.zhn.webopenapibackend.utils.redis.RedisCache;
-import com.zhn.webopenapibackend.utils.string.StringUtils;
-import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
-import java.nio.charset.Charset;
-import java.util.Collections;
+
+import static com.zhn.webopenapibackend.constant.CommonConstant.SALT;
 
 /**
  * @author zhn
@@ -40,6 +39,13 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Override
     public String register(RegisterRequest request) {
+        //校验验证码是否正确
+        String code = request.getVerificationCode();
+        String cacheCode = redisCache.getCacheObject(
+                CacheEnums.REGISTER_CODE.getKeyPrefix() + request.getEmail());
+        if (!code.equals(cacheCode)) {
+            return "验证码错误";
+        }
         User user = BeanUtils.copy(request, User.class);
         //校验用户名是否重复
         if (userService.checkUserAccount(user.getUserAccount())) {
@@ -58,6 +64,13 @@ public class RegisterServiceImpl implements RegisterService {
         user.setUserPassword(password);
         //默认角色为普通用户
         user.setUserRole(UserConstant.DEFAULT_ROLE);
+        //分配api签名
+        String accessKey = DigestUtil.md5Hex(SALT + user.getUserAccount() +
+                RandomUtil.randomNumbers(4));
+        String secretKey = DigestUtil.md5Hex(SALT + user.getUserAccount() +
+                RandomUtil.randomNumbers(8));
+        user.setAccessKey(accessKey);
+        user.setSecretKey(secretKey);
         //根据QQ获取昵称和头像
         QQUtil.setAvatarUrlAndNickname(user,restTemplate);
         //创建用户
@@ -72,7 +85,7 @@ public class RegisterServiceImpl implements RegisterService {
         //创建验证码
         String code = RandomUtil.randomNumbers(6);
         //保存验证码到Redis，设置有效期，用邮箱做key
-        redisCache.setCacheObject(CacheConstant.REGISTER_CODE,email,code);
+        redisCache.setCacheObject(CacheEnums.REGISTER_CODE,email,code);
         //发送验证码
         emailService.sendVerificationCode(email,code);
     }

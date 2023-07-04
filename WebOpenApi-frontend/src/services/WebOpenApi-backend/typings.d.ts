@@ -28,8 +28,14 @@ declare namespace API {
     method: string;
     name: string;
     requestHeader: string;
+    requestParams: string;
     responseHeader: string;
     url: string;
+  };
+
+  type InterfaceInfoInvokeRequest = {
+    id: number;
+    userRequestParams: string;
   };
 
   type InterfaceInfoQueryRequest = {
@@ -49,6 +55,7 @@ declare namespace API {
     method: string;
     name: string;
     requestHeader: string;
+    requestParams: string;
     responseHeader: string;
     url: string;
   };
@@ -112,6 +119,8 @@ declare namespace API {
     email?: string;
     qq?: string;
     userRole?: string;
+    accessKey?: string;
+    secretKey?: string;
     createTime?: Date;
     updateTime?: Date;
     isDelete?: number;
@@ -128,6 +137,8 @@ declare namespace API {
       email?: string;
       qq?: string;
       userRole?: string;
+      accessKey?: string;
+      secretKey?: string;
       createTime?: Date;
       updateTime?: Date;
       isDelete?: number;
@@ -144,11 +155,13 @@ declare namespace API {
     description: string;
     method: string;
     url: string;
+    requestParams: string;
     requestHeader: string;
     responseHeader: string;
     status: number;
     userId: number;
     createBy: string;
     createTime: Date;
+    updateTime?: Date;
   };
 }

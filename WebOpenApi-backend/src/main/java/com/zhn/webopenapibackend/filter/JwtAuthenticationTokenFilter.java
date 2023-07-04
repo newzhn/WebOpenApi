@@ -1,6 +1,6 @@
 package com.zhn.webopenapibackend.filter;
 
-import com.zhn.webopenapibackend.constant.CacheConstant;
+import com.zhn.webopenapibackend.model.eneum.CacheEnums;
 import com.zhn.webopenapibackend.exception.BusinessException;
 import com.zhn.webopenapibackend.model.domain.LoginUser;
 import com.zhn.webopenapibackend.utils.JwtUtil;
@@ -57,7 +57,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             throw new BusinessException("非法的Token");
         }
         //Redis查询登录数据
-        String key = CacheConstant.USER_LOGIN.getKeyPrefix() + userId;
+        String key = CacheEnums.USER_LOGIN.getKeyPrefix() + userId;
         LoginUser loginUser = redisCache.getCacheObject(key);
         if (loginUser == null) {
             throw new BusinessException("用户未登录");
@@ -66,7 +66,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        redisCache.expire(CacheConstant.USER_LOGIN,userId);
+        redisCache.expire(CacheEnums.USER_LOGIN,userId);
         //放行
         filterChain.doFilter(httpServletRequest,httpServletResponse);
     }

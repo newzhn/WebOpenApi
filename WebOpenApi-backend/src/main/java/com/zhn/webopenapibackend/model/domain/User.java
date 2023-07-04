@@ -60,6 +60,16 @@ public class User implements Serializable {
     private String userRole;
 
     /**
+     * accessKey
+     */
+    private String accessKey;
+
+    /**
+     * secretKey
+     */
+    private String secretKey;
+
+    /**
      * 创建时间
      */
     private Date createTime;

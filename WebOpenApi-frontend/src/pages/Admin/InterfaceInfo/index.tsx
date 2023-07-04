@@ -229,9 +229,19 @@ const InterfaceInfo: React.FC = () => {
       }
     },
     {
+      title: '请求参数',
+      dataIndex: 'requestParams',
+      valueType: 'jsonCode',
+      formItemProps: {
+        rules: [{
+          required: true
+        }]
+      }
+    },
+    {
       title: '请求头',
       dataIndex: 'requestHeader',
-      valueType: 'textarea',
+      valueType: 'jsonCode',
       formItemProps: {
         rules: [{
           required: true
@@ -241,7 +251,7 @@ const InterfaceInfo: React.FC = () => {
     {
       title: '响应头',
       dataIndex: 'responseHeader',
-      valueType: 'textarea',
+      valueType: 'jsonCode',
       formItemProps: {
         rules: [{
           required: true
@@ -312,6 +322,9 @@ const InterfaceInfo: React.FC = () => {
       ],
     },
   ];
+  // @ts-ignore
+  // @ts-ignore
+  // @ts-ignore
   return (
     <PageContainer>
       <ProTable<API.InterfaceInfoVo, API.PageParams>
@@ -354,7 +367,7 @@ const InterfaceInfo: React.FC = () => {
               </a>{' '}
               项 &nbsp;&nbsp;
               <span>
-                服务调用次数总计 {selectedRowsState.reduce((pre, item) => pre + item.callNo!, 0)} 万
+                服务调用次数总计 {selectedRowsState.reduce((pre, item) => pre , 0)} 万
               </span>
             </div>
           }
@@ -391,6 +404,7 @@ const InterfaceInfo: React.FC = () => {
           }
         }}
         visible={updateModalOpen}
+        //@ts-ignore
         values={currentRow || {}}
       />
 

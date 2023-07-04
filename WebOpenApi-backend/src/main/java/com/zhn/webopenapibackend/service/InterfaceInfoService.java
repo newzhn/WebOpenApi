@@ -5,6 +5,7 @@ import com.zhn.webopenapibackend.model.domain.InterfaceInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zhn.webopenapibackend.model.request.IdRequest;
 import com.zhn.webopenapibackend.model.request.api.InterfaceInfoAddRequest;
+import com.zhn.webopenapibackend.model.request.api.InterfaceInfoInvokeRequest;
 import com.zhn.webopenapibackend.model.request.api.InterfaceInfoQueryRequest;
 import com.zhn.webopenapibackend.model.request.api.InterfaceInfoUpdateRequest;
 import com.zhn.webopenapibackend.model.vo.InterfaceInfoVo;
@@ -61,16 +62,24 @@ public interface InterfaceInfoService extends IService<InterfaceInfo> {
     Page<InterfaceInfoVo> getVoPage(InterfaceInfoQueryRequest request);
 
     /**
-     * Online interface
+     * 接口下线服务
      *
      * @param request the request
      */
     void onlineInterfaceInfo(IdRequest request);
 
     /**
-     * Offline interface
+     * 接口上线服务
      *
      * @param request the request
      */
     void offlineInterfaceInfo(IdRequest request);
+
+    /**
+     * 接口调用服务
+     *
+     * @param request the request
+     * @return the object
+     */
+    Object invokeInterfaceInfo(InterfaceInfoInvokeRequest request);
 }

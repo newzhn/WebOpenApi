@@ -18,7 +18,10 @@ export async function updateUserUsingPUT(
 }
 
 /** addUser POST /api/user */
-export async function addUserUsingPOST(body: API.UserAddRequest, options?: { [key: string]: any }) {
+export async function addUserUsingPOST(
+  body: API.UserAddRequest,
+  options?: { [key: string]: any },
+) {
   return request<Record<string, any>>('/api/user', {
     method: 'POST',
     headers: {

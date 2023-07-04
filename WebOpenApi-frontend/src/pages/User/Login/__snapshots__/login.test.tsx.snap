@@ -42,7 +42,7 @@ exports[`Login Page should login success 1`] = `
                   role="menuitem"
                   style="padding-left: 16px;"
                   tabindex="-1"
-                  title="Welcome"
+                  title="Index"
                 >
                   <span
                     class="ant-menu-title-content"
@@ -76,7 +76,7 @@ exports[`Login Page should login success 1`] = `
                       <span
                         class="ant-pro-base-menu-item-text ant-pro-base-menu-item-text-has-icon"
                       >
-                        Welcome
+                        Index
                       </span>
                     </div>
                   </span>
@@ -305,9 +305,9 @@ exports[`Login Page should login success 1`] = `
                   >
                     <span
                       class="ant-page-header-heading-title "
-                      title="Welcome"
+                      title="Index"
                     >
-                      Welcome
+                      Index
                     </span>
                   </div>
                 </div>

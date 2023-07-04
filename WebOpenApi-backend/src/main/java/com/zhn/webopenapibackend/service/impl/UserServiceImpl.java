@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.zhn.webopenapibackend.constant.CacheConstant;
+import com.zhn.webopenapibackend.model.eneum.CacheEnums;
 import com.zhn.webopenapibackend.constant.UserConstant;
 import com.zhn.webopenapibackend.exception.BusinessException;
 import com.zhn.webopenapibackend.exception.ThrowUtils;
@@ -152,7 +152,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             throw new BusinessException("非法的Token");
         }
         //Redis查询登录数据
-        String key = CacheConstant.USER_LOGIN.getKeyPrefix() + userId;
+        String key = CacheEnums.USER_LOGIN.getKeyPrefix() + userId;
         LoginUser loginUser = redisCache.getCacheObject(key);
         if (loginUser == null) {
             throw new BusinessException("用户未登录");

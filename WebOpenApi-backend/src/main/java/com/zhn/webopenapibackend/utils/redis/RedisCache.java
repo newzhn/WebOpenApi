@@ -1,6 +1,6 @@
 package com.zhn.webopenapibackend.utils.redis;
 
-import com.zhn.webopenapibackend.constant.CacheConstant;
+import com.zhn.webopenapibackend.model.eneum.CacheEnums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundSetOperations;
 import org.springframework.data.redis.core.HashOperations;
@@ -24,7 +24,7 @@ public class RedisCache
      * @param keySuffix key后缀
      * @param value 缓存的值
      */
-    public <T> void setCacheObject(final CacheConstant constant,final String keySuffix, final T value)
+    public <T> void setCacheObject(final CacheEnums constant, final String keySuffix, final T value)
     {
         String key = constant.getKeyPrefix() + keySuffix;
         long timeout = constant.getTtl();
@@ -56,7 +56,7 @@ public class RedisCache
         redisTemplate.opsForValue().set(key, value, timeout, timeUnit);
     }
 
-    public boolean expire(final CacheConstant constant, String keuSuffix)
+    public boolean expire(final CacheEnums constant, String keuSuffix)
     {
         String key = constant.getKeyPrefix() + keuSuffix;
         long timeout = constant.getTtl();

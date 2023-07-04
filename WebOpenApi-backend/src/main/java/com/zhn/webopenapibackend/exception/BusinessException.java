@@ -10,6 +10,7 @@ import com.zhn.webopenapibackend.common.HttpStatus;
  */
 public class BusinessException extends RuntimeException {
 
+    private static final long serialVersionUID = 4998560032471494599L;
     /**
      * 错误码
      */
@@ -20,8 +21,18 @@ public class BusinessException extends RuntimeException {
         this.code = HttpStatus.ERROR;
     }
 
+    public BusinessException(String message,Throwable cause) {
+        super(message, cause);
+        this.code = HttpStatus.ERROR;
+    }
+
     public BusinessException(int code, String message) {
         super(message);
+        this.code = code;
+    }
+
+    public BusinessException(int code, String message,Throwable cause) {
+        super(message, cause);
         this.code = code;
     }
 
