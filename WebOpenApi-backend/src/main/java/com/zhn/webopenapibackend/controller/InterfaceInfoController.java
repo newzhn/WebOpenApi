@@ -32,7 +32,7 @@ public class InterfaceInfoController {
     private InterfaceInfoService interfaceInfoService;
 
     /**
-     * Add接口
+     * Add
      *
      * @param request the request
      * @return the ajax result
@@ -45,7 +45,7 @@ public class InterfaceInfoController {
     }
 
     /**
-     * Delete接口
+     * Delete
      *
      * @param ids the ids
      * @return the ajax result
@@ -58,7 +58,7 @@ public class InterfaceInfoController {
     }
 
     /**
-     * Update接口
+     * Update
      *
      * @param request the request
      * @return the ajax result
@@ -71,7 +71,7 @@ public class InterfaceInfoController {
     }
 
     /**
-     * Get接口
+     * Get
      *
      * @param id the id
      * @return the interface info
@@ -83,7 +83,7 @@ public class InterfaceInfoController {
     }
 
     /**
-     * Get接口page.
+     * Get page.
      *
      * @param request the request
      * @return the interface list vo by page

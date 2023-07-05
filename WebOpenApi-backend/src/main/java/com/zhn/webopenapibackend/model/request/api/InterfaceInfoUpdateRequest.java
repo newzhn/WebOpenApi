@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
- * 用户修改请求
+ * 修改请求
  *
  * @author zhn
  * @version 1.0

@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
- * 用户添加请求
+ * 添加请求
  *
  * @author zhn
  * @version 1.0

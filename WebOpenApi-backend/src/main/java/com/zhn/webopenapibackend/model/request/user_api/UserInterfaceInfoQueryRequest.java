@@ -1,4 +1,4 @@
-package com.zhn.webopenapibackend.model.request.api;
+package com.zhn.webopenapibackend.model.request.user_api;
 
 import com.zhn.webopenapibackend.model.request.PageRequest;
 import lombok.Data;
@@ -14,24 +14,24 @@ import java.io.Serializable;
  * @blog www.zhnblog.icu
  */
 @Data
-public class InterfaceInfoQueryRequest extends PageRequest implements Serializable {
+public class UserInterfaceInfoQueryRequest extends PageRequest implements Serializable {
     /**
-     * 接口名
+     * 主键
      */
-    private String name;
+    private Long id;
 
     /**
-     * 接口类型
+     * 调用者Id
      */
-    private String method;
+    private Long userId;
 
     /**
-     * 接口地址
+     * 被调用接口Id
      */
-    private String url;
+    private Long interfaceInfoId;
 
     /**
-     * 接口状态（0-关闭，1-开启）
+     * 状态，0是正常，1是关闭
      */
     private Integer status;
 
