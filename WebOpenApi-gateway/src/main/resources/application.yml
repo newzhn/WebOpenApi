@@ -1,0 +1,27 @@
+server:
+  port: 8848
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: api_route
+          uri: http://localhost:9999
+          predicates:
+            - Path=/api/**
+logging:
+  level:
+    org.springframework.cloud.gateway: trace
+#配置网关自定义全局过滤器
+web-open-api:
+  gateway:
+    access-control:
+      enabled: true
+      #白名单
+      white-list:
+        - 127.0.0.1
+        - localhost
+    log:
+      request:
+        enabled: true
+      response:
+        enabled: true

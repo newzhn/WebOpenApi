@@ -15,34 +15,18 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/name")
 public class NameController {
-    @GetMapping("/")
+    @GetMapping("/get")
     public String getNameByGet(String name) {
         return "Get 你的名字是：" + name;
     }
 
-    @PostMapping("/")
+    @PostMapping("/post")
     public String getNameByPost(@RequestParam("name") String name) {
         return "Post 你的名字是：" + name;
     }
 
     @PostMapping("/json")
     public String getNameByPostJson(@RequestBody User user, HttpServletRequest request) {
-        //secretKey不会从前端获取，而是保存在后端配置里，保证安全性
-        String accessKey = request.getHeader("accessKey");
-        String nonce = request.getHeader("nonce");
-        String timestamp = request.getHeader("timestamp");
-        String body = request.getHeader("body");
-        String sign = request.getHeader("sign");
-        if (!"f395fc296d5507b4d0ba8859468d3681".equals(accessKey)) {
-            return "认证失败";
-        }
-        // TODO 可以对请求头中随机数和时间戳进行验证，随机数保证不会重放，时间戳进行定时清除后台保存的随机数
-
-        //进行签名比对
-        String genSign = SignUtil.genSign(body, "2eec75616f6a65a3590e59a05d650ef3");
-        if (!genSign.equals(sign)) {
-            return "认证失败";
-        }
         return user.getName();
     }
 }

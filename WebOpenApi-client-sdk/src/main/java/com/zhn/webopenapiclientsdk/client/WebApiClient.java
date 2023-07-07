@@ -24,6 +24,8 @@ public class WebApiClient {
     private final String accessKey;
     private final String secretKey;
 
+    private static final String GATEWAY_HOST = "http://127.0.0.1:8848";
+
     public WebApiClient(String accessKey, String secretKey) {
         this.accessKey = accessKey;
         this.secretKey = secretKey;
@@ -33,7 +35,7 @@ public class WebApiClient {
         //可以单独传入http参数，这样参数会自动做URL编码，拼接在URL中
         HashMap<String, Object> paramMap = new HashMap<>();
         paramMap.put("name", name);
-        String result= HttpUtil.get("http://localhost:9999/api/name/", paramMap);
+        String result= HttpUtil.get(GATEWAY_HOST + "/api/name/", paramMap);
         System.out.println(result);
         return result;
     }
@@ -41,14 +43,14 @@ public class WebApiClient {
     public String getNameByPost(String name) {
         HashMap<String, Object> paramMap = new HashMap<>();
         paramMap.put("name", name);
-        String result= HttpUtil.post("http://localhost:9999/api/name/", paramMap);
+        String result= HttpUtil.post(GATEWAY_HOST + "/api/name/", paramMap);
         System.out.println(result);
         return result;
     }
 
     public String getNameByPostJson(User user) {
         String json = JSONUtil.toJsonStr(user);
-        HttpResponse response = HttpRequest.post("http://localhost:9999/api/name/json")
+        HttpResponse response = HttpRequest.post(GATEWAY_HOST + "/api/name/json")
                 .addHeaders(getHeaderMap(json))
                 .contentType("application/json;charset=UTF-8")
                 .body(json)
