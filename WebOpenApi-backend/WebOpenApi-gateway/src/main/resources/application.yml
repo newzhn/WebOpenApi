@@ -1,0 +1,38 @@
+server:
+  port: 8849
+  servlet:
+    application-display-name: webopenapi-gateway
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: api_route
+          uri: http://localhost:9999
+          predicates:
+            - Path=/interface/**
+logging:
+  level:
+    org.springframework.cloud.gateway: trace
+# 配置dubbo
+dubbo:
+  application:
+    name: webopenapi-gateway
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    address: nacos://${nacos.address:127.0.0.1}:8848
+#配置网关自定义全局过滤器
+web-open-api:
+  gateway:
+    access-control:
+      enabled: true
+      #白名单
+      white-list:
+        - 127.0.0.1
+        - localhost
+    log:
+      request:
+        enabled: true
+      response:
+        enabled: true
