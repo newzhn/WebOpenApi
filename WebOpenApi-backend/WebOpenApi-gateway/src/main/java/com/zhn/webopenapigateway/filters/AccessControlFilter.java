@@ -1,14 +1,14 @@
 package com.zhn.webopenapigateway.filters;
 
+import com.zhn.webopenapicommon.exception.BusinessException;
+import com.zhn.webopenapicommon.model.HttpStatus;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -38,22 +38,16 @@ public class AccessControlFilter implements GlobalFilter, Ordered {
             return chain.filter(exchange);
         }
         ServerHttpRequest request = exchange.getRequest();
-        ServerHttpResponse response = exchange.getResponse();
         //访问控制，只有白名单内的ip才能放行
         String host = Objects.requireNonNull(request.getLocalAddress()).getHostString();
         if (!whiteList.contains(host)) {
-            return handleNoAuth(response);
+            throw new BusinessException(HttpStatus.FORBIDDEN,"您没有访问权限");
         }
         return chain.filter(exchange);
     }
 
     @Override
     public int getOrder() {
-        return -9;
-    }
-
-    private Mono<Void> handleNoAuth(ServerHttpResponse response) {
-        response.setStatusCode(HttpStatus.FORBIDDEN);
-        return response.setComplete();
+        return -10;
     }
 }

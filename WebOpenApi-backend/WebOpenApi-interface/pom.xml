@@ -27,6 +27,18 @@
             <artifactId>WebOpenApi-client-sdk</artifactId>
             <version>0.0.1</version>
         </dependency>
+        <!--rpc接口包-->
+        <dependency>
+            <artifactId>WebOpenApi-common</artifactId>
+            <groupId>com.zhn</groupId>
+            <version>${project.parent.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.baomidou</groupId>
+                    <artifactId>mybatis-plus-boot-starter</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

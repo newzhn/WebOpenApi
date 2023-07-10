@@ -1,5 +1,4 @@
-package com.zhn.webopenapicore.exception;
-
+package com.zhn.webopenapicommon.exception;
 
 import com.zhn.webopenapicommon.model.HttpStatus;
 
@@ -22,7 +21,7 @@ public class BusinessException extends RuntimeException {
         this.code = HttpStatus.ERROR;
     }
 
-    public BusinessException(String message,Throwable cause) {
+    public BusinessException(String message, Throwable cause) {
         super(message, cause);
         this.code = HttpStatus.ERROR;
     }
@@ -32,7 +31,7 @@ public class BusinessException extends RuntimeException {
         this.code = code;
     }
 
-    public BusinessException(int code, String message,Throwable cause) {
+    public BusinessException(int code, String message, Throwable cause) {
         super(message, cause);
         this.code = code;
     }

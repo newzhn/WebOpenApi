@@ -2,10 +2,10 @@ package com.zhn.webopenapicore.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zhn.webopenapicommon.model.domain.UserInterfaceInfo;
 import com.zhn.webopenapicore.constant.InterfaceConstant;
 import com.zhn.webopenapicore.mapper.UserInterfaceInfoMapper;
-import com.zhn.webopenapicore.model.domain.LoginUser;
-import com.zhn.webopenapicore.model.domain.UserInterfaceInfo;
+import com.zhn.webopenapicore.model.LoginUser;
 import com.zhn.webopenapicore.model.request.user_api.UserInterfaceInfoAddRequest;
 import com.zhn.webopenapicore.model.request.user_api.UserInterfaceInfoQueryRequest;
 import com.zhn.webopenapicore.model.request.user_api.UserInterfaceInfoUpdateRequest;

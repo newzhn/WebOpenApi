@@ -1,6 +1,7 @@
 package com.zhn.webopenapiinterface.controller;
 
 import com.zhn.webopenapiclientsdk.model.User;
+import com.zhn.webopenapicommon.model.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,17 +16,17 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/name")
 public class NameController {
     @GetMapping("/get")
-    public String getNameByGet(String name) {
-        return "Get 你的名字是：" + name;
+    public Result getNameByGet(String name) {
+        return Result.success("Get 你的名字是：" + name);
     }
 
     @PostMapping("/post")
-    public String getNameByPost(@RequestParam("name") String name) {
-        return "Post 你的名字是：" + name;
+    public Result getNameByPost(@RequestParam("name") String name) {
+        return Result.success("Post 你的名字是：" + name);
     }
 
     @PostMapping("/json")
-    public String getNameByPostJson(@RequestBody User user, HttpServletRequest request) {
-        return user.getName();
+    public Result getNameByPostJson(@RequestBody User user, HttpServletRequest request) {
+        return Result.success(user.getName());
     }
 }

@@ -1,10 +1,7 @@
 package com.zhn.webopenapicore;
 
-import com.zhn.webopenapicore.model.domain.User;
-import com.zhn.webopenapicore.utils.QQUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * @author zhn
@@ -17,9 +14,7 @@ public class WebOpenApiCoreApplicationTests {
 
     @Test
     void contextLoads() {
-        User user = new User();
-        user.setQq("2571469810");
-        QQUtil.setAvatarUrlAndNickname(user,new RestTemplate());
+
     }
 
 }

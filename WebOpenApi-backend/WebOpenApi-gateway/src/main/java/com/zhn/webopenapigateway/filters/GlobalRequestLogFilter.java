@@ -98,6 +98,6 @@ public class GlobalRequestLogFilter implements GlobalFilter, Ordered {
 
     @Override
     public int getOrder() {
-        return -10;
+        return -9;
     }
 }

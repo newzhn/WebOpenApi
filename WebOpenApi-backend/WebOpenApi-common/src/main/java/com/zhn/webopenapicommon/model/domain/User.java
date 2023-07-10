@@ -1,4 +1,4 @@
-package com.zhn.webopenapicore.model.domain;
+package com.zhn.webopenapicommon.model.domain;
 
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;

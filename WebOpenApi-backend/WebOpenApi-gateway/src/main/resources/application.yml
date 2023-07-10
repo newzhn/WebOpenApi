@@ -3,6 +3,9 @@ server:
   servlet:
     application-display-name: webopenapi-gateway
 spring:
+  mvc:
+    #没有绑定的url直接抛出错误
+    throw-exception-if-no-handler-found: true
   cloud:
     gateway:
       routes:

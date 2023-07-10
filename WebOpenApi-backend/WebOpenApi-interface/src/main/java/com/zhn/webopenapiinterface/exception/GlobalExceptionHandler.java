@@ -1,11 +1,9 @@
-package com.zhn.webopenapicore.exception;
+package com.zhn.webopenapiinterface.exception;
 
 import com.zhn.webopenapicommon.exception.BusinessException;
 import com.zhn.webopenapicommon.model.HttpStatus;
 import com.zhn.webopenapicommon.model.Result;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -40,18 +38,5 @@ public class GlobalExceptionHandler {
     public Result bindExceptionHandler(BindException e) {
         log.error("参数校验出现了异常! {}", e);
         return Result.error(HttpStatus.ERROR,e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
-    }
-
-    /**
-     * 全局异常会比自定义认证和鉴权处理器先捕获到异常，所以要进行抛出
-     */
-    @ExceptionHandler(AccessDeniedException.class)
-    public void accessDeniedExceptionHandler(AccessDeniedException e) throws AccessDeniedException {
-        throw e;
-    }
-
-    @ExceptionHandler(AuthenticationException.class)
-    public void authenticationExceptionHandler(AuthenticationException e) throws AuthenticationException {
-        throw e;
     }
 }

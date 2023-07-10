@@ -2,8 +2,8 @@ package com.zhn.webopenapicore.service.impl;
 
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.digest.DigestUtil;
+import com.zhn.webopenapicommon.model.domain.User;
 import com.zhn.webopenapicore.constant.UserConstant;
-import com.zhn.webopenapicore.model.domain.User;
 import com.zhn.webopenapicore.model.eneum.CacheEnums;
 import com.zhn.webopenapicore.model.request.user.RegisterRequest;
 import com.zhn.webopenapicore.service.EmailService;

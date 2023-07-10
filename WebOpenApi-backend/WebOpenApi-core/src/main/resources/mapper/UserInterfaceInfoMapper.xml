@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhn.webopenapicore.mapper.UserInterfaceInfoMapper">
 
-    <resultMap id="BaseResultMap" type="com.zhn.webopenapicore.model.domain.UserInterfaceInfo">
+    <resultMap id="BaseResultMap" type="com.zhn.webopenapicommon.model.domain.UserInterfaceInfo">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="userId" column="user_id" jdbcType="BIGINT"/>
             <result property="interfaceInfoId" column="interface_info_id" jdbcType="BIGINT"/>

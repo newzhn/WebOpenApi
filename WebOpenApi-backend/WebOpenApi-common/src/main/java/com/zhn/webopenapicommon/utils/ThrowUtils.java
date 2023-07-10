@@ -1,5 +1,6 @@
-package com.zhn.webopenapicore.exception;
+package com.zhn.webopenapicommon.utils;
 
+import com.zhn.webopenapicommon.exception.BusinessException;
 import com.zhn.webopenapicommon.model.HttpStatus;
 
 /**

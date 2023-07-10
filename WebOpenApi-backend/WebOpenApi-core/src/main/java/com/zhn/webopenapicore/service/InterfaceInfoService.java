@@ -2,7 +2,7 @@ package com.zhn.webopenapicore.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.zhn.webopenapicore.model.domain.InterfaceInfo;
+import com.zhn.webopenapicommon.model.domain.InterfaceInfo;
 import com.zhn.webopenapicore.model.request.IdRequest;
 import com.zhn.webopenapicore.model.request.api.InterfaceInfoAddRequest;
 import com.zhn.webopenapicore.model.request.api.InterfaceInfoInvokeRequest;

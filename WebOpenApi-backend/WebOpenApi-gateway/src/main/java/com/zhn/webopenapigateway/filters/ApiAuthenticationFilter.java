@@ -1,12 +1,17 @@
 package com.zhn.webopenapigateway.filters;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.zhn.webopenapiclientsdk.utils.SignUtil;
+import com.zhn.webopenapicommon.exception.BusinessException;
+import com.zhn.webopenapicommon.model.HttpStatus;
+import com.zhn.webopenapicommon.model.domain.User;
+import com.zhn.webopenapicommon.service.RpcUserService;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
@@ -25,10 +30,12 @@ import reactor.core.publisher.Mono;
 public class ApiAuthenticationFilter implements GlobalFilter, Ordered {
     private static final long FIVE_MINUTES = 60 * 5L;
 
+    @DubboReference
+    private RpcUserService rpcUserService;
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
-        ServerHttpResponse response = exchange.getResponse();
         HttpHeaders headers = request.getHeaders();
         String accessKey = headers.getFirst("accessKey");
         String nonce = headers.getFirst("nonce");
@@ -37,11 +44,12 @@ public class ApiAuthenticationFilter implements GlobalFilter, Ordered {
         String sign = headers.getFirst("sign");
         //非空校验
         if (!StrUtil.isAllNotBlank(accessKey,nonce,timestamp,sign)) {
-            return handleNoAuth(response);
+            throw new BusinessException(HttpStatus.FORBIDDEN,"未分配密钥，无权限访问");
         }
-        // TODO 查询分配给该用户的密钥校验accessKey
-        if (!"f395fc296d5507b4d0ba8859468d3681".equals(accessKey)) {
-            return handleNoAuth(response);
+        //查询分配给该用户的密钥校验accessKey
+        User user = rpcUserService.getUserByAccessKey(accessKey);
+        if (ObjectUtil.isNull(user)) {
+            throw new BusinessException(HttpStatus.FORBIDDEN,"未分配密钥，无权限访问");
         }
         // TODO 查询数据库或缓存校验随机数，防止重放
 
@@ -50,12 +58,12 @@ public class ApiAuthenticationFilter implements GlobalFilter, Ordered {
         if (currentTime - Long.parseLong(timestamp) >= FIVE_MINUTES) {
             // TODO 定时清除后台保存的随机数
 
-            return handleNoAuth(response);
+            throw new BusinessException(HttpStatus.FORBIDDEN,"无权限访问");
         }
         //进行签名比对
-        String genSign = SignUtil.genSign(body, "2eec75616f6a65a3590e59a05d650ef3");
+        String genSign = SignUtil.genSign(body, user.getSecretKey());
         if (!genSign.equals(sign)) {
-            return handleNoAuth(response);
+            throw new BusinessException(HttpStatus.FORBIDDEN,"api签名认证失败，无权限访问");
         }
         return chain.filter(exchange);
     }
@@ -65,8 +73,4 @@ public class ApiAuthenticationFilter implements GlobalFilter, Ordered {
         return -8;
     }
 
-    private Mono<Void> handleNoAuth(ServerHttpResponse response) {
-        response.setStatusCode(HttpStatus.FORBIDDEN);
-        return response.setComplete();
-    }
 }

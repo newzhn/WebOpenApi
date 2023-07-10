@@ -1,5 +1,6 @@
 package com.zhn.webopenapigateway.filters;
 
+import com.zhn.webopenapicommon.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -76,7 +77,7 @@ public class GlobalResponseLogFilter implements GlobalFilter, Ordered {
             return chain.filter(exchange);
         }catch (Exception e){
             log.error("网关处理响应异常.\n" + e);
-            return chain.filter(exchange);
+            throw new BusinessException("网关处理响应异常",e);
         }
     }
 
@@ -114,10 +115,5 @@ public class GlobalResponseLogFilter implements GlobalFilter, Ordered {
         responseLog.append("================  Gateway Response End  =================\n");
         // 打印执行时间
         log.info(responseLog.toString(), responseArgs.toArray());
-    }
-
-    private Mono<Void> handleInvokeError(ServerHttpResponse response) {
-        response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
-        return response.setComplete();
     }
 }

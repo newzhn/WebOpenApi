@@ -1,7 +1,7 @@
 package com.zhn.webopenapicore.utils;
 
+import com.zhn.webopenapicommon.model.domain.User;
 import com.zhn.webopenapicore.constant.UserConstant;
-import com.zhn.webopenapicore.model.domain.User;
 import com.zhn.webopenapicore.utils.string.StringUtils;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;

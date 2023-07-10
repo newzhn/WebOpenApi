@@ -1,7 +1,7 @@
 package com.zhn.webopenapicore.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.zhn.webopenapicore.model.domain.InterfaceInfo;
+import com.zhn.webopenapicommon.model.domain.InterfaceInfo;
 
 /**
 * @author zhanh

@@ -1,6 +1,7 @@
-package com.zhn.webopenapicore.model.domain;
+package com.zhn.webopenapicore.model;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.zhn.webopenapicommon.model.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

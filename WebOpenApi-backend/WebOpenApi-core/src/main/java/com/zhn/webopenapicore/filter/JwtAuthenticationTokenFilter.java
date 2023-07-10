@@ -1,7 +1,7 @@
 package com.zhn.webopenapicore.filter;
 
-import com.zhn.webopenapicore.exception.BusinessException;
-import com.zhn.webopenapicore.model.domain.LoginUser;
+import com.zhn.webopenapicommon.exception.BusinessException;
+import com.zhn.webopenapicore.model.LoginUser;
 import com.zhn.webopenapicore.model.eneum.CacheEnums;
 import com.zhn.webopenapicore.utils.JwtUtil;
 import com.zhn.webopenapicore.utils.redis.RedisCache;
@@ -15,7 +15,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import javax.annotation.Resource;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;

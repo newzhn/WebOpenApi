@@ -2,7 +2,7 @@ package com.zhn.webopenapicore.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhn.webopenapicommon.model.Result;
-import com.zhn.webopenapicore.model.domain.LoginUser;
+import com.zhn.webopenapicore.model.LoginUser;
 import com.zhn.webopenapicore.model.request.user.UserAddRequest;
 import com.zhn.webopenapicore.model.request.user.UserQueryRequest;
 import com.zhn.webopenapicore.model.request.user.UserUpdateRequest;
