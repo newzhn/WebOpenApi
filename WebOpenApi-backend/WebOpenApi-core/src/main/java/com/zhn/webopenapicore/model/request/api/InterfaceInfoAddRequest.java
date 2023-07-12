@@ -35,7 +35,13 @@ public class InterfaceInfoAddRequest implements Serializable {
      * 接口地址
      */
     @NotBlank(message = "接口地址不能为空")
-    private String url;
+    private String host;
+
+    /**
+     * 接口路径
+     */
+    @NotBlank(message = "接口路径不能为空")
+    private String uri;
 
     /**
      * 请求参数

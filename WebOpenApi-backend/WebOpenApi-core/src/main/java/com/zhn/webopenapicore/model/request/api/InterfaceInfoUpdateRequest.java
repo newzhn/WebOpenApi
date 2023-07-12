@@ -44,12 +44,18 @@ public class InterfaceInfoUpdateRequest implements Serializable {
      * 接口地址
      */
     @NotNull(message = "接口地址不能为空")
-    private String url;
+    private String host;
+
+    /**
+     * 接口路径
+     */
+    @NotNull(message = "接口路径不能为空")
+    private String uri;
 
     /**
      * 请求参数
      */
-    @NotBlank(message = "接口请求参数不能为空")
+    @NotNull(message = "接口请求参数不能为空")
     private String requestParams;
 
     /**

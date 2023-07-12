@@ -10,6 +10,7 @@ import com.zhn.webopenapicore.model.request.api.InterfaceInfoQueryRequest;
 import com.zhn.webopenapicore.model.request.api.InterfaceInfoUpdateRequest;
 import com.zhn.webopenapicore.model.vo.InterfaceInfoVo;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -81,5 +82,5 @@ public interface InterfaceInfoService extends IService<InterfaceInfo> {
      * @param request the request
      * @return the object
      */
-    Object invokeInterfaceInfo(InterfaceInfoInvokeRequest request);
+    Object invokeInterfaceInfo(InterfaceInfoInvokeRequest invokeRequest, HttpServletRequest request);
 }

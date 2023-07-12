@@ -1,7 +1,7 @@
 server:
   port: 9999
   servlet:
-    context-path: /interface
+    context-path: /api
 web-open-api:
   client:
     access-key: zhn

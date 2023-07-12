@@ -27,7 +27,6 @@ import java.util.Objects;
 @Data
 @Configuration
 @ConfigurationProperties(prefix = "web-open-api.gateway.access-control")
-@Component
 public class AccessControlFilter implements GlobalFilter, Ordered {
     private boolean enabled;
     private List<String> whiteList;

@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Arrays;
@@ -125,8 +126,9 @@ public class InterfaceInfoController {
      * @return the ajax result
      */
     @PostMapping("/invoke")
-    public Result invokeInterfaceInfo(@Valid @RequestBody InterfaceInfoInvokeRequest request) {
-        Object result = interfaceInfoService.invokeInterfaceInfo(request);
+    public Result invokeInterfaceInfo(@Valid @RequestBody InterfaceInfoInvokeRequest invokeRequest,
+                                      HttpServletRequest request) {
+        Object result = interfaceInfoService.invokeInterfaceInfo(invokeRequest,request);
         return Result.success(result);
     }
 }

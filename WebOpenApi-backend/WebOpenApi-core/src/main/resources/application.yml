@@ -33,8 +33,8 @@ mybatis-plus:
 # 开发者签名认证
 web-open-api:
   client:
-    access-key: zhn
-    secret-key: 123
+    access-key: f395fc296d5507b4d0ba8859468d3681
+    secret-key: 2eec75616f6a65a3590e59a05d650ef3
 # 配置dubbo
 dubbo:
   application:

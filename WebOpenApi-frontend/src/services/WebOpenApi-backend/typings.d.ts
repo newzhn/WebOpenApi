@@ -4,6 +4,11 @@ declare namespace API {
     ids: number[];
   };
 
+  type deleteUserInterfaceByIdsUsingDELETEParams = {
+    /** ids */
+    ids: number[];
+  };
+
   type deleteUserUsingDELETEParams = {
     /** id */
     id: number;
@@ -19,18 +24,24 @@ declare namespace API {
     id: number;
   };
 
+  type getUserInterfaceInfoUsingGETParams = {
+    /** id */
+    id: number;
+  };
+
   type IdRequest = {
     id: number;
   };
 
   type InterfaceInfoAddRequest = {
     description: string;
+    host: string;
     method: string;
     name: string;
     requestHeader: string;
     requestParams: string;
     responseHeader: string;
-    url: string;
+    uri: string;
   };
 
   type InterfaceInfoInvokeRequest = {
@@ -46,18 +57,19 @@ declare namespace API {
     sortField?: string;
     sortOrder?: string;
     status?: number;
-    url?: string;
+    uri?: string;
   };
 
   type InterfaceInfoUpdateRequest = {
     description: string;
+    host: string;
     id: number;
     method: string;
     name: string;
     requestHeader: string;
     requestParams: string;
     responseHeader: string;
-    url: string;
+    uri: string;
   };
 
   type LoginRequest = {
@@ -85,6 +97,28 @@ declare namespace API {
     userPassword: string;
     userProfile?: string;
     userRole?: string;
+  };
+
+  type UserInterfaceInfoAddRequest = {
+    interfaceInfoId: number;
+  };
+
+  type UserInterfaceInfoQueryRequest = {
+    current?: number;
+    id?: number;
+    interfaceInfoId?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+    status?: number;
+    userId?: number;
+  };
+
+  type UserInterfaceInfoUpdateRequest = {
+    id: number;
+    status?: number;
+    surplusNum?: number;
+    totalNum?: number;
   };
 
   type UserQueryRequest = {
@@ -154,7 +188,8 @@ declare namespace API {
     name: string;
     description: string;
     method: string;
-    url: string;
+    host: string;
+    uri: string;
     requestParams: string;
     requestHeader: string;
     responseHeader: string;

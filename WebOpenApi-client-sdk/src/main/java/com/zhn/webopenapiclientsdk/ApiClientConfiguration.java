@@ -1,6 +1,6 @@
 package com.zhn.webopenapiclientsdk;
 
-import com.zhn.webopenapiclientsdk.client.WebApiClient;
+import com.zhn.webopenapiclientsdk.facade.ApiClientFacade;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -22,8 +22,8 @@ public class ApiClientConfiguration {
     private String secretKey;
 
     @Bean
-    public WebApiClient webApiClient() {
-        return new WebApiClient(accessKey,secretKey);
+    public ApiClientFacade webApiClient() {
+        return new ApiClientFacade(accessKey,secretKey);
     }
 
 }

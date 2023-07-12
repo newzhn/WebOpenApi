@@ -1,7 +1,9 @@
 package com.zhn.webopenapigateway.filters;
 
 import com.zhn.webopenapicommon.exception.BusinessException;
+import com.zhn.webopenapicommon.service.RpcUserInterfaceInfoService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.reactivestreams.Publisher;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -10,6 +12,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.core.io.buffer.DataBufferUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -37,11 +40,17 @@ import java.util.List;
 @Component
 @ConditionalOnProperty(value = "web-open-api.gateway.log.response.enabled", havingValue = "true", matchIfMissing = true)
 public class GlobalResponseLogFilter implements GlobalFilter, Ordered {
+    @DubboReference
+    private RpcUserInterfaceInfoService rpcUserInterfaceInfoService;
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         try {
             ServerHttpRequest request = exchange.getRequest();
             ServerHttpResponse originalResponse = exchange.getResponse();
+            //获取接口Id
+            HttpHeaders headers = request.getHeaders();
+            String userInterfaceInfoId = headers.getFirst("user_interface_id");
             //缓存数据
             DataBufferFactory bufferFactory = originalResponse.bufferFactory();
             //拿到响应码
@@ -57,7 +66,9 @@ public class GlobalResponseLogFilter implements GlobalFilter, Ordered {
                             //往返回值里写数据
                             return super.writeWith(fluxBody.map(dataBuffer -> {
                                 // TODO 调用成功，接口调用次数加一
-
+                                if (!rpcUserInterfaceInfoService.updateInvokeNum(Long.parseLong(userInterfaceInfoId))) {
+                                    throw new BusinessException(HttpStatus.INTERNAL_SERVER_ERROR.value(),"出现错误，调用接口失败");
+                                }
                                 byte[] content = new byte[dataBuffer.readableByteCount()];
                                 dataBuffer.read(content);
                                 DataBufferUtils.release(dataBuffer);//释放掉内存
@@ -83,7 +94,7 @@ public class GlobalResponseLogFilter implements GlobalFilter, Ordered {
 
     @Override
     public int getOrder() {
-        return -7;
+        return -6;
     }
 
     private void printResponseLog(byte[] content,ServerHttpRequest request,ServerHttpResponse response) {

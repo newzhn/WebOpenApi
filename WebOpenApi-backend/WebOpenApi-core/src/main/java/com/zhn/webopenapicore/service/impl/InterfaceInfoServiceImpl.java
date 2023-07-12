@@ -5,16 +5,15 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.google.gson.Gson;
-import com.zhn.webopenapiclientsdk.client.WebApiClient;
-import com.zhn.webopenapiclientsdk.model.User;
+import com.zhn.webopenapiclientsdk.facade.ApiClientFacade;
 import com.zhn.webopenapicommon.exception.BusinessException;
 import com.zhn.webopenapicommon.model.HttpStatus;
+import com.zhn.webopenapicommon.model.Result;
 import com.zhn.webopenapicommon.model.domain.InterfaceInfo;
 import com.zhn.webopenapicommon.utils.ThrowUtils;
 import com.zhn.webopenapicore.mapper.InterfaceInfoMapper;
 import com.zhn.webopenapicore.model.LoginUser;
-import com.zhn.webopenapicore.model.eneum.InterfaceInfoStatusEnum;
+import com.zhn.webopenapicore.model.eneum.InterfaceInfoStatus;
 import com.zhn.webopenapicore.model.request.IdRequest;
 import com.zhn.webopenapicore.model.request.api.InterfaceInfoAddRequest;
 import com.zhn.webopenapicore.model.request.api.InterfaceInfoInvokeRequest;
@@ -24,10 +23,13 @@ import com.zhn.webopenapicore.model.vo.InterfaceInfoVo;
 import com.zhn.webopenapicore.service.InterfaceInfoService;
 import com.zhn.webopenapicore.service.UserService;
 import com.zhn.webopenapicore.utils.bean.BeanUtils;
+import com.zhn.webopenapicore.utils.string.JSONUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
 * @author zhanh
@@ -42,7 +44,7 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
     @Resource
     private UserService userService;
     @Resource
-    private WebApiClient webApiClient;
+    private ApiClientFacade apiClientFacade;
 
     @Override
     public boolean addInterface(InterfaceInfoAddRequest request) {
@@ -87,8 +89,8 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
         if (StrUtil.isNotBlank(request.getMethod())) {
             wrapper.eq(InterfaceInfo::getMethod,request.getMethod());
         }
-        if (StrUtil.isNotBlank(request.getUrl())) {
-            wrapper.like(InterfaceInfo::getUrl,request.getUrl());
+        if (StrUtil.isNotBlank(request.getUri())) {
+            wrapper.like(InterfaceInfo::getUri,request.getUri());
         }
         if (request.getStatus() != null) {
             wrapper.eq(InterfaceInfo::getStatus,request.getStatus());
@@ -110,19 +112,22 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
         InterfaceInfo interfaceInfo = this.getById(id);
         ThrowUtils.throwIf(ObjectUtil.isNull(interfaceInfo),
                 HttpStatus.NOT_FOUND,"接口信息不存在");
-        //验证接口是否可用 TODO 此处客户端接口是写死的，后续优化
-        User user = new User();
-        user.setName("zhangsan");
-        String result = null;
+        //验证接口是否可用
+        String method = interfaceInfo.getMethod();
+        String uri = interfaceInfo.getUri();
+        Map<String, Object> paramMap = JSONUtil.toMap(interfaceInfo.getRequestParams());
+        Map<String, Object> result;
         try {
-            result = webApiClient.getNameByPostJson(user);
+            String resultStr = apiClientFacade.invoke(method,uri,paramMap);
+            result = JSONUtil.toMap(resultStr);
+            if ((Double) result.get("code") != 200) {
+                throw new BusinessException(HttpStatus.ERROR,(String) result.get("msg"));
+            }
         } catch (Exception e) {
-            throw new BusinessException(HttpStatus.ERROR,"接口验证失败",e);
+            throw new BusinessException(HttpStatus.ERROR,e.getMessage());
         }
-        ThrowUtils.throwIf(!"zhangsan".equals(result),
-                HttpStatus.ERROR,"接口验证失败");
         //上线接口
-        interfaceInfo.setStatus(InterfaceInfoStatusEnum.ONLINE.getStatus());
+        interfaceInfo.setStatus(InterfaceInfoStatus.ONLINE.getStatus());
         this.updateById(interfaceInfo);
     }
 
@@ -134,39 +139,44 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
         ThrowUtils.throwIf(ObjectUtil.isNull(interfaceInfo),
                 HttpStatus.NOT_FOUND,"接口信息不存在");
         //下线接口
-        interfaceInfo.setStatus(InterfaceInfoStatusEnum.OFFLINE.getStatus());
+        interfaceInfo.setStatus(InterfaceInfoStatus.OFFLINE.getStatus());
         this.updateById(interfaceInfo);
     }
 
     @Override
-    public Object invokeInterfaceInfo(InterfaceInfoInvokeRequest request) {
+    public Object invokeInterfaceInfo(InterfaceInfoInvokeRequest invokeRequest,
+                                      HttpServletRequest request) {
         //校验接口信息是否存在
-        Long id = request.getId();
+        Long id = invokeRequest.getId();
         InterfaceInfo interfaceInfo = this.getById(id);
         ThrowUtils.throwIf(ObjectUtil.isNull(interfaceInfo),
                 HttpStatus.NOT_FOUND,"接口信息不存在");
         //校验接口是否正常
-        ThrowUtils.throwIf(InterfaceInfoStatusEnum.OFFLINE.getStatus().equals(interfaceInfo.getStatus()),
+        ThrowUtils.throwIf(InterfaceInfoStatus.OFFLINE.getStatus().equals(interfaceInfo.getStatus()),
                 HttpStatus.ERROR,"接口未上线");
-        //取出传入参数进行转换
-        // TODO 开发阶段参数和调用的接口暂时写死，后续修改
-        String userRequestParams = request.getUserRequestParams();
-        Gson gson = new Gson();
-        User user = gson.fromJson(userRequestParams, User.class);
         //获取当前登录用户ak、sk
         LoginUser loginUser = userService.getCurrentUser();
         String accessKey = loginUser.getUser().getAccessKey();
         String secretKey = loginUser.getUser().getSecretKey();
         //这里不能用引入的客户端，因为开发模式下ak、sk都是配置死的
-        WebApiClient client = new WebApiClient(accessKey, secretKey);
+        ApiClientFacade client = new ApiClientFacade(accessKey, secretKey);
         //调用接口
-        String result;
+        String method = interfaceInfo.getMethod();
+        String uri = interfaceInfo.getUri();
+        Map<String, Object> paramMap = JSONUtil.
+                toMap(invokeRequest.getUserRequestParams());
+        Map<String, Object> result;
+        String resultStr;
         try {
-            result = client.getNameByPostJson(user);
+            resultStr = client.invoke(method,uri,paramMap);
+            result = JSONUtil.toMap(resultStr);
+            if ((Double) result.get("code") != 200) {
+                throw new BusinessException(HttpStatus.ERROR,(String) result.get("msg"));
+            }
         } catch (Exception e) {
-            throw new BusinessException(HttpStatus.ERROR,"发生未知错误，接口调用失败",e);
+            throw new BusinessException(HttpStatus.ERROR,e.getMessage());
         }
-        return result;
+        return resultStr;
     }
 }
 

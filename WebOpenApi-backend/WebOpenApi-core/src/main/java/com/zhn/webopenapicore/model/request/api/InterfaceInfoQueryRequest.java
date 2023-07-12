@@ -26,9 +26,9 @@ public class InterfaceInfoQueryRequest extends PageRequest implements Serializab
     private String method;
 
     /**
-     * 接口地址
+     * 接口路径
      */
-    private String url;
+    private String uri;
 
     /**
      * 接口状态（0-关闭，1-开启）

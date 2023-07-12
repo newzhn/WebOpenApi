@@ -220,7 +220,17 @@ const InterfaceInfo: React.FC = () => {
     },
     {
       title: '接口地址',
-      dataIndex: 'url',
+      dataIndex: 'host',
+      valueType: 'text',
+      formItemProps: {
+        rules: [{
+          required: true
+        }]
+      }
+    },
+    {
+      title: '接口路径',
+      dataIndex: 'uri',
       valueType: 'text',
       formItemProps: {
         rules: [{
