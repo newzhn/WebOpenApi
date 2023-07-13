@@ -1,10 +1,8 @@
 package com.zhn.webopenapiinterface.controller;
 
-import com.zhn.webopenapiclientsdk.model.User;
 import com.zhn.webopenapicommon.model.Result;
+import com.zhn.webopenapiinterface.model.User;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author zhn
@@ -16,17 +14,32 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/name")
 public class NameController {
     @GetMapping("/get")
-    public Result getNameByGet(String name) {
-        return Result.success("Get 你的名字是：" + name);
+    public Result getNameByGet(@RequestParam("name") String name) {
+        return Result.success("/get 接口测试成功：" + name);
+    }
+
+    @GetMapping("/get/{name}")
+    public Result getNameByGetRest(@PathVariable("name") String name) {
+        return Result.success("/get/{name} 接口测试成功：" + name);
     }
 
     @PostMapping("/post")
-    public Result getNameByPost(@RequestParam("name") String name) {
-        return Result.success("Post 你的名字是：" + name);
+    public Result getNameByPost(@RequestBody User user) {
+        return Result.success("/post 接口测试成功：" + user.getName());
     }
 
-    @PostMapping("/json")
-    public Result getNameByPostJson(@RequestBody User user, HttpServletRequest request) {
-        return Result.success(user.getName());
+    @PutMapping("/put")
+    public Result getNameByPut(@RequestBody User user) {
+        return Result.success("/put 接口测试成功：" + user.getName());
+    }
+
+    @DeleteMapping("/delete")
+    public Result getNameByDelete(@RequestParam("name") String name) {
+        return Result.success("/delete 接口测试成功：" + name);
+    }
+
+    @DeleteMapping("/delete/{name}")
+    public Result getNameByDeleteRest(@PathVariable("name") String name) {
+        return Result.success("/delete/{name} 接口测试成功：" + name);
     }
 }

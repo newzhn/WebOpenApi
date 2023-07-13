@@ -17,12 +17,9 @@ import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
-
-import java.net.URI;
 
 /**
  * api鉴权过滤器
@@ -49,10 +46,9 @@ public class ApiAuthenticationFilter implements GlobalFilter, Ordered {
         HttpHeaders headers = request.getHeaders();
         String accessKey = headers.getFirst("accessKey");
         String timestamp = headers.getFirst("timestamp");
-        String body = headers.getFirst("body");
         String sign = headers.getFirst("sign");
+        String uri = headers.getFirst("uri");
         String method = request.getMethodValue();
-        String uri = request.getURI().getPath();
 
         //非空校验
         if (!StrUtil.isAllNotBlank(accessKey,timestamp,sign)) {
@@ -69,7 +65,7 @@ public class ApiAuthenticationFilter implements GlobalFilter, Ordered {
             throw new BusinessException(HttpStatus.FORBIDDEN,"无权限访问");
         }
         //进行签名比对
-        String genSign = SignUtil.genSign(body, user.getSecretKey());
+        String genSign = SignUtil.genSign(timestamp, user.getSecretKey());
         if (!genSign.equals(sign)) {
             throw new BusinessException(HttpStatus.FORBIDDEN,"api签名认证失败，无权限访问");
         }

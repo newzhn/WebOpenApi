@@ -8,22 +8,22 @@ import java.util.Map;
 /**
  * @author zhn
  * @version 1.0
- * @date 2023/7/12 17:23
+ * @date 2023/7/13 17:38
  * @blog www.zhnblog.icu
  */
-public class GetApiClient extends DefaultAbstractApiClient {
-    public GetApiClient(String accessKey, String secretKey) {
+public class DeleteApiClient extends DefaultAbstractApiClient {
+    public DeleteApiClient(String accessKey, String secretKey) {
         super(accessKey, secretKey);
     }
 
     @Override
     public String invoke(String uri, Map<String, Object> paramMap) {
         //判断是否是restful风格的请求，请求不同，参数拼接方式也不一样
-        String temp = uri;
+        String tempUri = uri;
         uri = RestfulUtil.buildUri(uri,paramMap);
         String url = GATEWAY_HOST + uri;
-        return HttpRequest.get(url)
-                .header("uri",temp)
+        return HttpRequest.delete(url)
+                .header("uri",tempUri)
                 .addHeaders(getApiHeaderMap())
                 .contentType("application/json;charset=UTF-8")
                 .timeout(50000)

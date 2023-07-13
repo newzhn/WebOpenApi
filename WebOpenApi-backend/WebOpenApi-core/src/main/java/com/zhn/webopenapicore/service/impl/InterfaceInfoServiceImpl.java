@@ -8,8 +8,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zhn.webopenapiclientsdk.facade.ApiClientFacade;
 import com.zhn.webopenapicommon.exception.BusinessException;
 import com.zhn.webopenapicommon.model.HttpStatus;
-import com.zhn.webopenapicommon.model.Result;
 import com.zhn.webopenapicommon.model.domain.InterfaceInfo;
+import com.zhn.webopenapicommon.model.domain.UserInterfaceInfo;
 import com.zhn.webopenapicommon.utils.ThrowUtils;
 import com.zhn.webopenapicore.mapper.InterfaceInfoMapper;
 import com.zhn.webopenapicore.model.LoginUser;
@@ -19,8 +19,10 @@ import com.zhn.webopenapicore.model.request.api.InterfaceInfoAddRequest;
 import com.zhn.webopenapicore.model.request.api.InterfaceInfoInvokeRequest;
 import com.zhn.webopenapicore.model.request.api.InterfaceInfoQueryRequest;
 import com.zhn.webopenapicore.model.request.api.InterfaceInfoUpdateRequest;
+import com.zhn.webopenapicore.model.request.user_api.UserInterfaceInfoAddRequest;
 import com.zhn.webopenapicore.model.vo.InterfaceInfoVo;
 import com.zhn.webopenapicore.service.InterfaceInfoService;
+import com.zhn.webopenapicore.service.UserInterfaceInfoService;
 import com.zhn.webopenapicore.service.UserService;
 import com.zhn.webopenapicore.utils.bean.BeanUtils;
 import com.zhn.webopenapicore.utils.string.JSONUtil;
@@ -43,6 +45,8 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
     private InterfaceInfoMapper interfaceInfoMapper;
     @Resource
     private UserService userService;
+    @Resource
+    private UserInterfaceInfoService userInterfaceInfoService;
     @Resource
     private ApiClientFacade apiClientFacade;
 
@@ -112,19 +116,23 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
         InterfaceInfo interfaceInfo = this.getById(id);
         ThrowUtils.throwIf(ObjectUtil.isNull(interfaceInfo),
                 HttpStatus.NOT_FOUND,"接口信息不存在");
+        //校验该接口调用次数是否足够
+        UserInterfaceInfo userInterfaceInfo = userInterfaceInfoService.
+                getInfoByInterfaceId(interfaceInfo.getId());
+        if (ObjectUtil.isNull(userInterfaceInfo)) {
+            //调用次数不足则向数据库添加调用次数
+            UserInterfaceInfoAddRequest addRequest = new UserInterfaceInfoAddRequest();
+            addRequest.setInterfaceInfoId(interfaceInfo.getId());
+            userInterfaceInfoService.addInterface(addRequest);
+        }
         //验证接口是否可用
         String method = interfaceInfo.getMethod();
         String uri = interfaceInfo.getUri();
         Map<String, Object> paramMap = JSONUtil.toMap(interfaceInfo.getRequestParams());
-        Map<String, Object> result;
         try {
-            String resultStr = apiClientFacade.invoke(method,uri,paramMap);
-            result = JSONUtil.toMap(resultStr);
-            if ((Double) result.get("code") != 200) {
-                throw new BusinessException(HttpStatus.ERROR,(String) result.get("msg"));
-            }
+            apiClientFacade.invoke(method,uri,paramMap);
         } catch (Exception e) {
-            throw new BusinessException(HttpStatus.ERROR,e.getMessage());
+            throw new BusinessException(HttpStatus.ERROR,"接口验证失败！",e);
         }
         //上线接口
         interfaceInfo.setStatus(InterfaceInfoStatus.ONLINE.getStatus());
@@ -165,18 +173,13 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
         String uri = interfaceInfo.getUri();
         Map<String, Object> paramMap = JSONUtil.
                 toMap(invokeRequest.getUserRequestParams());
-        Map<String, Object> result;
-        String resultStr;
+        String result;
         try {
-            resultStr = client.invoke(method,uri,paramMap);
-            result = JSONUtil.toMap(resultStr);
-            if ((Double) result.get("code") != 200) {
-                throw new BusinessException(HttpStatus.ERROR,(String) result.get("msg"));
-            }
+            result = client.invoke(method,uri,paramMap);
         } catch (Exception e) {
-            throw new BusinessException(HttpStatus.ERROR,e.getMessage());
+            throw new BusinessException(HttpStatus.ERROR,"接口调用失败",e);
         }
-        return resultStr;
+        return  result;
     }
 }
 

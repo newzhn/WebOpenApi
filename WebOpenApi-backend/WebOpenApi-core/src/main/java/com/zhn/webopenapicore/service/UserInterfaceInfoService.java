@@ -25,5 +25,9 @@ public interface UserInterfaceInfoService extends IService<UserInterfaceInfo> {
 
     UserInterfaceInfoVo getVoById(Long id);
 
+    UserInterfaceInfo getInfoByInterfaceId(Long interfaceInfoId);
+
+    UserInterfaceInfo getInfoByInterfaceId(Long userId, Long interfaceInfoId);
+
     Page<UserInterfaceInfoVo> getVoPage(UserInterfaceInfoQueryRequest request);
 }

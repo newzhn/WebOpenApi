@@ -1,5 +1,6 @@
 package com.zhn.webopenapicore.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zhn.webopenapicommon.model.domain.UserInterfaceInfo;
@@ -31,9 +32,6 @@ public class UserInterfaceInfoServiceImpl extends ServiceImpl<UserInterfaceInfoM
     private UserInterfaceInfoMapper userInterfaceInfoMapper;
     @Resource
     private UserService userService;
-    @Resource
-    private InterfaceInfoService interfaceInfoService;
-
 
     @Override
     public boolean addInterface(UserInterfaceInfoAddRequest request) {
@@ -61,6 +59,21 @@ public class UserInterfaceInfoServiceImpl extends ServiceImpl<UserInterfaceInfoM
     @Override
     public UserInterfaceInfoVo getVoById(Long id) {
         return null;
+    }
+
+    @Override
+    public UserInterfaceInfo getInfoByInterfaceId(Long interfaceInfoId) {
+        LoginUser loginUser = userService.getCurrentUser();
+        return this.getInfoByInterfaceId(loginUser.getUser().getId(),interfaceInfoId);
+    }
+
+    @Override
+    public UserInterfaceInfo getInfoByInterfaceId(Long userId, Long interfaceInfoId) {
+        LambdaQueryWrapper<UserInterfaceInfo> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(UserInterfaceInfo::getUserId,userId);
+        wrapper.eq(UserInterfaceInfo::getInterfaceInfoId,interfaceInfoId);
+        wrapper.eq(UserInterfaceInfo::getStatus,0);
+        return userInterfaceInfoMapper.selectOne(wrapper);
     }
 
     @Override

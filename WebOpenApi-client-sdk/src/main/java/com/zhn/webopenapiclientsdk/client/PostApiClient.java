@@ -1,8 +1,6 @@
 package com.zhn.webopenapiclientsdk.client;
 
-import cn.hutool.http.Header;
 import cn.hutool.http.HttpRequest;
-import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
 
 import java.util.Map;
@@ -23,7 +21,8 @@ public class PostApiClient extends DefaultAbstractApiClient{
         String url = GATEWAY_HOST + uri;
         String body = JSONUtil.toJsonStr(paramMap);
         return HttpRequest.post(url)
-                .addHeaders(getHeaderMap(body))
+                .header("uri",uri)
+                .addHeaders(getApiHeaderMap())
                 .contentType("application/json;charset=UTF-8")
                 .body(body)
                 .timeout(50000)

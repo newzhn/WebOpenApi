@@ -25,15 +25,14 @@ public abstract class DefaultAbstractApiClient implements ApiClient {
         this.secretKey = secretKey;
     }
 
-    protected Map<String,String> getHeaderMap(String body) {
+    protected Map<String,String> getApiHeaderMap() {
         HashMap<String, String> map = new HashMap<>();
         map.put("accessKey",accessKey);
         //时间戳
-        map.put("timestamp",String.valueOf(System.currentTimeMillis() / 1000));
-        //请求传参
-        map.put("body",body);
+        String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
+        map.put("timestamp",timestamp);
         //签名认证
-        map.put("sign",genSign(body,secretKey));
+        map.put("sign",genSign(timestamp,secretKey));
         return map;
     }
 }

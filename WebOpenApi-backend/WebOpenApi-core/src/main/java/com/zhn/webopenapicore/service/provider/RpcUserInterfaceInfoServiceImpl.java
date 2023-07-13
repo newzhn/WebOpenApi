@@ -1,4 +1,4 @@
-package com.zhn.webopenapicore.provider;
+package com.zhn.webopenapicore.service.provider;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -26,10 +26,7 @@ public class RpcUserInterfaceInfoServiceImpl implements RpcUserInterfaceInfoServ
     @Override
     public UserInterfaceInfo getOneByInterfaceInfoId(Long userId, Long interfaceInfoId) {
         // TODO 后续优化可以加上时间过期条件
-        LambdaQueryWrapper<UserInterfaceInfo> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(UserInterfaceInfo::getUserId,userId);
-        wrapper.eq(UserInterfaceInfo::getInterfaceInfoId,interfaceInfoId);
-        return userInterfaceInfoMapper.selectOne(wrapper);
+        return userInterfaceInfoService.getInfoByInterfaceId(userId, interfaceInfoId);
     }
 
     @Override

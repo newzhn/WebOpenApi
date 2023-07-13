@@ -1,10 +1,9 @@
-package com.zhn.webopenapicore.provider;
+package com.zhn.webopenapicore.service.provider;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.zhn.webopenapicommon.model.domain.InterfaceInfo;
 import com.zhn.webopenapicommon.service.RpcInterfaceInfoService;
 import com.zhn.webopenapicore.mapper.InterfaceInfoMapper;
-import com.zhn.webopenapicore.model.eneum.InterfaceInfoStatus;
 import org.apache.dubbo.config.annotation.DubboService;
 
 import javax.annotation.Resource;

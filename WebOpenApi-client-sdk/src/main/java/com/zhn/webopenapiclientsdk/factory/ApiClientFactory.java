@@ -1,8 +1,6 @@
 package com.zhn.webopenapiclientsdk.factory;
 
-import com.zhn.webopenapiclientsdk.client.ApiClient;
-import com.zhn.webopenapiclientsdk.client.GetApiClient;
-import com.zhn.webopenapiclientsdk.client.PostApiClient;
+import com.zhn.webopenapiclientsdk.client.*;
 import com.zhn.webopenapiclientsdk.model.HttpMethod;
 
 import static com.zhn.webopenapiclientsdk.model.HttpMethod.*;
@@ -26,15 +24,15 @@ public class ApiClientFactory {
     }
 
     public ApiClient createClient(HttpMethod method) {
-        ApiClient client = null;
+        ApiClient client;
         if (method == GET) {
             client = new GetApiClient(accessKey, secretKey);
         } else if (method == POST) {
             client = new PostApiClient(accessKey, secretKey);
         } else if (method == PUT) {
-
+            client = new PutApiClient(accessKey, secretKey);
         } else if (method == DELETE) {
-
+            client = new DeleteApiClient(accessKey, secretKey);
         } else {
             throw new RuntimeException("不支持该类型的客户端创建");
         }

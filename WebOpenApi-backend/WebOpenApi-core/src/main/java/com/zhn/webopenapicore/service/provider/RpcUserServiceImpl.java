@@ -1,12 +1,10 @@
-package com.zhn.webopenapicore.provider;
+package com.zhn.webopenapicore.service.provider;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.zhn.webopenapicommon.model.domain.User;
 import com.zhn.webopenapicommon.service.RpcUserService;
 import com.zhn.webopenapicore.mapper.UserMapper;
-import com.zhn.webopenapicore.service.UserService;
 import org.apache.dubbo.config.annotation.DubboService;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 

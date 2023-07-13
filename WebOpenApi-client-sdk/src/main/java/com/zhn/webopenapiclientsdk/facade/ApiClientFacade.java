@@ -1,10 +1,7 @@
 package com.zhn.webopenapiclientsdk.facade;
 
-import cn.hutool.http.HttpRequest;
 import com.zhn.webopenapiclientsdk.client.ApiClient;
 import com.zhn.webopenapiclientsdk.factory.ApiClientFactory;
-import com.zhn.webopenapiclientsdk.model.HttpMethod;
-import javafx.geometry.Pos;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,9 +25,13 @@ public class ApiClientFacade {
         ApiClientFactory factory = new ApiClientFactory(accessKey, secretKey);
         ApiClient getClient = factory.createClient(GET);
         ApiClient postClient = factory.createClient(POST);
+        ApiClient putClient = factory.createClient(PUT);
+        ApiClient deleteClient = factory.createClient(DELETE);
         this.clientMap = new HashMap<>();
         this.clientMap.put(GET.getValue(),getClient);
         this.clientMap.put(POST.getValue(),postClient);
+        this.clientMap.put(PUT.getValue(),putClient);
+        this.clientMap.put(DELETE.getValue(),deleteClient);
     }
 
     public String invoke(String method, String uri, Map<String, Object> paramMap) {

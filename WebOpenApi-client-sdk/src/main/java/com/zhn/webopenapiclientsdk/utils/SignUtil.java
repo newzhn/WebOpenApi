@@ -11,9 +11,8 @@ import cn.hutool.crypto.digest.DigestUtil;
  * @blog www.zhnblog.icu
  */
 public class SignUtil {
-    public static String genSign(String body, String secretKey) {
+    public static String genSign(String timestamp, String secretKey) {
         // 进行加密
-        String md5 = DigestUtil.md5Hex(body + secretKey);
-        return md5;
+        return DigestUtil.md5Hex(timestamp + secretKey);
     }
 }

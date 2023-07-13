@@ -21,12 +21,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <!--引入sdk包-->
-        <dependency>
-            <groupId>com.zhn</groupId>
-            <artifactId>WebOpenApi-client-sdk</artifactId>
-            <version>0.0.1</version>
-        </dependency>
         <!--rpc接口包-->
         <dependency>
             <artifactId>WebOpenApi-common</artifactId>

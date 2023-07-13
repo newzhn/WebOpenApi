@@ -12,5 +12,5 @@ public interface InterfaceConstant {
     /**
      * 默认总调用次数
      */
-    Integer TOTAL_NUMBER = 100;
+    Integer TOTAL_NUMBER = 0;
 }
