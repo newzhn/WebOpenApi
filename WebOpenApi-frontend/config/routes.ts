@@ -4,7 +4,7 @@ export default [
     layout: false,
     routes: [{ name: '登录', path: '/user/login', component: './User/Login' }],
   },
-  { path: '/index', name: '首页', icon: 'smile', component: './Index' },
+  { path: '/index', name: '接口商店', icon: 'smile', component: './Index' },
   { path: '/interface_info/:id', name: '查看接口', icon: 'smile', component: './InterfaceInfo', hideInMenu: true },
   {
     path: '/admin',
@@ -13,6 +13,7 @@ export default [
     access: 'canAdmin',
     routes: [
       { name: '接口管理', icon: 'table', path: '/admin/interface_info', component: './Admin/InterfaceInfo' },
+      { name: '接口统计', icon: 'analysis', path: '/admin/interface_statistic', component: './Admin/InterfaceStatistic' },
     ],
   },
   { path: '/', redirect: '/index' },

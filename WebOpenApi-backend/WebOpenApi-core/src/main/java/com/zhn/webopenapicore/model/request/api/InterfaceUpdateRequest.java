@@ -15,7 +15,7 @@ import java.io.Serializable;
  * @blog www.zhnblog.icu
  */
 @Data
-public class InterfaceInfoUpdateRequest implements Serializable {
+public class InterfaceUpdateRequest implements Serializable {
     /**
      * 主键
      */
@@ -51,6 +51,12 @@ public class InterfaceInfoUpdateRequest implements Serializable {
      */
     @NotNull(message = "接口路径不能为空")
     private String uri;
+
+    /**
+     * 接口申请时的可调用次数
+     */
+    @NotNull(message = "接口申请时的可调用次数不能为空")
+    private Integer applyNum;
 
     /**
      * 请求参数

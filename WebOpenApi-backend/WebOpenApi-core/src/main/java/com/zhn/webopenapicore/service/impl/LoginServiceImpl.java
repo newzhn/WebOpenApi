@@ -1,7 +1,7 @@
 package com.zhn.webopenapicore.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.zhn.webopenapicommon.utils.ThrowUtils;
+import com.zhn.webopenapicommon.utils.ThrowUtil;
 import com.zhn.webopenapicore.model.LoginUser;
 import com.zhn.webopenapicore.model.eneum.CacheEnums;
 import com.zhn.webopenapicore.model.request.user.LoginRequest;
@@ -36,7 +36,7 @@ public class LoginServiceImpl implements LoginService {
                 new UsernamePasswordAuthenticationToken(request.getUserAccount(), request.getUserPassword());
         // 调用manager查询数据库进行信息比对
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
-        ThrowUtils.throwIf(ObjectUtil.isNull(authentication),"账户名或密码错误");
+        ThrowUtil.throwIf(ObjectUtil.isNull(authentication),"账户名或密码错误");
         // 登录成功则根据用户Id生成Jwt
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         String userId = loginUser.getUser().getId().toString();

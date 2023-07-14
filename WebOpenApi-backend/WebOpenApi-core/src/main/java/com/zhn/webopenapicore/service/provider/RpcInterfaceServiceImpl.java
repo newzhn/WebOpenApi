@@ -2,7 +2,7 @@ package com.zhn.webopenapicore.service.provider;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.zhn.webopenapicommon.model.domain.InterfaceInfo;
-import com.zhn.webopenapicommon.service.RpcInterfaceInfoService;
+import com.zhn.webopenapicommon.service.RpcInterfaceService;
 import com.zhn.webopenapicore.mapper.InterfaceInfoMapper;
 import org.apache.dubbo.config.annotation.DubboService;
 
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  * @blog www.zhnblog.icu
  */
 @DubboService
-public class RpcInterfaceInfoServiceImpl implements RpcInterfaceInfoService {
+public class RpcInterfaceServiceImpl implements RpcInterfaceService {
     @Resource
     private InterfaceInfoMapper interfaceInfoMapper;
 

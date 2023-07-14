@@ -12,7 +12,7 @@ import java.util.Map;
  * @date 2023 /7/10 20:18
  * @blog www.zhnblog.icu
  */
-public interface RpcInterfaceInfoService {
+public interface RpcInterfaceService {
     /**
      * 根据请求method and uri获取对应接口信息
      *

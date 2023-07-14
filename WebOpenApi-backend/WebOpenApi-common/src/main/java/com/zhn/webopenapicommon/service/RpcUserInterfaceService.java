@@ -10,7 +10,7 @@ import com.zhn.webopenapicommon.model.domain.UserInterfaceInfo;
  * @date 2023 /7/10 20:19
  * @blog www.zhnblog.icu
  */
-public interface RpcUserInterfaceInfoService {
+public interface RpcUserInterfaceService {
     /**
      * Gets one by interface info id.
      *

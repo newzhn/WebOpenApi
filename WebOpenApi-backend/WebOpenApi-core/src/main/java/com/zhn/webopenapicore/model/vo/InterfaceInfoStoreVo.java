@@ -13,7 +13,7 @@ import java.util.Date;
  * @blog www.zhnblog.icu
  */
 @Data
-public class InterfaceInfoVo {
+public class InterfaceInfoStoreVo {
     /**
      * 主键
      */
@@ -45,19 +45,9 @@ public class InterfaceInfoVo {
     private Integer applyNum;
 
     /**
-     * 请求参数
+     * 是否可申请
      */
-    private String requestParams;
-
-    /**
-     * 请求头
-     */
-    private String requestHeader;
-
-    /**
-     * 响应头
-     */
-    private String responseHeader;
+    private boolean applyFlag;
 
     /**
      * 接口状态（0-关闭，1-开启）
@@ -68,10 +58,5 @@ public class InterfaceInfoVo {
      * 创建时间
      */
     private Date createTime;
-
-    /**
-     * 更新时间
-     */
-    private Date updateTime;
 
 }

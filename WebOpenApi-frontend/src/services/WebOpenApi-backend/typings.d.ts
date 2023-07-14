@@ -4,14 +4,9 @@ declare namespace API {
     ids: number[];
   };
 
-  type deleteUserInterfaceByIdsUsingDELETEParams = {
-    /** ids */
-    ids: number[];
-  };
-
   type deleteUserUsingDELETEParams = {
     /** id */
-    id: number;
+    id: number[];
   };
 
   type getInterfaceInfoUsingGETParams = {
@@ -24,16 +19,12 @@ declare namespace API {
     id: number;
   };
 
-  type getUserInterfaceInfoUsingGETParams = {
-    /** id */
-    id: number;
-  };
-
   type IdRequest = {
     id: number;
   };
 
-  type InterfaceInfoAddRequest = {
+  type InterfaceAddRequest = {
+    applyNum?: number;
     description: string;
     host: string;
     method: string;
@@ -44,23 +35,27 @@ declare namespace API {
     uri: string;
   };
 
-  type InterfaceInfoInvokeRequest = {
+  type InterfaceApplyRequest = {
+    applyNum?: number;
+    interfaceInfoId: number;
+  };
+
+  type InterfaceInvokeRequest = {
     id: number;
     userRequestParams: string;
   };
 
-  type InterfaceInfoQueryRequest = {
+  type InterfaceQueryRequest = {
     current?: number;
     method?: string;
     name?: string;
     pageSize?: number;
-    sortField?: string;
-    sortOrder?: string;
     status?: number;
     uri?: string;
   };
 
-  type InterfaceInfoUpdateRequest = {
+  type InterfaceUpdateRequest = {
+    applyNum: number;
     description: string;
     host: string;
     id: number;
@@ -99,35 +94,11 @@ declare namespace API {
     userRole?: string;
   };
 
-  type UserInterfaceInfoAddRequest = {
-    interfaceInfoId: number;
-  };
-
-  type UserInterfaceInfoQueryRequest = {
-    current?: number;
-    id?: number;
-    interfaceInfoId?: number;
-    pageSize?: number;
-    sortField?: string;
-    sortOrder?: string;
-    status?: number;
-    userId?: number;
-  };
-
-  type UserInterfaceInfoUpdateRequest = {
-    id: number;
-    status?: number;
-    surplusNum?: number;
-    totalNum?: number;
-  };
-
   type UserQueryRequest = {
     current?: number;
     email?: string;
     pageSize?: number;
     qq?: string;
-    sortField?: string;
-    sortOrder?: string;
     userAccount?: string;
     userRole?: string;
   };
@@ -188,8 +159,8 @@ declare namespace API {
     name: string;
     description: string;
     method: string;
-    host: string;
     uri: string;
+    applyNum: number;
     requestParams: string;
     requestHeader: string;
     responseHeader: string;
@@ -198,5 +169,43 @@ declare namespace API {
     createBy: string;
     createTime: Date;
     updateTime?: Date;
+  };
+
+  /**
+   * 接口排行榜对象
+   */
+  type InterfaceInfoRankVo = {
+    id: number;
+    name: string;
+    num: number;
+  }
+
+  /**
+   * 接口Me对象
+   */
+  type InterfaceInfoMeVo = {
+    id: number;
+    name: string;
+    description: string;
+    method: string;
+    uri: string;
+    surplusNum: number;
+    status: number;
+    createTime: Date;
+  };
+
+  /**
+   * 接口商店对象
+   */
+  type InterfaceInfoMeVo = {
+    id: number;
+    name: string;
+    description: string;
+    method: string;
+    uri: string;
+    applyNum: number;
+    applyFlag: boolean;
+    status: number;
+    createTime: Date;
   };
 }

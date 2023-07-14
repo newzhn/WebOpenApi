@@ -8,8 +8,8 @@ import com.zhn.webopenapicommon.model.HttpStatus;
 import com.zhn.webopenapicommon.model.domain.InterfaceInfo;
 import com.zhn.webopenapicommon.model.domain.User;
 import com.zhn.webopenapicommon.model.domain.UserInterfaceInfo;
-import com.zhn.webopenapicommon.service.RpcInterfaceInfoService;
-import com.zhn.webopenapicommon.service.RpcUserInterfaceInfoService;
+import com.zhn.webopenapicommon.service.RpcInterfaceService;
+import com.zhn.webopenapicommon.service.RpcUserInterfaceService;
 import com.zhn.webopenapicommon.service.RpcUserService;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -36,9 +36,9 @@ public class ApiAuthenticationFilter implements GlobalFilter, Ordered {
     @DubboReference
     private RpcUserService rpcUserService;
     @DubboReference
-    private RpcUserInterfaceInfoService rpcUserInterfaceInfoService;
+    private RpcUserInterfaceService rpcUserInterfaceInfoService;
     @DubboReference
-    private RpcInterfaceInfoService rpcInterfaceInfoService;
+    private RpcInterfaceService rpcInterfaceInfoService;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {

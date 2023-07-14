@@ -1,7 +1,7 @@
 import { PageContainer } from '@ant-design/pro-components';
 import React, {useEffect, useState} from 'react';
 import {List} from "antd";
-import {getInterfaceListVoByPageUsingPOST} from "@/services/WebOpenApi-backend/interfaceInfoController";
+import {getInterfaceStoreVoByPageUsingPOST} from "@/services/WebOpenApi-backend/interfaceController";
 const pageNum = 10
 
 const Index: React.FC = () => {
@@ -12,9 +12,9 @@ const Index: React.FC = () => {
   const loadData = async (current = 1,pageSize = pageNum) => {
     setLoading(true);
     try {
-      const res = await getInterfaceListVoByPageUsingPOST({
+      const res = await getInterfaceStoreVoByPageUsingPOST({
         current,
-        pageSize
+        pageSize,
       })
       setList(res.data.records);
       setTotal(res.data.total);

@@ -1,11 +1,10 @@
 package com.zhn.webopenapicore.service.provider;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.zhn.webopenapicommon.model.domain.UserInterfaceInfo;
-import com.zhn.webopenapicommon.service.RpcUserInterfaceInfoService;
+import com.zhn.webopenapicommon.service.RpcUserInterfaceService;
 import com.zhn.webopenapicore.mapper.UserInterfaceInfoMapper;
-import com.zhn.webopenapicore.service.UserInterfaceInfoService;
+import com.zhn.webopenapicore.service.UserInterfaceService;
 import org.apache.dubbo.config.annotation.DubboService;
 
 import javax.annotation.Resource;
@@ -17,11 +16,11 @@ import javax.annotation.Resource;
  * @blog www.zhnblog.icu
  */
 @DubboService
-public class RpcUserInterfaceInfoServiceImpl implements RpcUserInterfaceInfoService {
+public class RpcUserInterfaceServiceImpl implements RpcUserInterfaceService {
     @Resource
     private UserInterfaceInfoMapper userInterfaceInfoMapper;
     @Resource
-    private UserInterfaceInfoService userInterfaceInfoService;
+    private UserInterfaceService userInterfaceInfoService;
 
     @Override
     public UserInterfaceInfo getOneByInterfaceInfoId(Long userId, Long interfaceInfoId) {

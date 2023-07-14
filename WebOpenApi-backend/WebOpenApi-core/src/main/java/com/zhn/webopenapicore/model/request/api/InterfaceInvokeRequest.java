@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
  * @blog www.zhnblog.icu
  */
 @Data
-public class InterfaceInfoInvokeRequest {
+public class InterfaceInvokeRequest {
     /**
      * 主键
      */

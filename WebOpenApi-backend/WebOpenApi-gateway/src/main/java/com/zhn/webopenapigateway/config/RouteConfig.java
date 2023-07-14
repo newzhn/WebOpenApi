@@ -1,6 +1,6 @@
 package com.zhn.webopenapigateway.config;
 
-import com.zhn.webopenapicommon.service.RpcInterfaceInfoService;
+import com.zhn.webopenapicommon.service.RpcInterfaceService;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
@@ -21,7 +21,7 @@ import java.util.Map;
 @Configuration
 public class RouteConfig {
     @DubboReference
-    private RpcInterfaceInfoService rpcInterfaceInfoService;
+    private RpcInterfaceService rpcInterfaceInfoService;
 
     @Bean
     public RouteLocator customizeRoute(RouteLocatorBuilder builder) {

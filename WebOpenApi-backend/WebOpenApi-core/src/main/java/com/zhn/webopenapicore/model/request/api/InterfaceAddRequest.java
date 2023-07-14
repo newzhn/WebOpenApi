@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @version 1.0
  */
 @Data
-public class InterfaceInfoAddRequest implements Serializable {
+public class InterfaceAddRequest implements Serializable {
     /**
      * 接口名
      */
@@ -42,6 +42,11 @@ public class InterfaceInfoAddRequest implements Serializable {
      */
     @NotBlank(message = "接口路径不能为空")
     private String uri;
+
+    /**
+     * 接口申请时的可调用次数
+     */
+    private Integer applyNum;
 
     /**
      * 请求参数

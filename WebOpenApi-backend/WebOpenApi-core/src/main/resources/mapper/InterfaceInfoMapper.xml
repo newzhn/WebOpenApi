@@ -11,6 +11,7 @@
             <result property="method" column="method" jdbcType="VARCHAR"/>
             <result property="host" column="host" jdbcType="VARCHAR"/>
             <result property="uri" column="uri" jdbcType="VARCHAR"/>
+            <result property="applyNum" column="apply_num" jdbcType="INTEGER"/>
             <result property="requestParams" column="request_params" jdbcType="VARCHAR"/>
             <result property="requestHeader" column="request_header" jdbcType="VARCHAR"/>
             <result property="responseHeader" column="response_header" jdbcType="VARCHAR"/>
@@ -25,9 +26,29 @@
 
     <sql id="Base_Column_List">
         id,name,description,
-        method,host,uri,request_params,request_header,
+        method,host,uri,apply_num,request_params,request_header,
         response_header,status,user_id,
         create_by,create_time,update_by,
         update_time,is_delete
     </sql>
+
+    <select id="getStatisticRankList" resultType="com.zhn.webopenapicore.model.vo.InterfaceInfoRankVo">
+        select uii.interface_info_id as id,
+               ii.`name`,
+               SUM(uii.total_num) as num
+        from user_interface_info uii
+                 join interface_info ii on uii.interface_info_id = ii.id
+        GROUP BY uii.interface_info_id
+        ORDER BY num desc;
+    </select>
+
+    <select id="getMeVoList" resultType="com.zhn.webopenapicore.model.vo.InterfaceInfoMeVo">
+        select ii.id,ii.`name`,ii.description,ii.method,
+               ii.uri,uii.surplus_num,ii.`status`,
+               uii.create_time
+        from user_interface_info uii
+                 join interface_info ii on uii.interface_info_id = ii.id
+        where uii.user_id = #{userId}
+        ORDER BY uii.create_time desc;
+    </select>
 </mapper>

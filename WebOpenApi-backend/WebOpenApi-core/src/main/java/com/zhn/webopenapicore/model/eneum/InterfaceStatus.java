@@ -8,7 +8,7 @@ package com.zhn.webopenapicore.model.eneum;
  * @date 2023/7/3 19:12
  * @blog www.zhnblog.icu
  */
-public enum InterfaceInfoStatus {
+public enum InterfaceStatus {
     /**
      * 接口具体状态
      */
@@ -25,7 +25,7 @@ public enum InterfaceInfoStatus {
      */
     private final Integer status;
 
-    InterfaceInfoStatus(String statusName, Integer status) {
+    InterfaceStatus(String statusName, Integer status) {
         this.statusName = statusName;
         this.status = status;
     }

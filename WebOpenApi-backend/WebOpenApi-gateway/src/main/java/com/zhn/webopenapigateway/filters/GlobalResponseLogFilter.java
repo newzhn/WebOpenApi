@@ -1,7 +1,7 @@
 package com.zhn.webopenapigateway.filters;
 
 import com.zhn.webopenapicommon.exception.BusinessException;
-import com.zhn.webopenapicommon.service.RpcUserInterfaceInfoService;
+import com.zhn.webopenapicommon.service.RpcUserInterfaceService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.reactivestreams.Publisher;
@@ -41,7 +41,7 @@ import java.util.List;
 @ConditionalOnProperty(value = "web-open-api.gateway.log.response.enabled", havingValue = "true", matchIfMissing = true)
 public class GlobalResponseLogFilter implements GlobalFilter, Ordered {
     @DubboReference
-    private RpcUserInterfaceInfoService rpcUserInterfaceInfoService;
+    private RpcUserInterfaceService rpcUserInterfaceInfoService;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {

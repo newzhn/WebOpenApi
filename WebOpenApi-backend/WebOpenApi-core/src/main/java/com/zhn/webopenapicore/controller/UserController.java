@@ -55,7 +55,7 @@ public class UserController {
         return Result.success(userVo);
     }
 
-    @PostMapping("/list/page/vo")
+    @PostMapping("/all/vo/page")
     @PreAuthorize("hasRole('admin')")
     public Result getUserListVoByPage(@RequestBody UserQueryRequest request) {
         Page<UserVo> page = userService.getVoPage(request);

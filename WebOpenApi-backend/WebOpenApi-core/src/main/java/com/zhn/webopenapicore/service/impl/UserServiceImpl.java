@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zhn.webopenapicommon.exception.BusinessException;
 import com.zhn.webopenapicommon.model.domain.User;
-import com.zhn.webopenapicommon.utils.ThrowUtils;
+import com.zhn.webopenapicommon.utils.ThrowUtil;
 import com.zhn.webopenapicore.constant.UserConstant;
 import com.zhn.webopenapicore.mapper.UserMapper;
 import com.zhn.webopenapicore.model.LoginUser;
@@ -101,7 +101,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     @Override
     public UserVo getVoById(Long id) {
         User user = this.getById(id);
-        ThrowUtils.throwIf(user == null, "该用户信息不存在");
+        ThrowUtil.throwIf(user == null, "该用户信息不存在");
         return BeanUtils.copy(user,UserVo.class);
     }
 
@@ -165,7 +165,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         LambdaQueryWrapper<User> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(User::getUserAccount,username);
         User user = userMapper.selectOne(wrapper);
-        ThrowUtils.throwIf(ObjectUtil.isNull(user),
+        ThrowUtil.throwIf(ObjectUtil.isNull(user),
                 HttpStatus.HTTP_NOT_FOUND,"用户信息不存在");
         return new LoginUser(user, Collections.singletonList(user.getUserRole()));
     }

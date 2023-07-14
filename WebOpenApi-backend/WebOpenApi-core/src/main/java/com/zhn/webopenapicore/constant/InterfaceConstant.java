@@ -13,4 +13,9 @@ public interface InterfaceConstant {
      * 默认总调用次数
      */
     Integer TOTAL_NUMBER = 0;
+
+    /**
+     * 默认剩余调用次数
+     */
+    Integer SURPLUS_NUMBER = 100;
 }

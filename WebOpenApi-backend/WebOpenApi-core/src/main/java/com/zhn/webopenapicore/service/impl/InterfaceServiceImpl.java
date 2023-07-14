@@ -10,19 +10,18 @@ import com.zhn.webopenapicommon.exception.BusinessException;
 import com.zhn.webopenapicommon.model.HttpStatus;
 import com.zhn.webopenapicommon.model.domain.InterfaceInfo;
 import com.zhn.webopenapicommon.model.domain.UserInterfaceInfo;
-import com.zhn.webopenapicommon.utils.ThrowUtils;
+import com.zhn.webopenapicommon.utils.ThrowUtil;
 import com.zhn.webopenapicore.mapper.InterfaceInfoMapper;
 import com.zhn.webopenapicore.model.LoginUser;
-import com.zhn.webopenapicore.model.eneum.InterfaceInfoStatus;
+import com.zhn.webopenapicore.model.eneum.InterfaceStatus;
 import com.zhn.webopenapicore.model.request.IdRequest;
-import com.zhn.webopenapicore.model.request.api.InterfaceInfoAddRequest;
-import com.zhn.webopenapicore.model.request.api.InterfaceInfoInvokeRequest;
-import com.zhn.webopenapicore.model.request.api.InterfaceInfoQueryRequest;
-import com.zhn.webopenapicore.model.request.api.InterfaceInfoUpdateRequest;
-import com.zhn.webopenapicore.model.request.user_api.UserInterfaceInfoAddRequest;
+import com.zhn.webopenapicore.model.request.PageRequest;
+import com.zhn.webopenapicore.model.request.api.*;
+import com.zhn.webopenapicore.model.vo.InterfaceInfoMeVo;
+import com.zhn.webopenapicore.model.vo.InterfaceInfoStoreVo;
 import com.zhn.webopenapicore.model.vo.InterfaceInfoVo;
-import com.zhn.webopenapicore.service.InterfaceInfoService;
-import com.zhn.webopenapicore.service.UserInterfaceInfoService;
+import com.zhn.webopenapicore.service.InterfaceService;
+import com.zhn.webopenapicore.service.UserInterfaceService;
 import com.zhn.webopenapicore.service.UserService;
 import com.zhn.webopenapicore.utils.bean.BeanUtils;
 import com.zhn.webopenapicore.utils.string.JSONUtil;
@@ -32,6 +31,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
 * @author zhanh
@@ -39,19 +39,20 @@ import java.util.Map;
 * @createDate 2023-06-13 22:21:40
 */
 @Service
-public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, InterfaceInfo>
-    implements InterfaceInfoService {
+public class InterfaceServiceImpl extends ServiceImpl<InterfaceInfoMapper, InterfaceInfo>
+    implements InterfaceService {
     @Resource
-    private InterfaceInfoMapper interfaceInfoMapper;
+    private InterfaceInfoMapper interfaceMapper;
     @Resource
     private UserService userService;
     @Resource
-    private UserInterfaceInfoService userInterfaceInfoService;
+    private UserInterfaceService userInterfaceService;
     @Resource
     private ApiClientFacade apiClientFacade;
 
     @Override
-    public boolean addInterface(InterfaceInfoAddRequest request) {
+    public boolean addInterface(InterfaceAddRequest request) {
+        // TODO 校验接口是否存在
         InterfaceInfo interfaceInfo = BeanUtils.copy(request, InterfaceInfo.class);
         // TODO 处理接口添加信息
         LoginUser loginUser = userService.getCurrentUser();
@@ -67,7 +68,9 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
     }
 
     @Override
-    public boolean updateInterface(InterfaceInfoUpdateRequest request) {
+    public boolean updateInterface(InterfaceUpdateRequest request) {
+        //校验接口是否存在
+        this.validateInterface(request.getId());
         InterfaceInfo interfaceInfo = BeanUtils.copy(request, InterfaceInfo.class);
         // TODO 处理接口修改数据，删除对应缓存
         LoginUser loginUser = userService.getCurrentUser();
@@ -84,7 +87,7 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
     }
 
     @Override
-    public Page<InterfaceInfoVo> getVoPage(InterfaceInfoQueryRequest request) {
+    public Page<InterfaceInfoVo> getVoPage(InterfaceQueryRequest request) {
         // 拼接查询条件
         LambdaQueryWrapper<InterfaceInfo> wrapper = new LambdaQueryWrapper<>();
         if (StrUtil.isNotBlank(request.getName())) {
@@ -110,20 +113,15 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
     }
 
     @Override
-    public void onlineInterfaceInfo(IdRequest request) {
+    public void onlineInterface(IdRequest request) {
         //校验接口信息是否存在
-        Long id = request.getId();
-        InterfaceInfo interfaceInfo = this.getById(id);
-        ThrowUtils.throwIf(ObjectUtil.isNull(interfaceInfo),
-                HttpStatus.NOT_FOUND,"接口信息不存在");
-        //校验该接口调用次数是否足够
-        UserInterfaceInfo userInterfaceInfo = userInterfaceInfoService.
+        InterfaceInfo interfaceInfo = this.validateInterface(request.getId());
+        //校验是否有该接口的调用权限
+        UserInterfaceInfo userInterface = userInterfaceService.
                 getInfoByInterfaceId(interfaceInfo.getId());
-        if (ObjectUtil.isNull(userInterfaceInfo)) {
-            //调用次数不足则向数据库添加调用次数
-            UserInterfaceInfoAddRequest addRequest = new UserInterfaceInfoAddRequest();
-            addRequest.setInterfaceInfoId(interfaceInfo.getId());
-            userInterfaceInfoService.addInterface(addRequest);
+        //没有则去申请权限
+        if (ObjectUtil.isNull(userInterface) || userInterface.getSurplusNum() <= 0) {
+            userInterfaceService.applyInterface(interfaceInfo.getId(),interfaceInfo.getApplyNum());
         }
         //验证接口是否可用
         String method = interfaceInfo.getMethod();
@@ -135,32 +133,26 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
             throw new BusinessException(HttpStatus.ERROR,"接口验证失败！",e);
         }
         //上线接口
-        interfaceInfo.setStatus(InterfaceInfoStatus.ONLINE.getStatus());
+        interfaceInfo.setStatus(InterfaceStatus.ONLINE.getStatus());
         this.updateById(interfaceInfo);
     }
 
     @Override
-    public void offlineInterfaceInfo(IdRequest request) {
+    public void offlineInterface(IdRequest request) {
         //校验接口信息是否存在
-        Long id = request.getId();
-        InterfaceInfo interfaceInfo = this.getById(id);
-        ThrowUtils.throwIf(ObjectUtil.isNull(interfaceInfo),
-                HttpStatus.NOT_FOUND,"接口信息不存在");
+        InterfaceInfo interfaceInfo = this.validateInterface(request.getId());
         //下线接口
-        interfaceInfo.setStatus(InterfaceInfoStatus.OFFLINE.getStatus());
+        interfaceInfo.setStatus(InterfaceStatus.OFFLINE.getStatus());
         this.updateById(interfaceInfo);
     }
 
     @Override
-    public Object invokeInterfaceInfo(InterfaceInfoInvokeRequest invokeRequest,
-                                      HttpServletRequest request) {
+    public Object invokeInterface(InterfaceInvokeRequest invokeRequest,
+                                  HttpServletRequest request) {
         //校验接口信息是否存在
-        Long id = invokeRequest.getId();
-        InterfaceInfo interfaceInfo = this.getById(id);
-        ThrowUtils.throwIf(ObjectUtil.isNull(interfaceInfo),
-                HttpStatus.NOT_FOUND,"接口信息不存在");
+        InterfaceInfo interfaceInfo = this.validateInterface(invokeRequest.getId());
         //校验接口是否正常
-        ThrowUtils.throwIf(InterfaceInfoStatus.OFFLINE.getStatus().equals(interfaceInfo.getStatus()),
+        ThrowUtil.throwIf(InterfaceStatus.OFFLINE.getStatus().equals(interfaceInfo.getStatus()),
                 HttpStatus.ERROR,"接口未上线");
         //获取当前登录用户ak、sk
         LoginUser loginUser = userService.getCurrentUser();
@@ -179,7 +171,53 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
         } catch (Exception e) {
             throw new BusinessException(HttpStatus.ERROR,"接口调用失败",e);
         }
-        return  result;
+        return result;
+    }
+
+    @Override
+    public void applyInterface(InterfaceApplyRequest request) {
+        //校验接口是否存在
+        Long interfaceId = request.getInterfaceInfoId();
+        InterfaceInfo interfaceInfo = this.validateInterface(interfaceId);
+        //校验是否可以申请接口
+        userInterfaceService.validateApply(interfaceId);
+        //申请接口
+        userInterfaceService.applyInterface(interfaceId,interfaceInfo.getApplyNum());
+    }
+
+    @Override
+    public InterfaceInfo validateInterface(Long id) {
+        InterfaceInfo interfaceInfo = this.getById(id);
+        ThrowUtil.throwIf(ObjectUtil.isNull(interfaceInfo),
+                HttpStatus.NOT_FOUND,"接口信息不存在");
+        return interfaceInfo;
+    }
+
+    @Override
+    public List<InterfaceInfoMeVo> getMeVoList() {
+        Long userId = userService.getCurrentUser().getUser().getId();
+        List<InterfaceInfoMeVo> interfaceList = interfaceMapper.getMeVoList(userId);
+        return interfaceList;
+    }
+
+    @Override
+    public Page<InterfaceInfoStoreVo> getStoreVoPage(InterfaceQueryRequest request) {
+        //获取所有接口分页数据
+        Page<InterfaceInfoVo> voPage = this.getVoPage(request);
+        //获取当前用户已申请的接口Id数据
+        List<Long> ids = this.getMeVoList().stream()
+                .map(InterfaceInfoMeVo::getId).collect(Collectors.toList());
+        //遍历比对，申请过的或者下线状态的接口applyFlag设置为false
+        long current = request.getCurrent();
+        long pageSize = request.getPageSize();
+        Page<InterfaceInfoStoreVo> storeVoPage = new Page<>(current, pageSize, voPage.getTotal());
+        storeVoPage.setRecords(voPage.getRecords().stream().map(vo -> {
+            InterfaceInfoStoreVo storeVo = BeanUtils.copy(vo, InterfaceInfoStoreVo.class);
+            storeVo.setApplyFlag(!(InterfaceStatus.OFFLINE.getStatus().equals(vo.getStatus()) ||
+                    ids.contains(vo.getId())));
+            return storeVo;
+        }).collect(Collectors.toList()));
+        return storeVoPage;
     }
 }
 
