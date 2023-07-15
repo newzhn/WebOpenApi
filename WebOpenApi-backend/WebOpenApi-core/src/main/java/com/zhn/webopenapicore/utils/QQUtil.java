@@ -7,6 +7,7 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 
 /**
@@ -29,9 +30,9 @@ public class QQUtil {
         user.setUserAvatar(UserConstant.QQ_AVATAR_API + qq + "&s=100");
         String nickname = "";
         try {
-            restTemplate.setMessageConverters(Collections.singletonList(new StringHttpMessageConverter(Charset.forName("GBK"))));
+            restTemplate.setMessageConverters(Collections.singletonList(new StringHttpMessageConverter(StandardCharsets.UTF_8)));
             String url = UserConstant.QQ_NICKNAME_API + qq;
-            // TODO 原QQ获取昵称url出现问题，后续修改替换
+            // TODO 原QQ获取昵称url被禁了，暂时改为随机字符昵称
             String response = restTemplate.getForObject(url, String.class);
             nickname = response.split(",")[6];
             nickname = nickname.substring(1, nickname.length() - 1);

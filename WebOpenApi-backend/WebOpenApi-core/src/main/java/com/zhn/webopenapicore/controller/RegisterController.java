@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 /**
  * 注册接口
@@ -33,7 +34,8 @@ public class RegisterController {
     }
 
     @GetMapping("/sendCode")
-    public Result sendCode(@Email(message = "邮箱格式不正确") String email) {
+    public Result sendCode(@Email(message = "邮箱格式不正确")@NotBlank(message = "邮箱不能为空")
+                                       String email) {
         registerService.sendCode(email);
         return Result.success();
     }
