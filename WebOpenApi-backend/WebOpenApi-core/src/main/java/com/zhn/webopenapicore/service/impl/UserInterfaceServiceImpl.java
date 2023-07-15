@@ -4,6 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zhn.webopenapicommon.exception.BusinessException;
 import com.zhn.webopenapicommon.model.HttpStatus;
 import com.zhn.webopenapicommon.model.domain.InterfaceInfo;
 import com.zhn.webopenapicommon.model.domain.UserInterfaceInfo;
@@ -45,7 +46,11 @@ public class UserInterfaceServiceImpl extends ServiceImpl<UserInterfaceInfoMappe
         wrapper.eq(UserInterfaceInfo::getUserId,userId);
         wrapper.eq(UserInterfaceInfo::getInterfaceInfoId,interfaceInfoId);
         wrapper.eq(UserInterfaceInfo::getStatus,0);
-        return userInterfaceInfoMapper.selectOne(wrapper);
+        UserInterfaceInfo userInterfaceInfo = userInterfaceInfoMapper.selectOne(wrapper);
+        if (ObjectUtil.isNull(userInterfaceInfo)) {
+            throw new BusinessException(HttpStatus.ERROR,"没有该接口的调用权限，请先去申请接口");
+        }
+        return userInterfaceInfo;
     }
 
     @Override
@@ -69,7 +74,8 @@ public class UserInterfaceServiceImpl extends ServiceImpl<UserInterfaceInfoMappe
     public boolean applyInterface(Long interfaceId, Integer applyNum) {
         UserInterfaceInfo userInterfaceInfo = this.getInfoByInterfaceId(interfaceId);
         if (userInterfaceInfo != null && userInterfaceInfo.getSurplusNum() <= 0) {
-            userInterfaceInfo.setSurplusNum(applyNum == null ? InterfaceConstant.SURPLUS_NUMBER : applyNum);
+            userInterfaceInfo.setSurplusNum(applyNum == null ?
+                    InterfaceConstant.SURPLUS_NUMBER : applyNum);
             return this.updateById(userInterfaceInfo);
         }
         Long userId = userService.getCurrentUser().getUser().getId();

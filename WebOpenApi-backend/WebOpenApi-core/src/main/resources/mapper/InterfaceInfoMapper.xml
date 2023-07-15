@@ -32,23 +32,25 @@
         update_time,is_delete
     </sql>
 
-    <select id="getStatisticRankList" resultType="com.zhn.webopenapicore.model.vo.InterfaceInfoRankVo">
+    <select id="getStatisticRankList" resultType="com.zhn.webopenapicore.model.vo.InterfaceRankVo">
         select uii.interface_info_id as id,
                ii.`name`,
                SUM(uii.total_num) as num
         from user_interface_info uii
                  join interface_info ii on uii.interface_info_id = ii.id
+        where ii.`status` = 1 and ii.is_delete = 0
         GROUP BY uii.interface_info_id
         ORDER BY num desc;
     </select>
 
-    <select id="getMeVoList" resultType="com.zhn.webopenapicore.model.vo.InterfaceInfoMeVo">
+    <select id="getMeVoList" resultType="com.zhn.webopenapicore.model.vo.InterfaceMeVo">
         select ii.id,ii.`name`,ii.description,ii.method,
                ii.uri,uii.surplus_num,ii.`status`,
                uii.create_time
         from user_interface_info uii
                  join interface_info ii on uii.interface_info_id = ii.id
-        where uii.user_id = #{userId}
+        where uii.user_id = #{userId} and ii.`status` = 1
+            and ii.is_delete = 0 and uii.`status` = 0 and ii.name LIKE CONCAT('%', #{search}, '%')
         ORDER BY uii.create_time desc;
     </select>
 </mapper>

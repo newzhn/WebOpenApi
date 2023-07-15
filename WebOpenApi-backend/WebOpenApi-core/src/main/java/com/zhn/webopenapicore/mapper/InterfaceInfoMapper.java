@@ -2,8 +2,8 @@ package com.zhn.webopenapicore.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zhn.webopenapicommon.model.domain.InterfaceInfo;
-import com.zhn.webopenapicore.model.vo.InterfaceInfoMeVo;
-import com.zhn.webopenapicore.model.vo.InterfaceInfoRankVo;
+import com.zhn.webopenapicore.model.vo.InterfaceMeVo;
+import com.zhn.webopenapicore.model.vo.InterfaceRankVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -22,9 +22,9 @@ public interface InterfaceInfoMapper extends BaseMapper<InterfaceInfo> {
      *
      * @return the statistic rank list
      */
-    List<InterfaceInfoRankVo> getStatisticRankList();
+    List<InterfaceRankVo> getStatisticRankList();
 
-    List<InterfaceInfoMeVo> getMeVoList(@Param("userId") Long userId);
+    List<InterfaceMeVo> getMeVoList(@Param("userId") Long userId, @Param("search") String search);
 }
 
 

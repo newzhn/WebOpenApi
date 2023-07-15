@@ -1,25 +1,28 @@
 import { PageContainer } from '@ant-design/pro-components';
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router";
-import {Button, Card, Descriptions, Form, Input, message} from "antd";
+import {Badge, Button, Card, Descriptions, Divider, Form, Input, message, Tag} from "antd";
 import moment from "moment";
-import {getInterfaceInfoUsingGET, invokeInterfaceUsingPOST} from "@/services/WebOpenApi-backend/interfaceController";
+import {
+  getDetailInterfaceInfoUsingGET,
+  invokeInterfaceUsingPOST
+} from "@/services/WebOpenApi-backend/interfaceController";
 
 const Index: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [invokeLoading, setInvokeLoading] = useState(false);
-  const [data, setData] = useState<API.InterfaceInfoVo>();
+  const [data, setData] = useState<API.InterfaceDetailVo>();
   const [invokeRes, setInvokeRes] = useState<any>();
   const params = useParams()
 
   const loadData = async () => {
     if (!params.id) {
-      message.error("接口不存在");
+      message.error("接口不存在或已下线");
       return;
     }
     setLoading(true);
     try {
-      const res = await getInterfaceInfoUsingGET({
+      const res = await getDetailInterfaceInfoUsingGET({
         id: Number(params.id)
       })
       setData(res.data);
@@ -55,29 +58,31 @@ const Index: React.FC = () => {
   }
 
   return (
-    <PageContainer title={"接口文档查看"}>
+    <PageContainer title={"接口在线调试"}>
       <Card loading={loading}>
         {data ? (
           <Descriptions title={data.name} column={1}>
             <Descriptions.Item label="描述">{data.description}</Descriptions.Item>
-            <Descriptions.Item label="接口状态">{data.status ? '正常' : '关闭'}</Descriptions.Item>
-            <Descriptions.Item label="请求类型">{data.method}</Descriptions.Item>
+            <Descriptions.Item label="接口状态">{data.status ? (
+              <Badge status="success" text={'在线'} />
+            ) : (
+              <Badge status="default" text={'已下线'} />
+            )}</Descriptions.Item>
+            <Descriptions.Item label="请求类型"><Tag color={data.method === 'GET' ? 'success' :
+              data.method === 'POST' ? 'processing' : data.method === 'PUT' ? 'warning' : 'error'} key={data.method}>
+              {data.method}
+            </Tag></Descriptions.Item>
             <Descriptions.Item label="接口地址">{data.uri}</Descriptions.Item>
-            <Descriptions.Item label="请求头">{data.requestHeader}</Descriptions.Item>
-            <Descriptions.Item label="响应头">{data.responseHeader}</Descriptions.Item>
             <Descriptions.Item label="发布时间">
               {moment(data.createTime).format('YYYY-MM-DD HH:mm:ss')}
             </Descriptions.Item>
-            <Descriptions.Item label="更新时间">
-              {data.updateTime ?
-                moment(data.updateTime).format('YYYY-MM-DD HH:mm:ss') : ''}
-            </Descriptions.Item>
           </Descriptions>
         ) : (
-          <>接口不存在</>
+          <>接口不存在或已下线</>
         )}
       </Card>
-      <Card title={"接口测试"}>
+      <Divider />
+      <Card title={"在线调试"}>
         <Form
           name={"invoke"}
           layout={"vertical"}
@@ -96,7 +101,8 @@ const Index: React.FC = () => {
           </Form.Item>
         </Form>
       </Card>
-      <Card title={"调用结果"} loading={invokeLoading}>
+      <Divider />
+      <Card title={"调试结果"} loading={invokeLoading}>
         {invokeRes}
       </Card>
     </PageContainer>

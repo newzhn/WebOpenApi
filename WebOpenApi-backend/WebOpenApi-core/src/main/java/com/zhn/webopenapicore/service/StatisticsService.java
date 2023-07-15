@@ -1,6 +1,6 @@
 package com.zhn.webopenapicore.service;
 
-import com.zhn.webopenapicore.model.vo.InterfaceInfoRankVo;
+import com.zhn.webopenapicore.model.vo.InterfaceRankVo;
 
 import java.util.List;
 
@@ -18,5 +18,5 @@ public interface StatisticsService {
      *
      * @return the statistic rank list
      */
-    List<InterfaceInfoRankVo> getRankVoList();
+    List<InterfaceRankVo> getRankVoList();
 }

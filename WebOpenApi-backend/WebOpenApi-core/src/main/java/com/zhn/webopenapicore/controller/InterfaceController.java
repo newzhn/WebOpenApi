@@ -4,8 +4,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhn.webopenapicommon.model.Result;
 import com.zhn.webopenapicore.model.request.IdRequest;
 import com.zhn.webopenapicore.model.request.api.*;
-import com.zhn.webopenapicore.model.vo.InterfaceInfoMeVo;
-import com.zhn.webopenapicore.model.vo.InterfaceInfoStoreVo;
+import com.zhn.webopenapicore.model.vo.InterfaceDetailVo;
+import com.zhn.webopenapicore.model.vo.InterfaceMeVo;
+import com.zhn.webopenapicore.model.vo.InterfaceStoreVo;
 import com.zhn.webopenapicore.model.vo.InterfaceInfoVo;
 import com.zhn.webopenapicore.service.InterfaceService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -72,7 +73,7 @@ public class InterfaceController {
     }
 
     /**
-     * 获取某个接口详细信息
+     * 获取某个接口信息
      *
      * @param id the id
      * @return the interface info
@@ -82,6 +83,19 @@ public class InterfaceController {
         InterfaceInfoVo interfaceVo = interfaceService.getVoById(id);
         return Result.success(interfaceVo);
     }
+
+    /**
+     * 获取某个接口详细信息（包括剩余调用次数）
+     *
+     * @param id the id
+     * @return the interface info
+     */
+    @GetMapping("/detail/{id}")
+    public Result getDetailInterfaceInfo(@NotNull(message = "查询接口的Id不能为空") @PathVariable("id") Long id) {
+        InterfaceDetailVo data = interfaceService.getDetailVoById(id);
+        return Result.success(data);
+    }
+
 
     /**
      * 获取所有接口的分页数据，用于管理
@@ -103,7 +117,7 @@ public class InterfaceController {
      */
     @PostMapping("/store/vo/page")
     public Result getInterfaceStoreVoByPage(@RequestBody InterfaceQueryRequest request) {
-        Page<InterfaceInfoStoreVo> page = interfaceService.getStoreVoPage(request);
+        Page<InterfaceStoreVo> page = interfaceService.getStoreVoPage(request);
         return Result.success(page);
     }
 
@@ -113,8 +127,8 @@ public class InterfaceController {
      * @return the interface me vo by page
      */
     @GetMapping("/me/vo/list")
-    public Result getInterfaceMeVoList() {
-        List<InterfaceInfoMeVo> list = interfaceService.getMeVoList();
+    public Result getInterfaceMeVoList(@RequestParam("search") String search) {
+        List<InterfaceMeVo> list = interfaceService.getMeVoList(search);
         return Result.success(list);
     }
 

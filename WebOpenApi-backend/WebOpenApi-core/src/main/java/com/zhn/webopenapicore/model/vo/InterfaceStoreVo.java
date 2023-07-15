@@ -13,7 +13,7 @@ import java.util.Date;
  * @blog www.zhnblog.icu
  */
 @Data
-public class InterfaceInfoMeVo {
+public class InterfaceStoreVo {
     /**
      * 主键
      */
@@ -40,9 +40,14 @@ public class InterfaceInfoMeVo {
     private String uri;
 
     /**
-     * 剩余接口调用次数
+     * 接口申请时的可调用次数
      */
-    private Integer surplusNum;
+    private Integer applyNum;
+
+    /**
+     * 是否可申请
+     */
+    private boolean applyFlag;
 
     /**
      * 接口状态（0-关闭，1-开启）

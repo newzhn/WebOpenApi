@@ -1,7 +1,7 @@
 package com.zhn.webopenapicore.service.impl;
 
 import com.zhn.webopenapicore.mapper.InterfaceInfoMapper;
-import com.zhn.webopenapicore.model.vo.InterfaceInfoRankVo;
+import com.zhn.webopenapicore.model.vo.InterfaceRankVo;
 import com.zhn.webopenapicore.service.StatisticsService;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     private InterfaceInfoMapper interfaceInfoMapper;
 
     @Override
-    public List<InterfaceInfoRankVo> getRankVoList() {
+    public List<InterfaceRankVo> getRankVoList() {
         return interfaceInfoMapper.getStatisticRankList();
     }
 }

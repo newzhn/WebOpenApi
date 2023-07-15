@@ -90,6 +90,20 @@ export async function applyInterfaceUsingPOST(
   });
 }
 
+/** getDetailInterfaceInfo GET /api/interface/detail/${param0} */
+export async function getDetailInterfaceInfoUsingGET(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getDetailInterfaceInfoUsingGETParams,
+  options?: { [key: string]: any },
+) {
+  const { id: param0, ...queryParams } = params;
+  return request<Record<string, any>>(`/api/interface/detail/${param0}`, {
+    method: 'GET',
+    params: { ...queryParams },
+    ...(options || {}),
+  });
+}
+
 /** invokeInterface POST /api/interface/invoke */
 export async function invokeInterfaceUsingPOST(
   body: API.InterfaceInvokeRequest,
@@ -106,9 +120,16 @@ export async function invokeInterfaceUsingPOST(
 }
 
 /** getInterfaceMeVoList GET /api/interface/me/vo/list */
-export async function getInterfaceMeVoListUsingGET(options?: { [key: string]: any }) {
+export async function getInterfaceMeVoListUsingGET(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getInterfaceMeVoListUsingGETParams,
+  options?: { [key: string]: any },
+) {
   return request<Record<string, any>>('/api/interface/me/vo/list', {
     method: 'GET',
+    params: {
+      ...params,
+    },
     ...(options || {}),
   });
 }

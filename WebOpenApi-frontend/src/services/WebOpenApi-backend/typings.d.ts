@@ -1,17 +1,27 @@
 declare namespace API {
   type deleteInterfaceByIdsUsingDELETEParams = {
     /** ids */
-    ids: number[];
+    ids: string;
   };
 
   type deleteUserUsingDELETEParams = {
     /** id */
-    id: number[];
+    id: number;
+  };
+
+  type getDetailInterfaceInfoUsingGETParams = {
+    /** id */
+    id: number;
   };
 
   type getInterfaceInfoUsingGETParams = {
     /** id */
     id: number;
+  };
+
+  type getInterfaceMeVoListUsingGETParams = {
+    /** search */
+    search: string;
   };
 
   type getUserInfoUsingGETParams = {
@@ -82,7 +92,7 @@ declare namespace API {
 
   type sendCodeUsingGETParams = {
     /** email */
-    email?: string;
+    email: string;
   };
 
   type UserAddRequest = {
@@ -172,9 +182,30 @@ declare namespace API {
   };
 
   /**
+   * 接口封装对象
+   */
+  type InterfaceDetailVo = {
+    id: number;
+    name: string;
+    description: string;
+    method: string;
+    uri: string;
+    surplusNum: number;
+    applyNum: number;
+    requestParams: string;
+    requestHeader: string;
+    responseHeader: string;
+    status: number;
+    userId: number;
+    createBy: string;
+    createTime: Date;
+    updateTime?: Date;
+  };
+
+  /**
    * 接口排行榜对象
    */
-  type InterfaceInfoRankVo = {
+  type InterfaceRankVo = {
     id: number;
     name: string;
     num: number;
@@ -183,7 +214,7 @@ declare namespace API {
   /**
    * 接口Me对象
    */
-  type InterfaceInfoMeVo = {
+  type InterfaceMeVo = {
     id: number;
     name: string;
     description: string;
@@ -197,7 +228,7 @@ declare namespace API {
   /**
    * 接口商店对象
    */
-  type InterfaceInfoMeVo = {
+  type InterfaceStoreVo = {
     id: number;
     name: string;
     description: string;

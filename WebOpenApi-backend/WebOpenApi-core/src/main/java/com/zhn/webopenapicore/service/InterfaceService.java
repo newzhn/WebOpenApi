@@ -4,12 +4,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zhn.webopenapicommon.model.domain.InterfaceInfo;
 import com.zhn.webopenapicore.model.request.IdRequest;
-import com.zhn.webopenapicore.model.request.PageRequest;
 import com.zhn.webopenapicore.model.request.api.*;
-import com.zhn.webopenapicore.model.vo.InterfaceInfoMeVo;
-import com.zhn.webopenapicore.model.vo.InterfaceInfoStoreVo;
+import com.zhn.webopenapicore.model.vo.InterfaceDetailVo;
+import com.zhn.webopenapicore.model.vo.InterfaceMeVo;
+import com.zhn.webopenapicore.model.vo.InterfaceStoreVo;
 import com.zhn.webopenapicore.model.vo.InterfaceInfoVo;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -101,7 +100,9 @@ public interface InterfaceService extends IService<InterfaceInfo> {
      */
     InterfaceInfo validateInterface(Long id);
 
-    List<InterfaceInfoMeVo> getMeVoList();
+    List<InterfaceMeVo> getMeVoList(String search);
 
-    Page<InterfaceInfoStoreVo> getStoreVoPage(InterfaceQueryRequest request);
+    Page<InterfaceStoreVo> getStoreVoPage(InterfaceQueryRequest request);
+
+    InterfaceDetailVo getDetailVoById(Long id);
 }

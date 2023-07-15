@@ -11,7 +11,7 @@ import {getRankInterfaceInfoVoListUsingGET} from "@/services/WebOpenApi-backend/
  * @constructor
  */
 const InterfaceStatistic: React.FC = () => {
-  const [data,setData] =  useState<API.InterfaceInfoRankVo[]>([])
+  const [data,setData] =  useState<API.InterfaceRankVo[]>([])
   const [loading,setLoading] =  useState(true)
 
   const loadData = async () => {

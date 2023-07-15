@@ -11,7 +11,7 @@ import lombok.Data;
  * @blog www.zhnblog.icu
  */
 @Data
-public class InterfaceInfoRankVo {
+public class InterfaceRankVo {
     private Long id;
 
     private String name;

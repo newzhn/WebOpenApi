@@ -9,8 +9,8 @@ import {
 import '@umijs/max';
 import {Button, Drawer, message} from 'antd';
 import React, {useRef, useState} from 'react';
-import CreateModal from "@/pages/Admin/InterfaceInfo/components/CreateModal";
-import UpdateModal from "@/pages/Admin/InterfaceInfo/components/UpdateModal";
+import CreateModal from "@/pages/Admin/Interface/components/CreateModal";
+import UpdateModal from "@/pages/Admin/Interface/components/UpdateModal";
 import {
   addInterfaceUsingPOST, deleteInterfaceByIdsUsingDELETE,
   getInterfaceListVoByPageUsingPOST, offlineInterfaceUsingPUT, onlineInterfaceUsingPUT, updateInterfaceUsingPUT

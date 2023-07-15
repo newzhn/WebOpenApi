@@ -15,10 +15,10 @@ import com.zhn.webopenapicore.mapper.InterfaceInfoMapper;
 import com.zhn.webopenapicore.model.LoginUser;
 import com.zhn.webopenapicore.model.eneum.InterfaceStatus;
 import com.zhn.webopenapicore.model.request.IdRequest;
-import com.zhn.webopenapicore.model.request.PageRequest;
 import com.zhn.webopenapicore.model.request.api.*;
-import com.zhn.webopenapicore.model.vo.InterfaceInfoMeVo;
-import com.zhn.webopenapicore.model.vo.InterfaceInfoStoreVo;
+import com.zhn.webopenapicore.model.vo.InterfaceDetailVo;
+import com.zhn.webopenapicore.model.vo.InterfaceMeVo;
+import com.zhn.webopenapicore.model.vo.InterfaceStoreVo;
 import com.zhn.webopenapicore.model.vo.InterfaceInfoVo;
 import com.zhn.webopenapicore.service.InterfaceService;
 import com.zhn.webopenapicore.service.UserInterfaceService;
@@ -91,10 +91,10 @@ public class InterfaceServiceImpl extends ServiceImpl<InterfaceInfoMapper, Inter
         // 拼接查询条件
         LambdaQueryWrapper<InterfaceInfo> wrapper = new LambdaQueryWrapper<>();
         if (StrUtil.isNotBlank(request.getName())) {
-            wrapper.eq(InterfaceInfo::getName,request.getName());
+            wrapper.like(InterfaceInfo::getName,request.getName());
         }
         if (StrUtil.isNotBlank(request.getMethod())) {
-            wrapper.eq(InterfaceInfo::getMethod,request.getMethod());
+            wrapper.like(InterfaceInfo::getMethod,request.getMethod());
         }
         if (StrUtil.isNotBlank(request.getUri())) {
             wrapper.like(InterfaceInfo::getUri,request.getUri());
@@ -116,6 +116,9 @@ public class InterfaceServiceImpl extends ServiceImpl<InterfaceInfoMapper, Inter
     public void onlineInterface(IdRequest request) {
         //校验接口信息是否存在
         InterfaceInfo interfaceInfo = this.validateInterface(request.getId());
+        if (InterfaceStatus.ONLINE.getStatus().equals(interfaceInfo.getStatus())) {
+            return;
+        }
         //校验是否有该接口的调用权限
         UserInterfaceInfo userInterface = userInterfaceService.
                 getInfoByInterfaceId(interfaceInfo.getId());
@@ -141,6 +144,9 @@ public class InterfaceServiceImpl extends ServiceImpl<InterfaceInfoMapper, Inter
     public void offlineInterface(IdRequest request) {
         //校验接口信息是否存在
         InterfaceInfo interfaceInfo = this.validateInterface(request.getId());
+        if (InterfaceStatus.OFFLINE.getStatus().equals(interfaceInfo.getStatus())) {
+            return;
+        }
         //下线接口
         interfaceInfo.setStatus(InterfaceStatus.OFFLINE.getStatus());
         this.updateById(interfaceInfo);
@@ -194,30 +200,44 @@ public class InterfaceServiceImpl extends ServiceImpl<InterfaceInfoMapper, Inter
     }
 
     @Override
-    public List<InterfaceInfoMeVo> getMeVoList() {
+    public List<InterfaceMeVo> getMeVoList(String search) {
         Long userId = userService.getCurrentUser().getUser().getId();
-        List<InterfaceInfoMeVo> interfaceList = interfaceMapper.getMeVoList(userId);
+        List<InterfaceMeVo> interfaceList = interfaceMapper.getMeVoList(userId,search);
         return interfaceList;
     }
 
     @Override
-    public Page<InterfaceInfoStoreVo> getStoreVoPage(InterfaceQueryRequest request) {
-        //获取所有接口分页数据
+    public Page<InterfaceStoreVo> getStoreVoPage(InterfaceQueryRequest request) {
+        //获取上线接口分页数据
+        request.setStatus(InterfaceStatus.ONLINE.getStatus());
         Page<InterfaceInfoVo> voPage = this.getVoPage(request);
         //获取当前用户已申请的接口Id数据
-        List<Long> ids = this.getMeVoList().stream()
-                .map(InterfaceInfoMeVo::getId).collect(Collectors.toList());
+        List<Long> ids = this.getMeVoList("").stream()
+                .map(InterfaceMeVo::getId).collect(Collectors.toList());
         //遍历比对，申请过的或者下线状态的接口applyFlag设置为false
         long current = request.getCurrent();
         long pageSize = request.getPageSize();
-        Page<InterfaceInfoStoreVo> storeVoPage = new Page<>(current, pageSize, voPage.getTotal());
+        Page<InterfaceStoreVo> storeVoPage = new Page<>(current, pageSize, voPage.getTotal());
         storeVoPage.setRecords(voPage.getRecords().stream().map(vo -> {
-            InterfaceInfoStoreVo storeVo = BeanUtils.copy(vo, InterfaceInfoStoreVo.class);
+            InterfaceStoreVo storeVo = BeanUtils.copy(vo, InterfaceStoreVo.class);
             storeVo.setApplyFlag(!(InterfaceStatus.OFFLINE.getStatus().equals(vo.getStatus()) ||
                     ids.contains(vo.getId())));
             return storeVo;
         }).collect(Collectors.toList()));
         return storeVoPage;
+    }
+
+    @Override
+    public InterfaceDetailVo getDetailVoById(Long id) {
+        InterfaceInfo info = this.getById(id);
+        if (info.getStatus().equals(InterfaceStatus.OFFLINE.getStatus())) {
+            throw new BusinessException(HttpStatus.FORBIDDEN,"该接口暂时还未上线");
+        }
+        InterfaceDetailVo detailVo = BeanUtils.copy(info, InterfaceDetailVo.class);
+        //查询当前用户剩余调用次数
+        UserInterfaceInfo userInterfaceInfo = userInterfaceService.getInfoByInterfaceId(id);
+        detailVo.setSurplusNum(userInterfaceInfo.getSurplusNum());
+        return detailVo;
     }
 }
 
