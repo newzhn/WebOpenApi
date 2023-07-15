@@ -9,13 +9,12 @@ import {
 import '@umijs/max';
 import {Button, Drawer, message} from 'antd';
 import React, {useRef, useState} from 'react';
-import {
-  addInterfaceUsingPOST, deleteInterfaceByIdsUsingDELETE,
-  getInterfaceListVoByPageUsingPOST, offlineInterfaceInfoUsingPUT, onlineInterfaceInfoUsingPUT,
-  updateInterfaceUsingPUT
-} from "@/services/WebOpenApi-backend/interfaceInfoController";
 import CreateModal from "@/pages/Admin/InterfaceInfo/components/CreateModal";
 import UpdateModal from "@/pages/Admin/InterfaceInfo/components/UpdateModal";
+import {
+  addInterfaceUsingPOST, deleteInterfaceByIdsUsingDELETE,
+  getInterfaceListVoByPageUsingPOST, offlineInterfaceUsingPUT, onlineInterfaceUsingPUT, updateInterfaceUsingPUT
+} from "@/services/WebOpenApi-backend/interfaceController";
 
 const InterfaceInfo: React.FC = () => {
   /**
@@ -69,7 +68,7 @@ const InterfaceInfo: React.FC = () => {
    * @zh-CN 添加节点
    * @param fields
    */
-  const handleAdd = async (fields: API.InterfaceInfoAddRequest) => {
+  const handleAdd = async (fields: API.InterfaceAddRequest) => {
     const hide = message.loading('正在添加');
     try {
       await addInterfaceUsingPOST({
@@ -92,7 +91,7 @@ const InterfaceInfo: React.FC = () => {
    *
    * @param fields
    */
-  const handleUpdate = async (fields: API.InterfaceInfoUpdateRequest) => {
+  const handleUpdate = async (fields: API.InterfaceUpdateRequest) => {
     const hide = message.loading('修改中');
     try {
       await updateInterfaceUsingPUT({
@@ -141,7 +140,7 @@ const InterfaceInfo: React.FC = () => {
     const hide = message.loading('正在上线中');
     if (!record) return true;
     try {
-      await onlineInterfaceInfoUsingPUT({
+      await onlineInterfaceUsingPUT({
         id: record.id
       });
       hide();
@@ -164,7 +163,7 @@ const InterfaceInfo: React.FC = () => {
     const hide = message.loading('正在下线中');
     if (!record) return true;
     try {
-      await offlineInterfaceInfoUsingPUT({
+      await offlineInterfaceUsingPUT({
         id: record.id
       });
       hide();

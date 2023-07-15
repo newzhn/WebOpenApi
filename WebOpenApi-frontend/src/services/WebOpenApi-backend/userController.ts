@@ -57,25 +57,25 @@ export async function deleteUserUsingDELETE(
   });
 }
 
-/** getCurrentUser GET /api/user/current */
-export async function getCurrentUserUsingGET(options?: { [key: string]: any }) {
-  return request<Record<string, any>>('/api/user/current', {
-    method: 'GET',
-    ...(options || {}),
-  });
-}
-
-/** getUserListVoByPage POST /api/user/list/page/vo */
+/** getUserListVoByPage POST /api/user/all/vo/page */
 export async function getUserListVoByPageUsingPOST(
   body: API.UserQueryRequest,
   options?: { [key: string]: any },
 ) {
-  return request<Record<string, any>>('/api/user/list/page/vo', {
+  return request<Record<string, any>>('/api/user/all/vo/page', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     data: body,
+    ...(options || {}),
+  });
+}
+
+/** getCurrentUser GET /api/user/current */
+export async function getCurrentUserUsingGET(options?: { [key: string]: any }) {
+  return request<Record<string, any>>('/api/user/current', {
+    method: 'GET',
     ...(options || {}),
   });
 }

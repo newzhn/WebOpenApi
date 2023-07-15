@@ -4,7 +4,7 @@ import { request } from '@umijs/max';
 
 /** updateInterface PUT /api/interface */
 export async function updateInterfaceUsingPUT(
-  body: API.InterfaceInfoUpdateRequest,
+  body: API.InterfaceUpdateRequest,
   options?: { [key: string]: any },
 ) {
   return request<Record<string, any>>('/api/interface', {
@@ -19,7 +19,7 @@ export async function updateInterfaceUsingPUT(
 
 /** addInterface POST /api/interface */
 export async function addInterfaceUsingPOST(
-  body: API.InterfaceInfoAddRequest,
+  body: API.InterfaceAddRequest,
   options?: { [key: string]: any },
 ) {
   return request<Record<string, any>>('/api/interface', {
@@ -60,9 +60,39 @@ export async function getInterfaceInfoUsingGET(
   });
 }
 
-/** invokeInterfaceInfo POST /api/interface/invoke */
-export async function invokeInterfaceInfoUsingPOST(
-  body: API.InterfaceInfoInvokeRequest,
+/** getInterfaceListVoByPage POST /api/interface/all/vo/page */
+export async function getInterfaceListVoByPageUsingPOST(
+  body: API.InterfaceQueryRequest,
+  options?: { [key: string]: any },
+) {
+  return request<Record<string, any>>('/api/interface/all/vo/page', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** applyInterface POST /api/interface/apply */
+export async function applyInterfaceUsingPOST(
+  body: API.InterfaceApplyRequest,
+  options?: { [key: string]: any },
+) {
+  return request<Record<string, any>>('/api/interface/apply', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** invokeInterface POST /api/interface/invoke */
+export async function invokeInterfaceUsingPOST(
+  body: API.InterfaceInvokeRequest,
   options?: { [key: string]: any },
 ) {
   return request<Record<string, any>>('/api/interface/invoke', {
@@ -75,23 +105,16 @@ export async function invokeInterfaceInfoUsingPOST(
   });
 }
 
-/** getInterfaceListVoByPage POST /api/interface/list/page/vo */
-export async function getInterfaceListVoByPageUsingPOST(
-  body: API.InterfaceInfoQueryRequest,
-  options?: { [key: string]: any },
-) {
-  return request<Record<string, any>>('/api/interface/list/page/vo', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: body,
+/** getInterfaceMeVoList GET /api/interface/me/vo/list */
+export async function getInterfaceMeVoListUsingGET(options?: { [key: string]: any }) {
+  return request<Record<string, any>>('/api/interface/me/vo/list', {
+    method: 'GET',
     ...(options || {}),
   });
 }
 
-/** offlineInterfaceInfo PUT /api/interface/offline */
-export async function offlineInterfaceInfoUsingPUT(
+/** offlineInterface PUT /api/interface/offline */
+export async function offlineInterfaceUsingPUT(
   body: API.IdRequest,
   options?: { [key: string]: any },
 ) {
@@ -105,13 +128,28 @@ export async function offlineInterfaceInfoUsingPUT(
   });
 }
 
-/** onlineInterfaceInfo PUT /api/interface/online */
-export async function onlineInterfaceInfoUsingPUT(
+/** onlineInterface PUT /api/interface/online */
+export async function onlineInterfaceUsingPUT(
   body: API.IdRequest,
   options?: { [key: string]: any },
 ) {
   return request<Record<string, any>>('/api/interface/online', {
     method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** getInterfaceStoreVoByPage POST /api/interface/store/vo/page */
+export async function getInterfaceStoreVoByPageUsingPOST(
+  body: API.InterfaceQueryRequest,
+  options?: { [key: string]: any },
+) {
+  return request<Record<string, any>>('/api/interface/store/vo/page', {
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },

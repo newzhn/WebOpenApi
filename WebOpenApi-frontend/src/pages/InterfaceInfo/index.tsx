@@ -1,11 +1,9 @@
 import { PageContainer } from '@ant-design/pro-components';
 import React, {useEffect, useState} from 'react';
-import {
-  getInterfaceInfoUsingGET, invokeInterfaceInfoUsingPOST,
-} from "@/services/WebOpenApi-backend/interfaceInfoController";
 import {useParams} from "react-router";
 import {Button, Card, Descriptions, Form, Input, message} from "antd";
 import moment from "moment";
+import {getInterfaceInfoUsingGET, invokeInterfaceUsingPOST} from "@/services/WebOpenApi-backend/interfaceController";
 
 const Index: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -43,7 +41,7 @@ const Index: React.FC = () => {
     }
     setInvokeLoading(true);
     try {
-      const res = await invokeInterfaceInfoUsingPOST({
+      const res = await invokeInterfaceUsingPOST({
         id: params.id,
         ...values
       })

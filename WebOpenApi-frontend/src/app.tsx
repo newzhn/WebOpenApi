@@ -21,7 +21,7 @@ export async function getInitialState(): Promise<InitialState> {
   }
   try {
     const res = await getCurrentUserUsingGET();
-    if (res.data) {
+    if (res.code === 200) {
       state.loginUser = res.data
     } else {
       history.push(loginPath);
@@ -48,8 +48,8 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     },
     footerRender: () => <Footer />,
     onPageChange: () => {
-      //const { location } = history;
-      // 如果没有登录，重定向到 login
+      // const { location } = history;
+      // //如果没有登录，重定向到 login
       // if (!initialState?.loginUser && location.pathname !== loginPath) {
       //   console.log(123)
       //   history.push(loginPath);
