@@ -64,13 +64,6 @@ public class RegisterServiceImpl implements RegisterService {
         user.setUserPassword(password);
         //默认角色为普通用户
         user.setUserRole(UserConstant.DEFAULT_ROLE);
-        //分配api签名 TODO 后续更改为用户自己申请
-        String accessKey = DigestUtil.md5Hex(SALT + user.getUserAccount() +
-                RandomUtil.randomNumbers(4));
-        String secretKey = DigestUtil.md5Hex(SALT + user.getUserAccount() +
-                RandomUtil.randomNumbers(8));
-        user.setAccessKey(accessKey);
-        user.setSecretKey(secretKey);
         //根据QQ获取昵称和头像
         QQUtil.setAvatarUrlAndNickname(user,restTemplate);
         //创建用户

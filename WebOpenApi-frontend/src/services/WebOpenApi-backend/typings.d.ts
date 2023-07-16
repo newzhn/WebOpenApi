@@ -1,7 +1,7 @@
 declare namespace API {
   type deleteInterfaceByIdsUsingDELETEParams = {
     /** ids */
-    ids: string;
+    ids: number[];
   };
 
   type deleteUserUsingDELETEParams = {
@@ -124,10 +124,9 @@ declare namespace API {
     userRole?: string;
   };
 
-  type User = {
+  type UserVo = {
     id?: number;
     userAccount?: string;
-    userPassword?: string;
     userName?: string;
     userAvatar?: string;
     userProfile?: string;

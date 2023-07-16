@@ -1,18 +1,22 @@
 import { PageContainer } from '@ant-design/pro-components';
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router";
-import {Badge, Button, Card, Descriptions, Divider, Form, Input, message, Tag} from "antd";
+import {Badge, Button, Card, Descriptions, Divider, message, Tag, Typography} from "antd";
 import moment from "moment";
 import {
   getDetailInterfaceInfoUsingGET,
   invokeInterfaceUsingPOST
 } from "@/services/WebOpenApi-backend/interfaceController";
+import ReactJson from "react-json-view";
+import './custom-react-json.css'; // 引入自定义 CSS 样式
+const { Paragraph } = Typography;
 
 const Index: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [invokeLoading, setInvokeLoading] = useState(false);
   const [data, setData] = useState<API.InterfaceDetailVo>();
-  const [invokeRes, setInvokeRes] = useState<any>();
+  const [invokeRes, setInvokeRes] = useState<any>('{"code":"响应码","msg":"响应消息","data":"响应结果"}');
+  const [requestParams, setRequestParams] = useState<string>('{}');
   const params = useParams()
 
   const loadData = async () => {
@@ -26,6 +30,7 @@ const Index: React.FC = () => {
         id: Number(params.id)
       })
       setData(res.data);
+      setRequestParams(res.data.requestParams)
     }catch (error: any) {
       return [];
     }
@@ -37,7 +42,7 @@ const Index: React.FC = () => {
   },[])
 
   //接口调用提交方法
-  const onFinish = async (values: any) => {
+  const doInvoke = async () => {
     if (!params.id) {
       message.error("接口不存在");
       return;
@@ -45,8 +50,8 @@ const Index: React.FC = () => {
     setInvokeLoading(true);
     try {
       const res = await invokeInterfaceUsingPOST({
-        id: params.id,
-        ...values
+        id: Number(params.id),
+        userRequestParams: requestParams,
       })
       setInvokeRes(res.data);
       message.success("调用成功");
@@ -54,27 +59,41 @@ const Index: React.FC = () => {
       return {};
     }
     setInvokeLoading(false);
-
   }
 
+  // @ts-ignore
   return (
     <PageContainer title={"接口在线调试"}>
       <Card loading={loading}>
         {data ? (
-          <Descriptions title={data.name} column={1}>
-            <Descriptions.Item label="描述">{data.description}</Descriptions.Item>
-            <Descriptions.Item label="接口状态">{data.status ? (
-              <Badge status="success" text={'在线'} />
-            ) : (
-              <Badge status="default" text={'已下线'} />
-            )}</Descriptions.Item>
-            <Descriptions.Item label="请求类型"><Tag color={data.method === 'GET' ? 'success' :
+          <Descriptions title={data.name} bordered column={4}>
+            <Descriptions.Item label="描述" span={4}>{data.description}</Descriptions.Item>
+            <Descriptions.Item label="请求URI" span={4}>
+              <Paragraph
+                copyable={{
+                  text: data?.uri,
+                }}
+                style={{marginBottom: '-4px'}}
+              >
+                {data.uri}
+              </Paragraph>
+            </Descriptions.Item>
+            <Descriptions.Item label="请求方法" span={1}><Tag color={data.method === 'GET' ? 'success' :
               data.method === 'POST' ? 'processing' : data.method === 'PUT' ? 'warning' : 'error'} key={data.method}>
               {data.method}
             </Tag></Descriptions.Item>
-            <Descriptions.Item label="接口地址">{data.uri}</Descriptions.Item>
-            <Descriptions.Item label="发布时间">
-              {moment(data.createTime).format('YYYY-MM-DD HH:mm:ss')}
+            <Descriptions.Item label="接口状态" span={1}>
+              <Badge status={data.status===1?"success":"error"} text={data.status===1?"在线":"已下线"} />
+            </Descriptions.Item>
+            <Descriptions.Item label="创建时间" span={1}>{moment(data.createTime).format('YYYY-MM-DD HH:mm')}</Descriptions.Item>
+            <Descriptions.Item label="更新时间" span={1}>
+              {moment(data.updateTime).format('YYYY-MM-DD HH:mm')}
+            </Descriptions.Item>
+
+            <Descriptions.Item label="请求头" span={2}>{data.requestHeader}</Descriptions.Item>
+            <Descriptions.Item label="响应头" span={2}>{data.responseHeader}</Descriptions.Item>
+            <Descriptions.Item label="请求参数" span={4}>
+              <ReactJson name={false} src={JSON.parse(data.requestParams)}/>
             </Descriptions.Item>
           </Descriptions>
         ) : (
@@ -82,28 +101,31 @@ const Index: React.FC = () => {
         )}
       </Card>
       <Divider />
-      <Card title={"在线调试"}>
-        <Form
-          name={"invoke"}
-          layout={"vertical"}
-          onFinish={onFinish}
-        >
-          <Form.Item
-            label={"请求参数"}
-            name={"userRequestParams"}
-          >
-            <Input.TextArea value={data?.requestParams}/>
-          </Form.Item>
-          <Form.Item wrapperCol={{span: 16}}>
-            <Button type={"primary"} htmlType={"submit"}>
-              调用
-            </Button>
-          </Form.Item>
-        </Form>
+      <Card title={"在线调试"} >
+        <ReactJson
+          theme="monokai"
+          name={false}
+          src={JSON.parse(requestParams)}
+          displayDataTypes={false}
+          onEdit={(edit) => {
+            setRequestParams(JSON.stringify(edit.updated_src))
+          }}
+        />
+        {/* 插入空白 div */}
+        <div style={{marginBottom: '20px'}}/>
+        <Button type={"primary"} onClick={doInvoke}>
+          调用
+        </Button>
       </Card>
       <Divider />
       <Card title={"调试结果"} loading={invokeLoading}>
-        {invokeRes}
+        <ReactJson
+          theme="monokai"
+          name={false}
+          src={JSON.parse(invokeRes)}
+          collapseStringsAfterLength={100}
+          displayDataTypes={false}
+        />
       </Card>
     </PageContainer>
   );

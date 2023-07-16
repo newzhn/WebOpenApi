@@ -1,0 +1,7 @@
+/* custom-react-json.css */
+
+/* 设置 ReactJson 组件的边框为圆角 */
+.react-json-view {
+  border-radius: 5px; /* 调整这个值来设置不同的圆角效果 */
+  padding: 8px;
+}

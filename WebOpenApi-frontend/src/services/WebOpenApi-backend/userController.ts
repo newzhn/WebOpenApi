@@ -18,7 +18,10 @@ export async function updateUserUsingPUT(
 }
 
 /** addUser POST /api/user */
-export async function addUserUsingPOST(body: API.UserAddRequest, options?: { [key: string]: any }) {
+export async function addUserUsingPOST(
+  body: API.UserAddRequest,
+  options?: { [key: string]: any },
+) {
   return request<Record<string, any>>('/api/user', {
     method: 'POST',
     headers: {
@@ -68,6 +71,14 @@ export async function getUserListVoByPageUsingPOST(
       'Content-Type': 'application/json',
     },
     data: body,
+    ...(options || {}),
+  });
+}
+
+/** applyUserApiToken GET /api/user/applyToken */
+export async function applyUserApiTokenUsingGET(options?: { [key: string]: any }) {
+  return request<Record<string, any>>('/api/user/applyToken', {
+    method: 'GET',
     ...(options || {}),
   });
 }

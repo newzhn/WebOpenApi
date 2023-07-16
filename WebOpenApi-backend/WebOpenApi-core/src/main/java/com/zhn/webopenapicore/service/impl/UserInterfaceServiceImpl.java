@@ -1,12 +1,14 @@
 package com.zhn.webopenapicore.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zhn.webopenapicommon.exception.BusinessException;
 import com.zhn.webopenapicommon.model.HttpStatus;
 import com.zhn.webopenapicommon.model.domain.InterfaceInfo;
+import com.zhn.webopenapicommon.model.domain.User;
 import com.zhn.webopenapicommon.model.domain.UserInterfaceInfo;
 import com.zhn.webopenapicommon.utils.ThrowUtil;
 import com.zhn.webopenapicore.constant.InterfaceConstant;
@@ -55,7 +57,11 @@ public class UserInterfaceServiceImpl extends ServiceImpl<UserInterfaceInfoMappe
 
     @Override
     public void validateApply(Long interfaceId) {
-        Long userId = userService.getCurrentUser().getUser().getId();
+        User user = userService.getCurrentUser().getUser();
+        if (StrUtil.isBlank(user.getAccessKey()) || StrUtil.isBlank(user.getAccessKey())) {
+            throw new BusinessException(HttpStatus.FORBIDDEN,"需要在个人中心里申请密钥后才能开通接口服务");
+        }
+        Long userId = user.getId();
         LambdaQueryWrapper<UserInterfaceInfo> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(UserInterfaceInfo::getUserId,userId);
         wrapper.eq(UserInterfaceInfo::getInterfaceInfoId,interfaceId);

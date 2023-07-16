@@ -98,4 +98,6 @@ public interface UserService extends IService<User> {
      * @return the current user
      */
     LoginUser getCurrentUser(String token);
+
+    void applyApiToken();
 }

@@ -67,4 +67,10 @@ public class UserController {
         LoginUser loginUser = userService.getCurrentUser();
         return Result.success(loginUser);
     }
+
+    @GetMapping("/applyToken")
+    public Result applyUserApiToken() {
+        userService.applyApiToken();
+        return Result.success();
+    }
 }

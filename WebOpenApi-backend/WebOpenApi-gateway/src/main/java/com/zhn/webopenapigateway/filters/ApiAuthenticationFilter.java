@@ -62,7 +62,7 @@ public class ApiAuthenticationFilter implements GlobalFilter, Ordered {
         //校验时间戳，超出五分钟的不放行
         long currentTime = System.currentTimeMillis() / 1000;
         if (currentTime - Long.parseLong(timestamp) >= FIVE_MINUTES) {
-            throw new BusinessException(HttpStatus.FORBIDDEN,"无权限访问");
+            throw new BusinessException(HttpStatus.FORBIDDEN,"超时，无权限访问");
         }
         //进行签名比对
         String genSign = SignUtil.genSign(timestamp, user.getSecretKey());

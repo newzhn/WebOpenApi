@@ -1,7 +1,9 @@
 package com.zhn.webopenapicore.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.http.HttpStatus;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -24,6 +26,7 @@ import com.zhn.webopenapicore.utils.QQUtil;
 import com.zhn.webopenapicore.utils.bean.BeanUtils;
 import com.zhn.webopenapicore.utils.redis.RedisCache;
 import io.jsonwebtoken.Claims;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,6 +38,8 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import java.util.Collections;
+
+import static com.zhn.webopenapicore.constant.CommonConstant.SALT;
 
 /**
 * @author zhanh
@@ -158,6 +163,29 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             throw new BusinessException("用户未登录");
         }
         return loginUser;
+    }
+
+    @Override
+    public void applyApiToken() {
+        User user = this.getCurrentUser().getUser();
+        //分配api签名
+        String accessKey = DigestUtil.md5Hex(SALT + user.getUserAccount() +
+                RandomUtil.randomNumbers(4));
+        String secretKey = DigestUtil.md5Hex(SALT + user.getUserAccount() +
+                RandomUtil.randomNumbers(8));
+        user.setAccessKey(accessKey);
+        user.setSecretKey(secretKey);
+        this.updateById(user);
+        //修改缓存中用户数据
+        String key = CacheEnums.USER_LOGIN.getKeyPrefix() + user.getId();
+        LoginUser loginUser = redisCache.getCacheObject(key);
+        if (loginUser == null) {
+            throw new BusinessException("用户未登录");
+        }
+        loginUser.setUser(user);
+        //数据存在则将其存入Redis中并更新登录时间
+        redisCache.setCacheObject(key,loginUser);
+        redisCache.expire(CacheEnums.USER_LOGIN,user.getId().toString());
     }
 
     @Override
