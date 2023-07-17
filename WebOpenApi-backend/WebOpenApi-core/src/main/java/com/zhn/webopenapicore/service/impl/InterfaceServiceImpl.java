@@ -2,7 +2,9 @@ package com.zhn.webopenapicore.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zhn.webopenapiclientsdk.facade.ApiClientFacade;
@@ -12,19 +14,16 @@ import com.zhn.webopenapicommon.model.domain.InterfaceInfo;
 import com.zhn.webopenapicommon.model.domain.UserInterfaceInfo;
 import com.zhn.webopenapicommon.utils.ThrowUtil;
 import com.zhn.webopenapicore.mapper.InterfaceInfoMapper;
-import com.zhn.webopenapicore.model.LoginUser;
+import com.zhn.webopenapicore.model.vo.api.*;
+import com.zhn.webopenapicore.model.vo.user.LoginUser;
 import com.zhn.webopenapicore.model.eneum.InterfaceStatus;
 import com.zhn.webopenapicore.model.request.IdRequest;
 import com.zhn.webopenapicore.model.request.api.*;
-import com.zhn.webopenapicore.model.vo.InterfaceDetailVo;
-import com.zhn.webopenapicore.model.vo.InterfaceMeVo;
-import com.zhn.webopenapicore.model.vo.InterfaceStoreVo;
-import com.zhn.webopenapicore.model.vo.InterfaceInfoVo;
 import com.zhn.webopenapicore.service.InterfaceService;
 import com.zhn.webopenapicore.service.UserInterfaceService;
 import com.zhn.webopenapicore.service.UserService;
 import com.zhn.webopenapicore.utils.bean.BeanUtils;
-import com.zhn.webopenapicore.utils.string.JSONUtil;
+import com.zhn.webopenapicore.utils.string.JsonUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -52,18 +51,25 @@ public class InterfaceServiceImpl extends ServiceImpl<InterfaceInfoMapper, Inter
 
     @Override
     public boolean addInterface(InterfaceAddRequest request) {
-        // TODO 校验接口是否存在
+        // 校验接口是否存在
         InterfaceInfo interfaceInfo = BeanUtils.copy(request, InterfaceInfo.class);
-        // TODO 处理接口添加信息
+        // 处理接口添加信息
         LoginUser loginUser = userService.getCurrentUser();
         interfaceInfo.setUserId(loginUser.getUser().getId());
         interfaceInfo.setCreateBy(loginUser.getUsername());
+        String requestParamsRemark = JSONUtil.toJsonStr(request.getRequestParamsRemark());
+        String responseParamsRemark = JSONUtil.toJsonStr(request.getResponseParamsRemark());
+        interfaceInfo.setRequestParamsRemark(requestParamsRemark);
+        interfaceInfo.setResponseParamsRemark(responseParamsRemark);
         return this.save(interfaceInfo);
     }
 
     @Override
     public boolean deleteByIds(List<Long> ids) {
-        // TODO 进行删除前的一些处理
+        // 删除关联的调用权限数据
+        LambdaUpdateWrapper<UserInterfaceInfo> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.in(UserInterfaceInfo::getInterfaceInfoId,ids);
+        userInterfaceService.remove(wrapper);
         return this.removeByIds(ids);
     }
 
@@ -72,9 +78,13 @@ public class InterfaceServiceImpl extends ServiceImpl<InterfaceInfoMapper, Inter
         //校验接口是否存在
         this.validateInterface(request.getId());
         InterfaceInfo interfaceInfo = BeanUtils.copy(request, InterfaceInfo.class);
-        // TODO 处理接口修改数据，删除对应缓存
+        //处理接口修改数据
         LoginUser loginUser = userService.getCurrentUser();
         interfaceInfo.setUpdateBy(loginUser.getUsername());
+        String requestParamsRemark = JSONUtil.toJsonStr(request.getRequestParamsRemark());
+        String responseParamsRemark = JSONUtil.toJsonStr(request.getResponseParamsRemark());
+        interfaceInfo.setRequestParamsRemark(requestParamsRemark);
+        interfaceInfo.setResponseParamsRemark(responseParamsRemark);
         return this.updateById(interfaceInfo);
     }
 
@@ -83,6 +93,10 @@ public class InterfaceServiceImpl extends ServiceImpl<InterfaceInfoMapper, Inter
         // TODO 查询接口缓存
         InterfaceInfo interfaceInfo = this.getById(id);
         InterfaceInfoVo interfaceInfoVo = BeanUtils.copy(interfaceInfo, InterfaceInfoVo.class);
+        interfaceInfoVo.setRequestParamsRemark(
+                JSONUtil.toList(interfaceInfo.getRequestParamsRemark(), RequestParamsRemarkVO.class));
+        interfaceInfoVo.setResponseParamsRemark(
+                JSONUtil.toList(interfaceInfo.getResponseParamsRemark(), ResponseParamsRemarkVo.class));
         return interfaceInfoVo;
     }
 
@@ -107,8 +121,14 @@ public class InterfaceServiceImpl extends ServiceImpl<InterfaceInfoMapper, Inter
         long pageSize = request.getPageSize();
         Page<InterfaceInfo> interfaceInfoPage = this.page(new Page<>(current, pageSize), wrapper);
         Page<InterfaceInfoVo> interfaceInfoVoPage = new Page<>(current, pageSize, interfaceInfoPage.getTotal());
-        interfaceInfoVoPage.setRecords(
-                BeanUtils.copyList(interfaceInfoPage.getRecords(),InterfaceInfoVo.class));
+        interfaceInfoVoPage.setRecords(interfaceInfoPage.getRecords().stream().map(info -> {
+            InterfaceInfoVo interfaceInfoVo = BeanUtils.copy(info, InterfaceInfoVo.class);
+            interfaceInfoVo.setRequestParamsRemark(
+                    JSONUtil.toList(info.getRequestParamsRemark(), RequestParamsRemarkVO.class));
+            interfaceInfoVo.setResponseParamsRemark(
+                    JSONUtil.toList(info.getResponseParamsRemark(), ResponseParamsRemarkVo.class));
+            return interfaceInfoVo;
+        }).collect(Collectors.toList()));
         return interfaceInfoVoPage;
     }
 
@@ -129,7 +149,7 @@ public class InterfaceServiceImpl extends ServiceImpl<InterfaceInfoMapper, Inter
         //验证接口是否可用
         String method = interfaceInfo.getMethod();
         String uri = interfaceInfo.getUri();
-        Map<String, Object> paramMap = JSONUtil.toMap(interfaceInfo.getRequestParams());
+        Map<String, Object> paramMap = JsonUtil.toMap(interfaceInfo.getRequestParams());
         try {
             apiClientFacade.invoke(method,uri,paramMap);
         } catch (Exception e) {
@@ -169,8 +189,9 @@ public class InterfaceServiceImpl extends ServiceImpl<InterfaceInfoMapper, Inter
         //调用接口
         String method = interfaceInfo.getMethod();
         String uri = interfaceInfo.getUri();
-        Map<String, Object> paramMap = JSONUtil.
+        Map<String, Object> paramMap = JsonUtil.
                 toMap(invokeRequest.getUserRequestParams());
+        // TODO 修改结果接收类型
         String result;
         try {
             result = client.invoke(method,uri,paramMap);
@@ -234,6 +255,10 @@ public class InterfaceServiceImpl extends ServiceImpl<InterfaceInfoMapper, Inter
             throw new BusinessException(HttpStatus.FORBIDDEN,"该接口暂时还未上线");
         }
         InterfaceDetailVo detailVo = BeanUtils.copy(info, InterfaceDetailVo.class);
+        detailVo.setRequestParamsRemark(
+                JSONUtil.toList(info.getRequestParamsRemark(), RequestParamsRemarkVO.class));
+        detailVo.setResponseParamsRemark(
+                JSONUtil.toList(info.getResponseParamsRemark(), ResponseParamsRemarkVo.class));
         //查询当前用户剩余调用次数
         UserInterfaceInfo userInterfaceInfo = userInterfaceService.getInfoByInterfaceId(id);
         detailVo.setSurplusNum(userInterfaceInfo.getSurplusNum());

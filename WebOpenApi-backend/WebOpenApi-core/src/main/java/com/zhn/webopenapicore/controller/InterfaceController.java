@@ -4,10 +4,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhn.webopenapicommon.model.Result;
 import com.zhn.webopenapicore.model.request.IdRequest;
 import com.zhn.webopenapicore.model.request.api.*;
-import com.zhn.webopenapicore.model.vo.InterfaceDetailVo;
-import com.zhn.webopenapicore.model.vo.InterfaceMeVo;
-import com.zhn.webopenapicore.model.vo.InterfaceStoreVo;
-import com.zhn.webopenapicore.model.vo.InterfaceInfoVo;
+import com.zhn.webopenapicore.model.vo.api.InterfaceDetailVo;
+import com.zhn.webopenapicore.model.vo.api.InterfaceMeVo;
+import com.zhn.webopenapicore.model.vo.api.InterfaceStoreVo;
+import com.zhn.webopenapicore.model.vo.api.InterfaceInfoVo;
 import com.zhn.webopenapicore.service.InterfaceService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -78,7 +78,7 @@ public class InterfaceController {
      * @param id the id
      * @return the interface info
      */
-    @GetMapping("/{id}")
+    @GetMapping("/vo/{id}")
     public Result getInterfaceInfo(@NotNull(message = "查询接口的Id不能为空") @PathVariable("id") Long id) {
         InterfaceInfoVo interfaceVo = interfaceService.getVoById(id);
         return Result.success(interfaceVo);
@@ -90,7 +90,7 @@ public class InterfaceController {
      * @param id the id
      * @return the interface info
      */
-    @GetMapping("/detail/{id}")
+    @GetMapping("/detail/vo/{id}")
     public Result getDetailInterfaceInfo(@NotNull(message = "查询接口的Id不能为空") @PathVariable("id") Long id) {
         InterfaceDetailVo data = interfaceService.getDetailVoById(id);
         return Result.success(data);

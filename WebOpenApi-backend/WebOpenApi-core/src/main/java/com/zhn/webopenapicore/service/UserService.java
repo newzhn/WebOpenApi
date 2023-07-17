@@ -4,11 +4,11 @@ package com.zhn.webopenapicore.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zhn.webopenapicommon.model.domain.User;
-import com.zhn.webopenapicore.model.LoginUser;
+import com.zhn.webopenapicore.model.vo.user.LoginUser;
 import com.zhn.webopenapicore.model.request.user.UserAddRequest;
 import com.zhn.webopenapicore.model.request.user.UserQueryRequest;
 import com.zhn.webopenapicore.model.request.user.UserUpdateRequest;
-import com.zhn.webopenapicore.model.vo.UserVo;
+import com.zhn.webopenapicore.model.vo.user.UserVo;
 
 /**
  * The interface User service.

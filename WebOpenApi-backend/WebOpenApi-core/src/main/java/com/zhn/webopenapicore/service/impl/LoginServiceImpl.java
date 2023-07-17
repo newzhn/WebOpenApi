@@ -2,7 +2,7 @@ package com.zhn.webopenapicore.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.zhn.webopenapicommon.utils.ThrowUtil;
-import com.zhn.webopenapicore.model.LoginUser;
+import com.zhn.webopenapicore.model.vo.user.LoginUser;
 import com.zhn.webopenapicore.model.eneum.CacheEnums;
 import com.zhn.webopenapicore.model.request.user.LoginRequest;
 import com.zhn.webopenapicore.service.LoginService;

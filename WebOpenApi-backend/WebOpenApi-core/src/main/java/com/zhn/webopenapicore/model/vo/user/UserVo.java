@@ -1,4 +1,4 @@
-package com.zhn.webopenapicore.model.vo;
+package com.zhn.webopenapicore.model.vo.user;
 
 import lombok.Data;
 

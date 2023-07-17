@@ -1,6 +1,6 @@
 package com.zhn.webopenapicore.service;
 
-import com.zhn.webopenapicore.model.vo.InterfaceRankVo;
+import com.zhn.webopenapicore.model.vo.api.InterfaceRankVo;
 
 import java.util.List;
 

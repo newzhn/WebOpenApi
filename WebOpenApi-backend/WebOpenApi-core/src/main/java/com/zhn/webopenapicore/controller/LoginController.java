@@ -1,7 +1,7 @@
 package com.zhn.webopenapicore.controller;
 
 import com.zhn.webopenapicommon.model.Result;
-import com.zhn.webopenapicore.model.LoginUser;
+import com.zhn.webopenapicore.model.vo.user.LoginUser;
 import com.zhn.webopenapicore.model.request.user.LoginRequest;
 import com.zhn.webopenapicore.service.LoginService;
 import org.springframework.web.bind.annotation.GetMapping;

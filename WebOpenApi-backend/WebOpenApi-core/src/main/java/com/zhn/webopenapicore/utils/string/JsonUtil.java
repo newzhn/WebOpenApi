@@ -16,7 +16,7 @@ import java.util.Map;
  * @date 2023 /7/12 18:32
  * @blog www.zhnblog.icu
  */
-public class JSONUtil {
+public class JsonUtil {
     private static Gson gson;
 
     static {

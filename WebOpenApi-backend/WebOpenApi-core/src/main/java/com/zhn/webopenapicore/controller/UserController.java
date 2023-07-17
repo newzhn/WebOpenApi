@@ -2,11 +2,11 @@ package com.zhn.webopenapicore.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhn.webopenapicommon.model.Result;
-import com.zhn.webopenapicore.model.LoginUser;
+import com.zhn.webopenapicore.model.vo.user.LoginUser;
 import com.zhn.webopenapicore.model.request.user.UserAddRequest;
 import com.zhn.webopenapicore.model.request.user.UserQueryRequest;
 import com.zhn.webopenapicore.model.request.user.UserUpdateRequest;
-import com.zhn.webopenapicore.model.vo.UserVo;
+import com.zhn.webopenapicore.model.vo.user.UserVo;
 import com.zhn.webopenapicore.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;

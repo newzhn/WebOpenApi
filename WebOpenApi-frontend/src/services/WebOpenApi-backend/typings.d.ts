@@ -41,7 +41,9 @@ declare namespace API {
     name: string;
     requestHeader: string;
     requestParams: string;
+    requestParamsRemark?: RequestParamsRemarkVO[];
     responseHeader: string;
+    responseParamsRemark?: ResponseParamsRemarkVo[];
     uri: string;
   };
 
@@ -73,7 +75,9 @@ declare namespace API {
     name: string;
     requestHeader: string;
     requestParams: string;
+    requestParamsRemark?: RequestParamsRemarkVO[];
     responseHeader: string;
+    responseParamsRemark?: ResponseParamsRemarkVo[];
     uri: string;
   };
 
@@ -88,6 +92,21 @@ declare namespace API {
     userAccount: string;
     userPassword: string;
     verificationCode: string;
+  };
+
+  type RequestParamsRemarkVO = {
+    id?: number;
+    isRequired?: string;
+    name?: string;
+    remark?: string;
+    type?: string;
+  };
+
+  type ResponseParamsRemarkVo = {
+    id?: number;
+    name?: string;
+    remark?: string;
+    type?: string;
   };
 
   type sendCodeUsingGETParams = {
@@ -168,9 +187,12 @@ declare namespace API {
     name: string;
     description: string;
     method: string;
+    host: string;
     uri: string;
     applyNum: number;
     requestParams: string;
+    requestParamsRemark?: RequestParamsRemarkVO[];
+    responseParamsRemark?: ResponseParamsRemarkVo[];
     requestHeader: string;
     responseHeader: string;
     status: number;
@@ -192,6 +214,8 @@ declare namespace API {
     surplusNum: number;
     applyNum: number;
     requestParams: string;
+    requestParamsRemark?: RequestParamsRemarkVO[];
+    responseParamsRemark?: ResponseParamsRemarkVo[];
     requestHeader: string;
     responseHeader: string;
     status: number;

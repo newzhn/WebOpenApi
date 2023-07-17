@@ -1,4 +1,4 @@
-package com.zhn.webopenapicore.model;
+package com.zhn.webopenapicore.model.vo.user;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.zhn.webopenapicommon.model.domain.User;

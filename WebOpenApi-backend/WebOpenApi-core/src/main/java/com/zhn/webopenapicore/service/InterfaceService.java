@@ -5,10 +5,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.zhn.webopenapicommon.model.domain.InterfaceInfo;
 import com.zhn.webopenapicore.model.request.IdRequest;
 import com.zhn.webopenapicore.model.request.api.*;
-import com.zhn.webopenapicore.model.vo.InterfaceDetailVo;
-import com.zhn.webopenapicore.model.vo.InterfaceMeVo;
-import com.zhn.webopenapicore.model.vo.InterfaceStoreVo;
-import com.zhn.webopenapicore.model.vo.InterfaceInfoVo;
+import com.zhn.webopenapicore.model.vo.api.InterfaceDetailVo;
+import com.zhn.webopenapicore.model.vo.api.InterfaceMeVo;
+import com.zhn.webopenapicore.model.vo.api.InterfaceStoreVo;
+import com.zhn.webopenapicore.model.vo.api.InterfaceInfoVo;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;

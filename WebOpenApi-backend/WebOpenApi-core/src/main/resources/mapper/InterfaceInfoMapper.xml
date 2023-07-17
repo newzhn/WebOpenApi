@@ -13,6 +13,8 @@
             <result property="uri" column="uri" jdbcType="VARCHAR"/>
             <result property="applyNum" column="apply_num" jdbcType="INTEGER"/>
             <result property="requestParams" column="request_params" jdbcType="VARCHAR"/>
+            <result property="requestParamsRemark" column="request_params_remark" jdbcType="VARCHAR"/>
+            <result property="responseParamsRemark" column="response_params_remark" jdbcType="VARCHAR"/>
             <result property="requestHeader" column="request_header" jdbcType="VARCHAR"/>
             <result property="responseHeader" column="response_header" jdbcType="VARCHAR"/>
             <result property="status" column="status" jdbcType="INTEGER"/>
@@ -26,13 +28,14 @@
 
     <sql id="Base_Column_List">
         id,name,description,
-        method,host,uri,apply_num,request_params,request_header,
+        method,host,uri,apply_num,request_params,request_params_remark
+        response_params_remark,request_header,
         response_header,status,user_id,
         create_by,create_time,update_by,
         update_time,is_delete
     </sql>
 
-    <select id="getStatisticRankList" resultType="com.zhn.webopenapicore.model.vo.InterfaceRankVo">
+    <select id="getStatisticRankList" resultType="com.zhn.webopenapicore.model.vo.api.InterfaceRankVo">
         select uii.interface_info_id as id,
                ii.`name`,
                SUM(uii.total_num) as num
@@ -43,7 +46,7 @@
         ORDER BY num desc;
     </select>
 
-    <select id="getMeVoList" resultType="com.zhn.webopenapicore.model.vo.InterfaceMeVo">
+    <select id="getMeVoList" resultType="com.zhn.webopenapicore.model.vo.api.InterfaceMeVo">
         select ii.id,ii.`name`,ii.description,ii.method,
                ii.uri,uii.surplus_num,ii.`status`,
                uii.create_time

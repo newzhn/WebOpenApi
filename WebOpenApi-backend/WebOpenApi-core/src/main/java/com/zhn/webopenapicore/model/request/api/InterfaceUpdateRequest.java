@@ -1,10 +1,13 @@
 package com.zhn.webopenapicore.model.request.api;
 
+import com.zhn.webopenapicore.model.vo.api.RequestParamsRemarkVO;
+import com.zhn.webopenapicore.model.vo.api.ResponseParamsRemarkVo;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 修改请求
@@ -63,6 +66,16 @@ public class InterfaceUpdateRequest implements Serializable {
      */
     @NotNull(message = "接口请求参数不能为空")
     private String requestParams;
+
+    /**
+     * 请求参数说明
+     */
+    private List<RequestParamsRemarkVO> requestParamsRemark;
+
+    /**
+     * 响应参数说明
+     */
+    private List<ResponseParamsRemarkVo> responseParamsRemark;
 
     /**
      * 请求头

@@ -1,22 +1,23 @@
-package com.zhn.webopenapicommon.model.domain;
+package com.zhn.webopenapicore.model.vo.api;
 
-import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
- * 接口信息表
- * @TableName interface_info
+ * 返回给前端的接口信息封装类
+ *
+ * @author zhn
+ * @version 1.0
+ * @date 2023/6/25 19:32
+ * @blog www.zhnblog.icu
  */
-@TableName(value ="interface_info")
 @Data
-public class InterfaceInfo implements Serializable {
+public class InterfaceDetailVo {
     /**
      * 主键
      */
-    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
@@ -35,14 +36,14 @@ public class InterfaceInfo implements Serializable {
     private String method;
 
     /**
-     * 接口地址
-     */
-    private String host;
-
-    /**
-     * 接口路径
+     * 接口uri
      */
     private String uri;
+
+    /**
+     * 剩余调用次数
+     */
+    private Integer surplusNum;
 
     /**
      * 接口申请时的可调用次数
@@ -57,12 +58,12 @@ public class InterfaceInfo implements Serializable {
     /**
      * 请求参数说明
      */
-    private String requestParamsRemark;
+    private List<RequestParamsRemarkVO> requestParamsRemark;
 
     /**
      * 响应参数说明
      */
-    private String responseParamsRemark;
+    private List<ResponseParamsRemarkVo> responseParamsRemark;
 
     /**
      * 请求头
@@ -80,36 +81,13 @@ public class InterfaceInfo implements Serializable {
     private Integer status;
 
     /**
-     * 创建者Id
-     */
-    private Long userId;
-
-    /**
-     * 创建者名
-     */
-    private String createBy;
-
-    /**
      * 创建时间
      */
     private Date createTime;
 
     /**
-     * 修改者名
-     */
-    private String updateBy;
-
-    /**
-     * 修改时间
+     * 更新时间
      */
     private Date updateTime;
 
-    /**
-     * 是否删除
-     */
-    @TableLogic
-    private Integer isDelete;
-
-    @TableField(exist = false)
-    private static final long serialVersionUID = 1L;
 }

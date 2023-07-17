@@ -46,20 +46,6 @@ export async function deleteInterfaceByIdsUsingDELETE(
   });
 }
 
-/** getInterfaceInfo GET /api/interface/${param0} */
-export async function getInterfaceInfoUsingGET(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.getInterfaceInfoUsingGETParams,
-  options?: { [key: string]: any },
-) {
-  const { id: param0, ...queryParams } = params;
-  return request<Record<string, any>>(`/api/interface/${param0}`, {
-    method: 'GET',
-    params: { ...queryParams },
-    ...(options || {}),
-  });
-}
-
 /** getInterfaceListVoByPage POST /api/interface/all/vo/page */
 export async function getInterfaceListVoByPageUsingPOST(
   body: API.InterfaceQueryRequest,
@@ -90,14 +76,14 @@ export async function applyInterfaceUsingPOST(
   });
 }
 
-/** getDetailInterfaceInfo GET /api/interface/detail/${param0} */
+/** getDetailInterfaceInfo GET /api/interface/detail/vo/${param0} */
 export async function getDetailInterfaceInfoUsingGET(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getDetailInterfaceInfoUsingGETParams,
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<Record<string, any>>(`/api/interface/detail/${param0}`, {
+  return request<Record<string, any>>(`/api/interface/detail/vo/${param0}`, {
     method: 'GET',
     params: { ...queryParams },
     ...(options || {}),
@@ -175,6 +161,20 @@ export async function getInterfaceStoreVoByPageUsingPOST(
       'Content-Type': 'application/json',
     },
     data: body,
+    ...(options || {}),
+  });
+}
+
+/** getInterfaceInfo GET /api/interface/vo/${param0} */
+export async function getInterfaceInfoUsingGET(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getInterfaceInfoUsingGETParams,
+  options?: { [key: string]: any },
+) {
+  const { id: param0, ...queryParams } = params;
+  return request<Record<string, any>>(`/api/interface/vo/${param0}`, {
+    method: 'GET',
+    params: { ...queryParams },
     ...(options || {}),
   });
 }

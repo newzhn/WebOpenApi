@@ -2,8 +2,8 @@ package com.zhn.webopenapicore.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zhn.webopenapicommon.model.domain.InterfaceInfo;
-import com.zhn.webopenapicore.model.vo.InterfaceMeVo;
-import com.zhn.webopenapicore.model.vo.InterfaceRankVo;
+import com.zhn.webopenapicore.model.vo.api.InterfaceMeVo;
+import com.zhn.webopenapicore.model.vo.api.InterfaceRankVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

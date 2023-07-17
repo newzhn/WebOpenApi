@@ -1,7 +1,7 @@
 package com.zhn.webopenapicore.service.impl;
 
 import com.zhn.webopenapicore.mapper.InterfaceInfoMapper;
-import com.zhn.webopenapicore.model.vo.InterfaceRankVo;
+import com.zhn.webopenapicore.model.vo.api.InterfaceRankVo;
 import com.zhn.webopenapicore.service.StatisticsService;
 import org.springframework.stereotype.Service;
 

@@ -1,8 +1,9 @@
-package com.zhn.webopenapicore.model.vo;
+package com.zhn.webopenapicore.model.vo.api;
 
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 返回给前端的接口信息封装类
@@ -13,7 +14,7 @@ import java.util.Date;
  * @blog www.zhnblog.icu
  */
 @Data
-public class InterfaceDetailVo {
+public class InterfaceInfoVo {
     /**
      * 主键
      */
@@ -35,14 +36,14 @@ public class InterfaceDetailVo {
     private String method;
 
     /**
-     * 接口uri
+     * 接口地址
      */
-    private String uri;
+    private String host;
 
     /**
-     * 剩余调用次数
+     * 接口路径
      */
-    private Integer surplusNum;
+    private String uri;
 
     /**
      * 接口申请时的可调用次数
@@ -53,6 +54,16 @@ public class InterfaceDetailVo {
      * 请求参数
      */
     private String requestParams;
+
+    /**
+     * 请求参数说明
+     */
+    private List<RequestParamsRemarkVO> requestParamsRemark;
+
+    /**
+     * 响应参数说明
+     */
+    private List<ResponseParamsRemarkVo> responseParamsRemark;
 
     /**
      * 请求头

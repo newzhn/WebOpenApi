@@ -1,7 +1,7 @@
 package com.zhn.webopenapicore.filter;
 
 import com.zhn.webopenapicommon.exception.BusinessException;
-import com.zhn.webopenapicore.model.LoginUser;
+import com.zhn.webopenapicore.model.vo.user.LoginUser;
 import com.zhn.webopenapicore.model.eneum.CacheEnums;
 import com.zhn.webopenapicore.utils.JwtUtil;
 import com.zhn.webopenapicore.utils.redis.RedisCache;

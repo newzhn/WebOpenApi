@@ -1,14 +1,15 @@
 import { PageContainer } from '@ant-design/pro-components';
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router";
-import {Badge, Button, Card, Descriptions, Divider, message, Tag, Typography} from "antd";
+import {Badge, Button, Card, Descriptions, Divider, message, Table, Tag, Typography} from "antd";
 import moment from "moment";
 import {
   getDetailInterfaceInfoUsingGET,
   invokeInterfaceUsingPOST
 } from "@/services/WebOpenApi-backend/interfaceController";
 import ReactJson from "react-json-view";
-import './custom-react-json.css'; // 引入自定义 CSS 样式
+import './custom-react-json.css';
+import {ColumnsType} from "antd/es/table"; // 引入自定义 CSS 样式
 const { Paragraph } = Typography;
 
 const Index: React.FC = () => {
@@ -61,7 +62,45 @@ const Index: React.FC = () => {
     setInvokeLoading(false);
   }
 
-  // @ts-ignore
+  const requestColumns: ColumnsType<API.RequestParamsRemarkVO> = [
+    {
+      title: '名称',
+      dataIndex: 'name',
+      width: '100px',
+    },
+    {
+      title: '必填',
+      key: 'isRequired',
+      dataIndex: 'isRequired',
+      width: '100px',
+    },
+    {
+      title: '类型',
+      dataIndex: 'type',
+      width: '100px',
+    },
+    {
+      title: '说明',
+      dataIndex: 'remark',
+    },
+  ];
+  const responseColumns: ColumnsType<API.RequestParamsRemarkVO> = [
+    {
+      title: '名称',
+      dataIndex: 'name',
+      width: '100px',
+    },
+    {
+      title: '类型',
+      dataIndex: 'type',
+      width: '100px',
+    },
+    {
+      title: '说明',
+      dataIndex: 'remark',
+    },
+  ];
+
   return (
     <PageContainer title={"接口在线调试"}>
       <Card loading={loading}>
@@ -95,6 +134,30 @@ const Index: React.FC = () => {
             <Descriptions.Item label="请求参数" span={4}>
               <ReactJson name={false} src={JSON.parse(data.requestParams)}/>
             </Descriptions.Item>
+            {data.requestParamsRemark && data.requestParamsRemark.length > 0 && (
+              <Descriptions.Item  label="请求参数说明" span={4}>
+                <Table
+                  style={{ width: '100%' }}
+                  pagination={{
+                    hideOnSinglePage: true,
+                  }}
+                  columns={requestColumns}
+                  dataSource={data.requestParamsRemark}
+                />
+              </Descriptions.Item>
+            )}
+            {data.responseParamsRemark && data.responseParamsRemark.length > 0 && (
+              <Descriptions.Item label="响应参数说明" span={4}>
+                <Table
+                  style={{ width: '100%' }}
+                  pagination={{
+                    hideOnSinglePage: true,
+                  }}
+                  columns={responseColumns}
+                  dataSource={data.responseParamsRemark}
+                />
+              </Descriptions.Item>
+            )}
           </Descriptions>
         ) : (
           <>接口不存在或已下线</>
