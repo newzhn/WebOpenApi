@@ -1,7 +1,5 @@
 package com.zhn.webopenapiclientsdk.utils;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -88,35 +86,5 @@ public class RestfulUtil {
             }
             return sb.toString();
         }
-    }
-
-    /**
-     * The entry point of application.
-     *
-     * @param args the input arguments
-     */
-    public static void main(String[] args) {
-        String uri1 = "/users/{id}/{name}";
-        String uri2 = "/products/{productId}/{category}";
-        String uri3 = "/users";
-        String uri4 = "/products";
-        String uri5 = "/orders";
-
-        Map<String, Object> map1 = new HashMap<>();
-        map1.put("id", 123);
-        map1.put("name", "John");
-
-        Map<String, Object> map2 = new HashMap<>();
-        map2.put("productId", 456);
-        map2.put("category", "Electronics");
-
-        System.out.println("RESTful Path:");
-        System.out.println(uri1 + " -> " + buildUri(uri1, map1));
-        System.out.println(uri2 + " -> " + buildUri(uri2, map2));
-
-        System.out.println("\nNon-RESTful Path:");
-        System.out.println(uri3 + " -> " + buildUri(uri3, map1));
-        System.out.println(uri4 + " -> " + buildUri(uri4, map2));
-        System.out.println(uri5 + " -> " + buildUri(uri5, Collections.emptyMap()));
     }
 }

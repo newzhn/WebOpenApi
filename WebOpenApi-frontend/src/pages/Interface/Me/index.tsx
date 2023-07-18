@@ -67,6 +67,8 @@ const InterfaceMe: React.FC = () => {
           ) : (
             <Badge status="default" text={'下线'} />
           )}</Descriptions.Item>
+        </Descriptions>
+        <Descriptions column={1} >
           <Descriptions.Item label="接口URI">{item.uri}</Descriptions.Item>
         </Descriptions>
       </div>

@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zhn.webopenapiclientsdk.facade.ApiClientFacade;
+import com.zhn.webopenapiclientsdk.utils.JsonUtil;
 import com.zhn.webopenapicommon.exception.BusinessException;
 import com.zhn.webopenapicommon.model.HttpStatus;
 import com.zhn.webopenapicommon.model.domain.InterfaceInfo;
@@ -23,7 +24,6 @@ import com.zhn.webopenapicore.service.InterfaceService;
 import com.zhn.webopenapicore.service.UserInterfaceService;
 import com.zhn.webopenapicore.service.UserService;
 import com.zhn.webopenapicore.utils.bean.BeanUtils;
-import com.zhn.webopenapicore.utils.string.JsonUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -151,9 +151,13 @@ public class InterfaceServiceImpl extends ServiceImpl<InterfaceInfoMapper, Inter
         String uri = interfaceInfo.getUri();
         Map<String, Object> paramMap = JsonUtil.toMap(interfaceInfo.getRequestParams());
         try {
-            apiClientFacade.invoke(method,uri,paramMap);
+            String resultStr = apiClientFacade.invoke(method,uri,paramMap);
+            Map<String, Object> result = JsonUtil.toMap(resultStr);
+            if ((Double) result.get("code") != 200) {
+                throw new RuntimeException((String) result.get("msg"));
+            }
         } catch (Exception e) {
-            throw new BusinessException(HttpStatus.ERROR,"接口验证失败！",e);
+            throw new BusinessException(HttpStatus.ERROR,e.getMessage(),e);
         }
         //上线接口
         interfaceInfo.setStatus(InterfaceStatus.ONLINE.getStatus());
@@ -192,13 +196,18 @@ public class InterfaceServiceImpl extends ServiceImpl<InterfaceInfoMapper, Inter
         Map<String, Object> paramMap = JsonUtil.
                 toMap(invokeRequest.getUserRequestParams());
         // TODO 修改结果接收类型
-        String result;
+        String resultStr;
+        Map<String, Object> result;
         try {
-            result = client.invoke(method,uri,paramMap);
+            resultStr = client.invoke(method,uri,paramMap);
+            result = JsonUtil.toMap(resultStr);
+            if ((Double) result.get("code") != 200) {
+                throw new RuntimeException((String) result.get("msg"));
+            }
         } catch (Exception e) {
-            throw new BusinessException(HttpStatus.ERROR,"接口调用失败",e);
+            throw new BusinessException(HttpStatus.ERROR,e.getMessage(),e);
         }
-        return result;
+        return resultStr;
     }
 
     @Override

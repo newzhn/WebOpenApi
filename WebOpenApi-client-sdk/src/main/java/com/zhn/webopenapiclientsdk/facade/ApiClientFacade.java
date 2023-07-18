@@ -18,7 +18,7 @@ import static com.zhn.webopenapiclientsdk.model.HttpMethod.*;
  * @blog www.zhnblog.icu
  */
 public class ApiClientFacade {
-    private Map<String, ApiClient> clientMap;
+    private final Map<String, ApiClient> clientMap;
 
     public ApiClientFacade(String accessKey, String secretKey) {
         //初始化客户端

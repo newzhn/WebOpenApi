@@ -1,10 +1,7 @@
-package com.zhn.webopenapicore.utils.string;
+package com.zhn.webopenapiclientsdk.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.zhn.webopenapicommon.exception.BusinessException;
-import com.zhn.webopenapicommon.model.HttpStatus;
-import com.zhn.webopenapicommon.model.Result;
 
 import java.util.Map;
 
@@ -36,7 +33,7 @@ public class JsonUtil {
             paramMap = gson.fromJson(requestParam,
                     new TypeToken<Map<String, Object>>() {}.getType());
         } catch (Exception e) {
-            throw new BusinessException(HttpStatus.ERROR,"字符串转JSON格式错误",e);
+            throw new RuntimeException("JSON转Map失败",e);
         }
         return paramMap;
     }
