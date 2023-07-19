@@ -8,7 +8,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource # 使用Druid数据源
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
     username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
     druid:
@@ -42,11 +42,15 @@ spring:
           auth: true
           starttls:
             enable: true
-  # Elasticsearch 配置
-#  elasticsearch:
-#    uris: http://localhost:9200
-#    username: root
-#    password: 123456
+# 配置dubbo
+dubbo:
+  application:
+    name: webopenapi-core
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    address: nacos://${NACOS_ADDRESS}:8848
 mybatis-plus:
   configuration:
     # 生产环境关闭日志

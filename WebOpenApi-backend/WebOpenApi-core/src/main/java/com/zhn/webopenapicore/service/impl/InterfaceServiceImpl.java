@@ -24,6 +24,7 @@ import com.zhn.webopenapicore.service.InterfaceService;
 import com.zhn.webopenapicore.service.UserInterfaceService;
 import com.zhn.webopenapicore.service.UserService;
 import com.zhn.webopenapicore.utils.bean.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -48,6 +49,9 @@ public class InterfaceServiceImpl extends ServiceImpl<InterfaceInfoMapper, Inter
     private UserInterfaceService userInterfaceService;
     @Resource
     private ApiClientFacade apiClientFacade;
+
+    @Value("${web-open-api.client.gateway-host}")
+    private String gatewayHost;
 
     @Override
     public boolean addInterface(InterfaceAddRequest request) {
@@ -189,13 +193,12 @@ public class InterfaceServiceImpl extends ServiceImpl<InterfaceInfoMapper, Inter
         String accessKey = loginUser.getUser().getAccessKey();
         String secretKey = loginUser.getUser().getSecretKey();
         //这里不能用引入的客户端，因为开发模式下ak、sk都是配置死的
-        ApiClientFacade client = new ApiClientFacade(accessKey, secretKey);
+        ApiClientFacade client = new ApiClientFacade(accessKey, secretKey, this.gatewayHost);
         //调用接口
         String method = interfaceInfo.getMethod();
         String uri = interfaceInfo.getUri();
         Map<String, Object> paramMap = JsonUtil.
                 toMap(invokeRequest.getUserRequestParams());
-        // TODO 修改结果接收类型
         String resultStr;
         Map<String, Object> result;
         try {

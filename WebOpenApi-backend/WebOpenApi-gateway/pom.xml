@@ -16,14 +16,15 @@
         <maven.compiler.target>8</maven.compiler.target>
         <spring-cloud.version>2021.0.7</spring-cloud.version>
         <nacos-client.version>2.1.0</nacos-client.version>
+        <WebOpenApi-client-sdk.version>1.0.0</WebOpenApi-client-sdk.version>
     </properties>
 
     <dependencies>
-        <!--引入sdk包-->
+        <!--接口调用客户端SDK-->
         <dependency>
-            <groupId>com.zhn</groupId>
+            <groupId>io.github.newzhn</groupId>
             <artifactId>WebOpenApi-client-sdk</artifactId>
-            <version>0.0.1</version>
+            <version>${WebOpenApi-client-sdk.version}</version>
         </dependency>
         <!--rpc接口包-->
         <dependency>
@@ -84,5 +85,39 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <!--需添加下面插件，否则java -jar命令启动报SrpingApplication类找不到错误-->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <configuration>
+                    <mainClass>com.zhn.webopenapigateway.WebOpenApiGatewayApplication</mainClass> <!-- 指定启动主类 -->
+                    <fork>true</fork> <!-- 如果没有该配置，devtools不会生效  打包 将外部jar包打包进项目中 -->
+                    <includeSystemScope>true</includeSystemScope> <!-- 打包 将外部jar包打包进项目中 -->
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

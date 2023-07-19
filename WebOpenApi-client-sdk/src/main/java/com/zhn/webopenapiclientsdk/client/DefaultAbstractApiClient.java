@@ -14,19 +14,21 @@ import static com.zhn.webopenapiclientsdk.utils.SignUtil.genSign;
  * @blog www.zhnblog.icu
  */
 public abstract class DefaultAbstractApiClient implements ApiClient {
-    protected static final String GATEWAY_HOST = "http://127.0.0.1:8849";
-
     private final String accessKey;
 
     private final String secretKey;
 
-    public DefaultAbstractApiClient(String accessKey, String secretKey) {
+    protected final String gatewayHost;
+
+    public DefaultAbstractApiClient(String accessKey, String secretKey, String gatewayHost) {
         this.accessKey = accessKey;
         this.secretKey = secretKey;
+        this.gatewayHost = gatewayHost;
     }
 
     protected Map<String,String> getApiHeaderMap() {
         HashMap<String, String> map = new HashMap<>();
+        map.put("requestSource","webopenapi-sdk");
         map.put("accessKey",accessKey);
         //时间戳
         String timestamp = String.valueOf(System.currentTimeMillis() / 1000);

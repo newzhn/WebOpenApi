@@ -12,13 +12,13 @@ import java.util.Map;
  * @blog www.zhnblog.icu
  */
 public class PutApiClient extends DefaultAbstractApiClient {
-    public PutApiClient(String accessKey, String secretKey) {
-        super(accessKey, secretKey);
+    public PutApiClient(String accessKey, String secretKey, String gatewayHost) {
+        super(accessKey, secretKey, gatewayHost);
     }
 
     @Override
     public String invoke(String uri, Map<String, Object> paramMap) {
-        String url = GATEWAY_HOST + uri;
+        String url = gatewayHost + uri;
         String body = JSONUtil.toJsonStr(paramMap);
         return HttpRequest.put(url)
                 .header("uri",uri)

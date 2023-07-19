@@ -3,30 +3,22 @@ server:
   servlet:
     application-display-name: webopenapi-gateway
 spring:
+  # 默认 dev 环境
+  profiles:
+    active: prod
   mvc:
     #没有绑定的url直接抛出错误
     throw-exception-if-no-handler-found: true
 logging:
   level:
     org.springframework.cloud.gateway: trace
-# 配置dubbo
-dubbo:
-  application:
-    name: webopenapi-gateway
-  protocol:
-    name: dubbo
-    port: -1
-  registry:
-    address: nacos://${nacos.address:127.0.0.1}:8848
 #配置网关自定义全局过滤器
 web-open-api:
   gateway:
     access-control:
       enabled: true
-      #白名单
-      white-list:
-        - 127.0.0.1
-        - localhost
+      #黑名单
+      black-list:
     log:
       request:
         enabled: true

@@ -1,5 +1,6 @@
 package com.zhn.webopenapiclientsdk;
 
+import cn.hutool.core.util.StrUtil;
 import com.zhn.webopenapiclientsdk.facade.ApiClientFacade;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -20,10 +21,13 @@ import org.springframework.context.annotation.Configuration;
 public class ApiClientConfiguration {
     private String accessKey;
     private String secretKey;
+    private String gatewayHost;
 
     @Bean
     public ApiClientFacade webApiClient() {
-        return new ApiClientFacade(accessKey,secretKey);
+        return StrUtil.isNotBlank(gatewayHost)
+                ? new ApiClientFacade(accessKey,secretKey)
+                : new ApiClientFacade(accessKey, secretKey, gatewayHost);
     }
 
 }

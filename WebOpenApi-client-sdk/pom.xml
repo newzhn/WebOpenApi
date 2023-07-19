@@ -10,7 +10,7 @@
     </parent>
     <groupId>io.github.newzhn</groupId>
     <artifactId>WebOpenApi-client-sdk</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>WebOpenApi-client-sdk</name>
     <url>https://github.com/newzhn/WebOpenApi</url>
     <description>WebOpenApi平台提供给开发者使用的SDK工具包</description>

@@ -1,8 +1,6 @@
 ﻿import type { RequestOptions } from '@@/plugin-request/request';
-// @ts-ignore
 import type { RequestConfig } from '@umijs/max';
-// @ts-ignore
-import { message, notification } from 'antd';
+import { message } from 'antd';
 
 // 错误处理方案： 错误类型
 enum ErrorShowType {
@@ -27,6 +25,7 @@ interface ResponseStructure {
  * @doc https://umijs.org/docs/max/request#配置
  */
 export const requestConfig: RequestConfig = {
+  // baseURL: 'https://api.openapi.zhnblog.icu',
   baseURL: 'http://localhost:8888',
   withCredentials: true,
 

@@ -11,7 +11,7 @@ spring:
     name: WebOpenApi-core
   # 默认 dev 环境
   profiles:
-    active: dev
+    active: prod
   # 支持 swagger3
   mvc:
     pathmatch:
@@ -35,12 +35,4 @@ web-open-api:
   client:
     access-key: 2e5a0d76d6793637d67219f1d5b9623e
     secret-key: 433e33d6d608d2dbc500302b133621b3
-# 配置dubbo
-dubbo:
-  application:
-    name: webopenapi-core
-  protocol:
-    name: dubbo
-    port: -1
-  registry:
-    address: nacos://${nacos.address:127.0.0.1}:8848
+    gateway-host: http://localhost:8849

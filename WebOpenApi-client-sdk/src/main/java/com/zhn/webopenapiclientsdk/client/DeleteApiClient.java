@@ -12,8 +12,8 @@ import java.util.Map;
  * @blog www.zhnblog.icu
  */
 public class DeleteApiClient extends DefaultAbstractApiClient {
-    public DeleteApiClient(String accessKey, String secretKey) {
-        super(accessKey, secretKey);
+    public DeleteApiClient(String accessKey, String secretKey, String gatewayHost) {
+        super(accessKey, secretKey, gatewayHost);
     }
 
     @Override
@@ -21,7 +21,7 @@ public class DeleteApiClient extends DefaultAbstractApiClient {
         //判断是否是restful风格的请求，请求不同，参数拼接方式也不一样
         String tempUri = uri;
         uri = RestfulUtil.buildUri(uri,paramMap);
-        String url = GATEWAY_HOST + uri;
+        String url = gatewayHost + uri;
         return HttpRequest.delete(url)
                 .header("uri",tempUri)
                 .addHeaders(getApiHeaderMap())

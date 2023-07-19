@@ -1,0 +1,12 @@
+spring:
+  config:
+    import: optional:file:.env[.properties]
+# 配置dubbo
+dubbo:
+  application:
+    name: webopenapi-gateway
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    address: nacos://${NACOS_ADDRESS}:8848
