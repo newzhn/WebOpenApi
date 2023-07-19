@@ -19,7 +19,7 @@
         <mybatis-plus.version>3.5.2</mybatis-plus.version>
         <druid.version>1.1.22</druid.version>
         <knife4j.version>3.0.3</knife4j.version>
-        <WebOpenApi-client-sdk.version>1.0.0</WebOpenApi-client-sdk.version>
+        <WebOpenApi-client-sdk.version>1.0.2</WebOpenApi-client-sdk.version>
     </properties>
 
     <dependencies>

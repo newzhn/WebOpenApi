@@ -25,7 +25,7 @@ public class ApiClientConfiguration {
 
     @Bean
     public ApiClientFacade webApiClient() {
-        return StrUtil.isNotBlank(gatewayHost)
+        return StrUtil.isBlank(gatewayHost)
                 ? new ApiClientFacade(accessKey,secretKey)
                 : new ApiClientFacade(accessKey, secretKey, gatewayHost);
     }

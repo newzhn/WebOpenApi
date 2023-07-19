@@ -43,9 +43,6 @@ public class UserInterfaceServiceImpl extends ServiceImpl<UserInterfaceInfoMappe
         wrapper.eq(UserInterfaceInfo::getInterfaceInfoId,interfaceInfoId);
         wrapper.eq(UserInterfaceInfo::getStatus,0);
         UserInterfaceInfo userInterfaceInfo = userInterfaceInfoMapper.selectOne(wrapper);
-        if (ObjectUtil.isNull(userInterfaceInfo)) {
-            throw new BusinessException(HttpStatus.ERROR,"没有该接口的调用权限，请先去申请接口");
-        }
         return userInterfaceInfo;
     }
 

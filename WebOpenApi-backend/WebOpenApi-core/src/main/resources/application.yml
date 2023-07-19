@@ -11,7 +11,7 @@ spring:
     name: WebOpenApi-core
   # 默认 dev 环境
   profiles:
-    active: prod
+    active: dev
   # 支持 swagger3
   mvc:
     pathmatch:
