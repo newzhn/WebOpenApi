@@ -36,12 +36,18 @@ spring:
     host: ${EMAIL_HOST} # 邮箱服务器地址
     username: ${EMAIL_USERNAME} # 发送者信箱
     password: ${EMAIL_PASSWORD} # 授权码
+    port: 465
     properties:
       mail:
         smtp:
-          auth: true
-          starttls:
-            enable: true
+          ssl: #上线环境下需要使用ssl加密
+            auth: true
+            socketFactory:
+              class: javax.net.ssl.SSLSocketFactory
+              port: 465 #生产环境下会默认禁掉邮件发送25端口，这里改为465发送
+            starttls:
+              enable: true
+              required: true
 # 配置dubbo
 dubbo:
   application:

@@ -16,7 +16,7 @@
         <maven.compiler.target>8</maven.compiler.target>
         <spring-cloud.version>2021.0.7</spring-cloud.version>
         <nacos-client.version>2.1.0</nacos-client.version>
-        <WebOpenApi-client-sdk.version>1.0.0</WebOpenApi-client-sdk.version>
+        <WebOpenApi-client-sdk.version>1.0.2</WebOpenApi-client-sdk.version>
     </properties>
 
     <dependencies>

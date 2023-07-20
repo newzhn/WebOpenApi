@@ -25,8 +25,8 @@ interface ResponseStructure {
  * @doc https://umijs.org/docs/max/request#配置
  */
 export const requestConfig: RequestConfig = {
-  // baseURL: 'https://api.openapi.zhnblog.icu',
-  baseURL: 'http://localhost:8888',
+  // baseURL: process.env.REACT_APP_BASE_URL || 'https://api.openapi.zhnblog.icu',
+  baseURL: process.env.REACT_APP_BASE_URL || 'http://localhost:8888',
   withCredentials: true,
 
   // 请求拦截器

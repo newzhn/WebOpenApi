@@ -91,7 +91,7 @@ const Login: React.FC = () => {
             maxWidth: '75vw',
           }}
           logo={<img alt="logo" src="/logo.svg" />}
-          title="Web OpenApi"
+          title="WebOpenApi"
           subTitle={'免费的开放式API服务平台'}
           initialValues={{
             autoLogin: true,

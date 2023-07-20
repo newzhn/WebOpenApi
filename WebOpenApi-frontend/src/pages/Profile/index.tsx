@@ -78,6 +78,7 @@ const Profile: React.FC = () => {
           loadData()
           message.success('重置成功！');
           setOpen(false);
+          setVisible(true);
         }
       }
     } catch (e: any) {
@@ -169,21 +170,26 @@ const Profile: React.FC = () => {
             <Divider />
             <Row>
               <Col>
-                {!visible ? (
-                  <Button
-                    type="primary"
-                    onClick={() => {
-                      setOpen(true);
-                      setFlag(true);
-                    }}
-                  >
-                    查看秘钥
-                  </Button>
-                ) : (
-                  <Button type="primary" onClick={() => setVisible(false)}>
-                    隐藏秘钥
-                  </Button>
-                )}
+                {!data?.accessKey ? (
+                  <></>
+                  ) : (
+                    !visible ? (
+                      <Button
+                        type="primary"
+                        onClick={() => {
+                          setOpen(true);
+                          setFlag(true);
+                        }}
+                      >
+                        查看秘钥
+                      </Button>
+                    ) : (
+                      <Button type="primary" onClick={() => setVisible(false)}>
+                        隐藏秘钥
+                      </Button>
+                    )
+                  )
+                }
                 <Button
                   style={buttonStyle}
                   onClick={() => {
@@ -193,7 +199,7 @@ const Profile: React.FC = () => {
                   type="primary"
                   danger
                 >
-                  重置秘钥
+                  {data?.accessKey ? '重置秘钥' : '申请密钥'}
                 </Button>
               </Col>
             </Row>
