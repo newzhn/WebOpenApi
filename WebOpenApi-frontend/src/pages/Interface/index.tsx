@@ -131,7 +131,7 @@ const Index: React.FC = () => {
 
             <Descriptions.Item label="请求头" span={2}>{data.requestHeader}</Descriptions.Item>
             <Descriptions.Item label="响应头" span={2}>{data.responseHeader}</Descriptions.Item>
-            <Descriptions.Item label="请求参数" span={4}>
+            <Descriptions.Item label="请求参数示例" span={4}>
               <ReactJson name={false} src={JSON.parse(data.requestParams)}/>
             </Descriptions.Item>
             {data.requestParamsRemark && data.requestParamsRemark.length > 0 && (

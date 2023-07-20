@@ -158,7 +158,7 @@ public class InterfaceServiceImpl extends ServiceImpl<InterfaceInfoMapper, Inter
             String resultStr = apiClientFacade.invoke(method,uri,paramMap);
             Map<String, Object> result = JsonUtil.toMap(resultStr);
             if ((Double) result.get("code") != 200) {
-                throw new RuntimeException((String) result.get("msg"));
+                throw new BusinessException((String) result.get("msg"));
             }
         } catch (Exception e) {
             throw new BusinessException(HttpStatus.ERROR,e.getMessage(),e);
@@ -205,7 +205,7 @@ public class InterfaceServiceImpl extends ServiceImpl<InterfaceInfoMapper, Inter
             resultStr = client.invoke(method,uri,paramMap);
             result = JsonUtil.toMap(resultStr);
             if ((Double) result.get("code") != 200) {
-                throw new RuntimeException((String) result.get("msg"));
+                throw new BusinessException((String) result.get("msg"));
             }
         } catch (Exception e) {
             throw new BusinessException(HttpStatus.ERROR,e.getMessage(),e);
