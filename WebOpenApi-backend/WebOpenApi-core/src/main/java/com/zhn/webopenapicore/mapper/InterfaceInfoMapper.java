@@ -24,6 +24,13 @@ public interface InterfaceInfoMapper extends BaseMapper<InterfaceInfo> {
      */
     List<InterfaceRankVo> getStatisticRankList();
 
+    /**
+     * 获取登录用户开通的所有接口（不包括下线的、被拉黑的）.
+     *
+     * @param userId the user id
+     * @param search the search
+     * @return the me vo list
+     */
     List<InterfaceMeVo> getMeVoList(@Param("userId") Long userId, @Param("search") String search);
 }
 

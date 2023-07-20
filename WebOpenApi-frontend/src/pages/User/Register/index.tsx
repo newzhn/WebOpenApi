@@ -170,39 +170,39 @@ const Register: React.FC = () => {
                 ]}
               />
               {/*验证码*/}
-              <ProFormCaptcha
-                fieldProps={{
-                  size: 'large',
-                  prefix: <LockOutlined />,
-                }}
-                captchaProps={{
-                  size: 'large',
-                }}
-                placeholder={'请输入验证码！'}
-                captchaTextRender={(timing, count) => {
-                  if (timing) {
-                    return `${count} ${'秒后重新获取'}`;
-                  }
-                  return '获取验证码';
-                }}
-                phoneName="email"
-                name="verificationCode"
-                rules={[
-                  {
-                    required: true,
-                    message: '验证码是必填项！',
-                  },
-                ]}
-                onGetCaptcha={async (email) => {
-                  // 发送请求获取验证码
-                  const result = await sendCodeUsingGET({
-                    email,
-                  });
-                  if (result.code === 200) {
-                    message.success('验证码发送成功，请注意邮箱查收！');
-                  }
-                }}
-              />
+              {/*<ProFormCaptcha*/}
+              {/*  fieldProps={{*/}
+              {/*    size: 'large',*/}
+              {/*    prefix: <LockOutlined />,*/}
+              {/*  }}*/}
+              {/*  captchaProps={{*/}
+              {/*    size: 'large',*/}
+              {/*  }}*/}
+              {/*  placeholder={'请输入验证码！'}*/}
+              {/*  captchaTextRender={(timing, count) => {*/}
+              {/*    if (timing) {*/}
+              {/*      return `${count} ${'秒后重新获取'}`;*/}
+              {/*    }*/}
+              {/*    return '获取验证码';*/}
+              {/*  }}*/}
+              {/*  phoneName="email"*/}
+              {/*  name="verificationCode"*/}
+              {/*  rules={[*/}
+              {/*    {*/}
+              {/*      required: true,*/}
+              {/*      message: '验证码是必填项！',*/}
+              {/*    },*/}
+              {/*  ]}*/}
+              {/*  onGetCaptcha={async (email) => {*/}
+              {/*    // 发送请求获取验证码*/}
+              {/*    const result = await sendCodeUsingGET({*/}
+              {/*      email,*/}
+              {/*    });*/}
+              {/*    if (result.code === 200) {*/}
+              {/*      message.success('验证码发送成功，请注意邮箱查收！');*/}
+              {/*    }*/}
+              {/*  }}*/}
+              {/*/>*/}
             </>
           )}
           <div style={{ textAlign: 'center',marginBottom:'20px'}}>

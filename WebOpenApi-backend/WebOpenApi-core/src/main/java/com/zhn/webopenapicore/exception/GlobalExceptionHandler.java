@@ -10,6 +10,9 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.servlet.ServletException;
+import java.io.IOException;
+
 /**
  * 全局异常处理器
  *
@@ -31,14 +34,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
     public Result businessExceptionHandler(BusinessException e) {
-        log.error("业务逻辑出现异常！{}", e);
+        log.error("业务逻辑出现异常！", e);
         return Result.error(e.getCode(),e.getMessage());
     }
 
     /** 添加校验参数异常处理 */
     @ExceptionHandler(BindException.class)
     public Result bindExceptionHandler(BindException e) {
-        log.error("参数校验出现了异常! {}", e);
+        log.error("参数校验出现了异常! ", e);
         return Result.error(HttpStatus.ERROR,e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
     }
 

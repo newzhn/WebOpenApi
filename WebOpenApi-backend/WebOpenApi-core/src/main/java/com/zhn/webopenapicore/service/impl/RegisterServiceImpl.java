@@ -1,24 +1,21 @@
 package com.zhn.webopenapicore.service.impl;
 
 import cn.hutool.core.util.RandomUtil;
-import cn.hutool.crypto.digest.DigestUtil;
 import com.zhn.webopenapicommon.model.domain.User;
 import com.zhn.webopenapicore.constant.UserConstant;
-import com.zhn.webopenapicore.model.eneum.CacheEnums;
+import com.zhn.webopenapicore.constant.CacheConstant;
 import com.zhn.webopenapicore.model.request.user.RegisterRequest;
 import com.zhn.webopenapicore.service.EmailService;
 import com.zhn.webopenapicore.service.RegisterService;
 import com.zhn.webopenapicore.service.UserService;
 import com.zhn.webopenapicore.utils.QQUtil;
-import com.zhn.webopenapicore.utils.bean.BeanUtils;
-import com.zhn.webopenapicore.utils.redis.RedisCache;
+import com.zhn.webopenapicore.utils.BeanUtils;
+import com.zhn.webopenapicore.utils.RedisCache;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
-
-import static com.zhn.webopenapicore.constant.CommonConstant.SALT;
 
 /**
  * @author zhn
@@ -40,12 +37,12 @@ public class RegisterServiceImpl implements RegisterService {
     @Override
     public String register(RegisterRequest request) {
         //校验验证码是否正确
-        String code = request.getVerificationCode();
+        /*String code = request.getVerificationCode();
         String cacheCode = redisCache.getCacheObject(
-                CacheEnums.REGISTER_CODE.getKeyPrefix() + request.getEmail());
+                CacheConstant.REGISTER_CODE.getKeyPrefix() + request.getEmail());
         if (!code.equals(cacheCode)) {
             return "验证码错误";
-        }
+        }*/
         User user = BeanUtils.copy(request, User.class);
         //校验用户名是否重复
         if (userService.checkUserAccount(user.getUserAccount())) {
@@ -78,7 +75,7 @@ public class RegisterServiceImpl implements RegisterService {
         //创建验证码
         String code = RandomUtil.randomNumbers(6);
         //保存验证码到Redis，设置有效期，用邮箱做key
-        redisCache.setCacheObject(CacheEnums.REGISTER_CODE,email,code);
+        redisCache.setCacheObject(CacheConstant.REGISTER_CODE,email,code);
         //发送验证码
         emailService.sendVerificationCode(email,code);
     }

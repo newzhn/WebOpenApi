@@ -12,9 +12,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
+ * The type Rpc interface service.
+ *
  * @author zhn
  * @version 1.0
- * @date 2023/7/10 20:20
+ * @date 2023 /7/10 20:20
  * @blog www.zhnblog.icu
  */
 @DubboService
@@ -39,6 +41,11 @@ public class RpcInterfaceServiceImpl implements RpcInterfaceService {
                         Collectors.collectingAndThen(Collectors.toList(), this::getCommonPrefix)));
     }
 
+    /**
+     * 获取接口列表Uri公共前缀，用于网关路由匹配
+     * @param interfaceInfos
+     * @return
+     */
     private String getCommonPrefix(List<InterfaceInfo> interfaceInfos) {
         if (interfaceInfos == null || interfaceInfos.isEmpty()) {
             return "/**";

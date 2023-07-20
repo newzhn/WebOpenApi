@@ -17,13 +17,13 @@ import com.zhn.webopenapicommon.utils.ThrowUtil;
 import com.zhn.webopenapicore.mapper.InterfaceInfoMapper;
 import com.zhn.webopenapicore.model.vo.api.*;
 import com.zhn.webopenapicore.model.vo.user.LoginUser;
-import com.zhn.webopenapicore.model.eneum.InterfaceStatus;
+import com.zhn.webopenapicore.constant.InterfaceStatus;
 import com.zhn.webopenapicore.model.request.IdRequest;
 import com.zhn.webopenapicore.model.request.api.*;
 import com.zhn.webopenapicore.service.InterfaceService;
 import com.zhn.webopenapicore.service.UserInterfaceService;
 import com.zhn.webopenapicore.service.UserService;
-import com.zhn.webopenapicore.utils.bean.BeanUtils;
+import com.zhn.webopenapicore.utils.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -140,7 +140,7 @@ public class InterfaceServiceImpl extends ServiceImpl<InterfaceInfoMapper, Inter
     public void onlineInterface(IdRequest request) {
         //校验接口信息是否存在
         InterfaceInfo interfaceInfo = this.validateInterface(request.getId());
-        if (InterfaceStatus.ONLINE.getStatus().equals(interfaceInfo.getStatus())) {
+        if (InterfaceStatus.ONLINE.getValue().equals(interfaceInfo.getStatus())) {
             return;
         }
         //校验是否有该接口的调用权限
@@ -164,7 +164,7 @@ public class InterfaceServiceImpl extends ServiceImpl<InterfaceInfoMapper, Inter
             throw new BusinessException(HttpStatus.ERROR,e.getMessage(),e);
         }
         //上线接口
-        interfaceInfo.setStatus(InterfaceStatus.ONLINE.getStatus());
+        interfaceInfo.setStatus(InterfaceStatus.ONLINE.getValue());
         this.updateById(interfaceInfo);
     }
 
@@ -172,11 +172,11 @@ public class InterfaceServiceImpl extends ServiceImpl<InterfaceInfoMapper, Inter
     public void offlineInterface(IdRequest request) {
         //校验接口信息是否存在
         InterfaceInfo interfaceInfo = this.validateInterface(request.getId());
-        if (InterfaceStatus.OFFLINE.getStatus().equals(interfaceInfo.getStatus())) {
+        if (InterfaceStatus.OFFLINE.getValue().equals(interfaceInfo.getStatus())) {
             return;
         }
         //下线接口
-        interfaceInfo.setStatus(InterfaceStatus.OFFLINE.getStatus());
+        interfaceInfo.setStatus(InterfaceStatus.OFFLINE.getValue());
         this.updateById(interfaceInfo);
     }
 
@@ -186,7 +186,7 @@ public class InterfaceServiceImpl extends ServiceImpl<InterfaceInfoMapper, Inter
         //校验接口信息是否存在
         InterfaceInfo interfaceInfo = this.validateInterface(invokeRequest.getId());
         //校验接口是否正常
-        ThrowUtil.throwIf(InterfaceStatus.OFFLINE.getStatus().equals(interfaceInfo.getStatus()),
+        ThrowUtil.throwIf(InterfaceStatus.OFFLINE.getValue().equals(interfaceInfo.getStatus()),
                 HttpStatus.ERROR,"接口未上线");
         //获取当前登录用户ak、sk
         LoginUser loginUser = userService.getCurrentUser();
@@ -242,7 +242,7 @@ public class InterfaceServiceImpl extends ServiceImpl<InterfaceInfoMapper, Inter
     @Override
     public Page<InterfaceStoreVo> getStoreVoPage(InterfaceQueryRequest request) {
         //获取上线接口分页数据
-        request.setStatus(InterfaceStatus.ONLINE.getStatus());
+        request.setStatus(InterfaceStatus.ONLINE.getValue());
         Page<InterfaceInfoVo> voPage = this.getVoPage(request);
         //获取当前用户已申请的接口Id数据
         List<Long> ids = this.getMeVoList("").stream()
@@ -253,7 +253,7 @@ public class InterfaceServiceImpl extends ServiceImpl<InterfaceInfoMapper, Inter
         Page<InterfaceStoreVo> storeVoPage = new Page<>(current, pageSize, voPage.getTotal());
         storeVoPage.setRecords(voPage.getRecords().stream().map(vo -> {
             InterfaceStoreVo storeVo = BeanUtils.copy(vo, InterfaceStoreVo.class);
-            storeVo.setApplyFlag(!(InterfaceStatus.OFFLINE.getStatus().equals(vo.getStatus()) ||
+            storeVo.setApplyFlag(!(InterfaceStatus.OFFLINE.getValue().equals(vo.getStatus()) ||
                     ids.contains(vo.getId())));
             return storeVo;
         }).collect(Collectors.toList()));
@@ -263,7 +263,7 @@ public class InterfaceServiceImpl extends ServiceImpl<InterfaceInfoMapper, Inter
     @Override
     public InterfaceDetailVo getDetailVoById(Long id) {
         InterfaceInfo info = this.getById(id);
-        if (info.getStatus().equals(InterfaceStatus.OFFLINE.getStatus())) {
+        if (info.getStatus().equals(InterfaceStatus.OFFLINE.getValue())) {
             throw new BusinessException(HttpStatus.FORBIDDEN,"该接口暂时还未上线");
         }
         InterfaceDetailVo detailVo = BeanUtils.copy(info, InterfaceDetailVo.class);

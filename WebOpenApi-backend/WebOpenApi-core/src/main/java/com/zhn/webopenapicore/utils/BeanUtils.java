@@ -1,4 +1,4 @@
-package com.zhn.webopenapicore.utils.bean;
+package com.zhn.webopenapicore.utils;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.SimpleCache;
@@ -6,7 +6,6 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.zhn.webopenapicore.utils.stream.StreamUtils;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.cglib.beans.BeanMap;
 import org.springframework.cglib.core.Converter;

@@ -7,6 +7,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
+ * Web配置
+ *
  * @author zhn
  * @version 1.0
  */

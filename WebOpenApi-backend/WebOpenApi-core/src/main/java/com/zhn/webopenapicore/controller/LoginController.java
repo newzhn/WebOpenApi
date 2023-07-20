@@ -15,6 +15,7 @@ import java.util.Map;
 
 /**
  * 登录接口
+ *
  * @author zhn
  * @version 1.0
  */
@@ -23,6 +24,12 @@ public class LoginController {
     @Resource
     private LoginService loginService;
 
+    /**
+     * 登录.
+     *
+     * @param request the request
+     * @return the result
+     */
     @PostMapping("/login")
     public Result login(@Valid @RequestBody LoginRequest request) {
         Map<String,Object> map = loginService.login(request);
@@ -31,6 +38,11 @@ public class LoginController {
         return Result.success(loginUser).put("token",token);
     }
 
+    /**
+     * 登出.
+     *
+     * @return the result
+     */
     @GetMapping("/quit")
     public Result logout() {
         loginService.logout();

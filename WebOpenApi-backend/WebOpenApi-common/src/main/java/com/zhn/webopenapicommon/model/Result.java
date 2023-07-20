@@ -5,7 +5,7 @@ import cn.hutool.core.util.ObjUtil;
 import java.util.HashMap;
 
 /**
- * 操作消息提醒
+ * 统一结果封装类
  *
  * @author server
  */

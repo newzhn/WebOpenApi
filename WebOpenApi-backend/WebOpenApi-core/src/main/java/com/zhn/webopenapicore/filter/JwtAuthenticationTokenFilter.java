@@ -1,11 +1,11 @@
 package com.zhn.webopenapicore.filter;
 
+import cn.hutool.core.util.StrUtil;
 import com.zhn.webopenapicommon.exception.BusinessException;
+import com.zhn.webopenapicommon.utils.JwtUtil;
 import com.zhn.webopenapicore.model.vo.user.LoginUser;
-import com.zhn.webopenapicore.model.eneum.CacheEnums;
-import com.zhn.webopenapicore.utils.JwtUtil;
-import com.zhn.webopenapicore.utils.redis.RedisCache;
-import com.zhn.webopenapicore.utils.string.StringUtils;
+import com.zhn.webopenapicore.constant.CacheConstant;
+import com.zhn.webopenapicore.utils.RedisCache;
 import io.jsonwebtoken.Claims;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,8 +43,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
         //获取token
         String token = httpServletRequest.getHeader("Access-Token");
-        if (StringUtils.isEmpty(token)) {
-            filterChain.doFilter(httpServletRequest,httpServletResponse);
+        if (StrUtil.isEmpty(token)) {
+            // Token为空，发送401未授权的错误响应
+            httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
         //token存在则进行解析
@@ -57,7 +58,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             throw new BusinessException("非法的Token");
         }
         //Redis查询登录数据
-        String key = CacheEnums.USER_LOGIN.getKeyPrefix() + userId;
+        String key = CacheConstant.USER_LOGIN.getKeyPrefix() + userId;
         LoginUser loginUser = redisCache.getCacheObject(key);
         if (loginUser == null) {
             throw new BusinessException("用户未登录");
@@ -66,7 +67,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        redisCache.expire(CacheEnums.USER_LOGIN,userId);
+        redisCache.expire(CacheConstant.USER_LOGIN,userId);
         //放行
         filterChain.doFilter(httpServletRequest,httpServletResponse);
     }

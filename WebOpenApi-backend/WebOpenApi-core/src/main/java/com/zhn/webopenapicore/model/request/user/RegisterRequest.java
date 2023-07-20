@@ -44,7 +44,7 @@ public class RegisterRequest {
     /**
      * 验证码
      */
-    @NotBlank(message = "注册验证码不能为空")
+    /*@NotBlank(message = "注册验证码不能为空")
     @Pattern(regexp = RegexConstant.VERIFY_CODE_REGEX,message="验证码必须是六位大小的数字")
-    private String verificationCode;
+    private String verificationCode;*/
 }

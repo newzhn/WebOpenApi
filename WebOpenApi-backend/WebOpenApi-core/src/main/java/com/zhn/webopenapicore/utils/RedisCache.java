@@ -1,6 +1,6 @@
-package com.zhn.webopenapicore.utils.redis;
+package com.zhn.webopenapicore.utils;
 
-import com.zhn.webopenapicore.model.eneum.CacheEnums;
+import com.zhn.webopenapicore.constant.CacheConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundSetOperations;
 import org.springframework.data.redis.core.HashOperations;
@@ -11,6 +11,11 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Redis工具分类
+ *
+ * @author zhn
+ */
 @SuppressWarnings(value = { "unchecked", "rawtypes" })
 @Component
 public class RedisCache
@@ -24,7 +29,7 @@ public class RedisCache
      * @param keySuffix key后缀
      * @param value 缓存的值
      */
-    public <T> void setCacheObject(final CacheEnums constant, final String keySuffix, final T value)
+    public <T> void setCacheObject(final CacheConstant constant, final String keySuffix, final T value)
     {
         String key = constant.getKeyPrefix() + keySuffix;
         long timeout = constant.getTtl();
@@ -56,7 +61,7 @@ public class RedisCache
         redisTemplate.opsForValue().set(key, value, timeout, timeUnit);
     }
 
-    public boolean expire(final CacheEnums constant, String keuSuffix)
+    public boolean expire(final CacheConstant constant, String keuSuffix)
     {
         String key = constant.getKeyPrefix() + keuSuffix;
         long timeout = constant.getTtl();

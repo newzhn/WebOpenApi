@@ -3,7 +3,7 @@ package com.zhn.webopenapicore.handler;
 import com.alibaba.fastjson.JSON;
 import com.zhn.webopenapicommon.model.HttpStatus;
 import com.zhn.webopenapicommon.model.Result;
-import com.zhn.webopenapicore.utils.web.WebUtils;
+import com.zhn.webopenapicore.utils.WebUtils;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;

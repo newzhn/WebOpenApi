@@ -1,6 +1,8 @@
 package com.zhn.webopenapicore.constant;
 
 /**
+ * 正则表达式常量
+ *
  * @author zhn
  */
 public interface RegexConstant {

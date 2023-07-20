@@ -20,6 +20,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import javax.annotation.Resource;
 
 /**
+ * 安全配置
+ *
  * @author zhn
  * @version 1.0
  */

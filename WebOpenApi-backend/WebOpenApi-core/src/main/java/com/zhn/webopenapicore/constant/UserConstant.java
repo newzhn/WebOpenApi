@@ -22,8 +22,6 @@ public interface UserConstant {
      */
     String USER_VERIFICATION_CODE = "/sendCode";
 
-    //  region 权限
-
     /**
      * 默认角色
      */

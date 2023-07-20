@@ -18,13 +18,10 @@ import javax.annotation.Resource;
 @DubboService
 public class RpcUserInterfaceServiceImpl implements RpcUserInterfaceService {
     @Resource
-    private UserInterfaceInfoMapper userInterfaceInfoMapper;
-    @Resource
     private UserInterfaceService userInterfaceInfoService;
 
     @Override
     public UserInterfaceInfo getOneByInterfaceInfoId(Long userId, Long interfaceInfoId) {
-        // TODO 后续优化可以加上时间过期条件
         return userInterfaceInfoService.getInfoByInterfaceId(userId, interfaceInfoId);
     }
 

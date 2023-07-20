@@ -1,4 +1,4 @@
-package com.zhn.webopenapicore.utils.web;
+package com.zhn.webopenapicore.utils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;

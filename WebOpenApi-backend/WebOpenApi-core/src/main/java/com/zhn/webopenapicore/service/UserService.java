@@ -1,6 +1,5 @@
 package com.zhn.webopenapicore.service;
 
-
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zhn.webopenapicommon.model.domain.User;
@@ -99,5 +98,8 @@ public interface UserService extends IService<User> {
      */
     LoginUser getCurrentUser(String token);
 
+    /**
+     * 申请api签名密钥.
+     */
     void applyApiToken();
 }

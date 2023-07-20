@@ -1,4 +1,4 @@
-package com.zhn.webopenapicore.utils.redis;
+package com.zhn.webopenapicore.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.parser.ParserConfig;

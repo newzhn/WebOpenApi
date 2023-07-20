@@ -1,4 +1,4 @@
-package com.zhn.webopenapicore.model.eneum;
+package com.zhn.webopenapicore.constant;
 
 /**
  * 接口状态枚举类
@@ -34,7 +34,7 @@ public enum InterfaceStatus {
         return statusName;
     }
 
-    public Integer getStatus() {
+    public Integer getValue() {
         return status;
     }
 }

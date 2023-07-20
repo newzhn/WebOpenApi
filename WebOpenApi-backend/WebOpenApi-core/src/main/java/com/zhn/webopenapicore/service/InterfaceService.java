@@ -100,9 +100,27 @@ public interface InterfaceService extends IService<InterfaceInfo> {
      */
     InterfaceInfo validateInterface(Long id);
 
+    /**
+     * 获取登录用户开通的所有接口（不包括下线的、被拉黑的）.
+     *
+     * @param search the search
+     * @return the me vo list
+     */
     List<InterfaceMeVo> getMeVoList(String search);
 
+    /**
+     * 获取首页中api商店展示的分页接口数据.
+     *
+     * @param request the request
+     * @return the store vo page
+     */
     Page<InterfaceStoreVo> getStoreVoPage(InterfaceQueryRequest request);
 
+    /**
+     * 获取接口详细信息（包括剩余调用次数等）.
+     *
+     * @param id the id
+     * @return the detail vo by id
+     */
     InterfaceDetailVo getDetailVoById(Long id);
 }

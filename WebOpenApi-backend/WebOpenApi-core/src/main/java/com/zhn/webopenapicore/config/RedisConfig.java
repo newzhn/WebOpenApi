@@ -1,6 +1,6 @@
 package com.zhn.webopenapicore.config;
 
-import com.zhn.webopenapicore.utils.redis.FastJsonRedisSerializer;
+import com.zhn.webopenapicore.utils.FastJsonRedisSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -8,6 +8,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
+ * 配置自定义Redis序列化器
+ *
  * @author zhn
  * @version 1.0
  */

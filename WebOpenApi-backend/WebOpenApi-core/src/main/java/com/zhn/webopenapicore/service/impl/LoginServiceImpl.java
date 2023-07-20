@@ -1,13 +1,13 @@
 package com.zhn.webopenapicore.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import com.zhn.webopenapicommon.utils.JwtUtil;
 import com.zhn.webopenapicommon.utils.ThrowUtil;
 import com.zhn.webopenapicore.model.vo.user.LoginUser;
-import com.zhn.webopenapicore.model.eneum.CacheEnums;
+import com.zhn.webopenapicore.constant.CacheConstant;
 import com.zhn.webopenapicore.model.request.user.LoginRequest;
 import com.zhn.webopenapicore.service.LoginService;
-import com.zhn.webopenapicore.utils.JwtUtil;
-import com.zhn.webopenapicore.utils.redis.RedisCache;
+import com.zhn.webopenapicore.utils.RedisCache;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -42,7 +42,7 @@ public class LoginServiceImpl implements LoginService {
         String userId = loginUser.getUser().getId().toString();
         String jwt = JwtUtil.createJWT(userId);
         // 将登陆用户信息存入Redis
-        redisCache.setCacheObject(CacheEnums.USER_LOGIN,userId,loginUser);
+        redisCache.setCacheObject(CacheConstant.USER_LOGIN,userId,loginUser);
         //返回token和登录用户信息
         HashMap<String, Object> map = new HashMap<>();
         map.put("token",jwt);
@@ -57,7 +57,7 @@ public class LoginServiceImpl implements LoginService {
         if (loginUser == null) {
             throw new RuntimeException("用户未登录");
         }
-        String key = CacheEnums.USER_LOGIN.getKeyPrefix() + loginUser.getUser().getId();
+        String key = CacheConstant.USER_LOGIN.getKeyPrefix() + loginUser.getUser().getId();
         redisCache.deleteObject(key);
     }
 }

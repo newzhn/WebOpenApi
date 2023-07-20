@@ -17,7 +17,7 @@ import java.util.List;
 public interface UserInterfaceService extends IService<UserInterfaceInfo> {
 
     /**
-     * Gets info by interface id.
+     * 获取当前登录用户与该接口的关联数据.
      *
      * @param interfaceInfoId the interface info id
      * @return the info by interface id
@@ -25,7 +25,7 @@ public interface UserInterfaceService extends IService<UserInterfaceInfo> {
     UserInterfaceInfo getInfoByInterfaceId(Long interfaceInfoId);
 
     /**
-     * Gets info by interface id.
+     * 获取当前登录用户与该接口的关联数据.
      *
      * @param userId          the user id
      * @param interfaceInfoId the interface info id
@@ -41,6 +41,13 @@ public interface UserInterfaceService extends IService<UserInterfaceInfo> {
      */
     void validateApply(Long interfaceId);
 
+    /**
+     * 申请接口服务.
+     *
+     * @param interfaceId the interface id
+     * @param applyNum    the apply num
+     * @return the boolean
+     */
     boolean applyInterface(Long interfaceId, Integer applyNum);
 
 }

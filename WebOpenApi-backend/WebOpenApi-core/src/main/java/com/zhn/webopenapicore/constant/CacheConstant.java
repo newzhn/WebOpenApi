@@ -1,4 +1,4 @@
-package com.zhn.webopenapicore.model.eneum;
+package com.zhn.webopenapicore.constant;
 
 import java.util.concurrent.TimeUnit;
 
@@ -11,7 +11,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
  * @date 2023/6/29 12:35
  * @blog www.zhnblog.icu
  */
-public enum CacheEnums {
+public enum CacheConstant {
     /**
      * 缓存key常量
      */
@@ -34,7 +34,7 @@ public enum CacheEnums {
      */
     private final TimeUnit unit;
 
-    CacheEnums(String keyPrefix, Long ttl, TimeUnit unit) {
+    CacheConstant(String keyPrefix, Long ttl, TimeUnit unit) {
         this.keyPrefix = keyPrefix;
         this.ttl = ttl;
         this.unit = unit;

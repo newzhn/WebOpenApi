@@ -14,7 +14,7 @@ import javax.annotation.Resource;
  *
  * @author zhn
  * @version 1.0
- * @date 2023/7/13 22:30
+ * @date 2023 /7/13 22:30
  * @blog www.zhnblog.icu
  */
 @RestController
@@ -23,6 +23,11 @@ public class StatisticsController {
     @Resource
     private StatisticsService statisticsService;
 
+    /**
+     * 统计排序所有上线接口调用次数
+     *
+     * @return the rank interface info vo list
+     */
     @GetMapping("/rank/vo/list")
     @PreAuthorize("hasRole('admin')")
     public Result getRankInterfaceInfoVoList() {

@@ -1,8 +1,8 @@
-package com.zhn.webopenapicore.utils.stream;
+package com.zhn.webopenapicore.utils;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
-import com.zhn.webopenapicore.utils.string.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -42,7 +42,7 @@ public class StreamUtils {
      * @return 拼接后的list
      */
     public static <E> String join(Collection<E> collection, Function<E, String> function) {
-        return join(collection, function, StringUtils.COMMA);
+        return join(collection, function, StrUtil.COMMA);
     }
 
     /**
@@ -55,7 +55,7 @@ public class StreamUtils {
      */
     public static <E> String join(Collection<E> collection, Function<E, String> function, CharSequence delimiter) {
         if (CollUtil.isEmpty(collection)) {
-            return StringUtils.EMPTY;
+            return StrUtil.EMPTY;
         }
         return collection.stream().map(function).filter(Objects::nonNull).collect(Collectors.joining(delimiter));
     }
