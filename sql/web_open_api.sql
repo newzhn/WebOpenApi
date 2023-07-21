@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主机： localhost
--- 生成日期： 2023-07-19 18:25:01
+-- 生成日期： 2023-07-21 20:22:50
 -- 服务器版本： 5.7.40-log
 -- PHP 版本： 7.4.33
 
@@ -48,6 +48,18 @@ CREATE TABLE `interface_info` (
   `is_delete` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否删除',
   `update_by` varchar(255) DEFAULT NULL COMMENT '修改者名'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='接口信息表' ROW_FORMAT=DYNAMIC;
+
+--
+-- 转存表中的数据 `interface_info`
+--
+
+INSERT INTO `interface_info` (`id`, `name`, `description`, `method`, `host`, `uri`, `apply_num`, `request_params`, `request_params_remark`, `response_params_remark`, `request_header`, `response_header`, `status`, `user_id`, `create_time`, `create_by`, `update_time`, `is_delete`, `update_by`) VALUES
+(1, '测试接口', '返回传入参数的用户名', 'GET', 'http://localhost:9999', '/api/test/get/{name}', 200, '{\"name\":\"张三\"}', '[{\"id\":1689765507302,\"name\":\"name\",\"isRequired\":\"yes\",\"type\":\"string\",\"remark\":\"用户输入姓名\"}]', '[]', '{\"Content-Type\":\"application/json\"}', '{\"Content-Type\":\"application/json\"}', 1, 1666439326650609671, '2023-07-19 19:21:19', 'admin', '2023-07-21 11:46:57', 0, NULL),
+(2, '随机头像', '返回随机头像URL', 'GET', 'http://localhost:9999', '/api/avatar/random', 200, '{}', '[]', '[]', '{\"Content-Type\":\"application/json\"}', '{\"Content-Type\":\"application/json\"}', 1, 1666439326650609671, '2023-07-20 23:27:57', 'admin', '2023-07-21 11:47:01', 0, 'admin'),
+(3, 'QQ头像', '根据QQ号获取QQ头像URL', 'GET', 'http://localhost:9999', '/api/avatar/qq/{qqNumber}', 200, '{\"qqNumber\":\"1563377232\"}', '[{\"id\":1689866912228,\"name\":\"qqNumber\",\"isRequired\":\"yes\",\"type\":\"string\",\"remark\":\"QQ号\"}]', '[]', '{\"Content-Type\":\"application/json\"}', '{\"Content-Type\":\"application/json\"}', 1, 1666439326650609671, '2023-07-20 23:30:17', 'admin', '2023-07-21 11:47:03', 0, 'admin'),
+(4, '百度热搜', '获取当前百度热搜榜数据', 'GET', 'http://localhost:9999', '/api/baidu/hot_search', 200, '{\"size\":\"10\"}', '[{\"id\":1689866912228,\"name\":\"size\",\"isRequired\":\"no\",\"type\":\"int\",\"remark\":\"热搜数量\"}]', '[]', '{\"Content-Type\":\"application/json\"}', '{\"Content-Type\":\"application/json\"}', 1, 1666439326650609671, '2023-07-20 23:31:47', 'admin', '2023-07-21 11:47:06', 0, 'admin'),
+(5, '域名是否注册', '查询域名是否被注册', 'GET', 'http://localhost:9999', '/api/domainName/isRegistered/{domain}', 200, '{\"domain\":\"baidu.com\"}', '[{\"id\":1689866912228,\"name\":\"domain\",\"isRequired\":\"yes\",\"type\":\"string\",\"remark\":\"域名\"}]', '[]', '{\"Content-Type\":\"application/json\"}', '{\"Content-Type\":\"application/json\"}', 1, 1666439326650609671, '2023-07-20 23:33:06', 'admin', '2023-07-21 11:47:09', 0, 'admin'),
+(6, 'QQ在线状态', '查询QQ电脑端是否在线', 'GET', 'http://localhost:9999', '/api/qq/isOnline/{qqNumber}', 200, '{\"qqNumber\":\"1563377232\"}', '[{\"id\":1689866912228,\"name\":\"qqNumber\",\"isRequired\":\"yes\",\"type\":\"string\",\"remark\":\"QQ号\"}]', '[]', '{\"Content-Type\":\"application/json\"}', '{\"Content-Type\":\"application/json\"}', 1, 1666439326650609671, '2023-07-20 23:34:41', 'admin', '2023-07-21 11:47:12', 0, 'admin');
 
 -- --------------------------------------------------------
 
@@ -98,6 +110,18 @@ CREATE TABLE `user_interface_info` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户接口关联表' ROW_FORMAT=DYNAMIC;
 
 --
+-- 转存表中的数据 `user_interface_info`
+--
+
+INSERT INTO `user_interface_info` (`id`, `user_id`, `interface_info_id`, `total_num`, `surplus_num`, `status`, `create_time`, `update_time`, `is_delete`) VALUES
+(1, 1666439326650609671, 1, 5, 95, 0, '2023-07-19 19:29:46', NULL, 0),
+(2, 1666439326650609671, 2, 2, 198, 0, '2023-07-21 19:52:32', NULL, 0),
+(3, 1666439326650609671, 3, 3, 197, 0, '2023-07-21 19:52:35', NULL, 0),
+(4, 1666439326650609671, 4, 4, 196, 0, '2023-07-21 19:52:37', NULL, 0),
+(5, 1666439326650609671, 5, 2, 198, 0, '2023-07-21 19:52:39', NULL, 0),
+(6, 1666439326650609671, 6, 2, 198, 0, '2023-07-21 19:52:43', NULL, 0);
+
+--
 -- 转储表的索引
 --
 
@@ -128,19 +152,19 @@ ALTER TABLE `user_interface_info`
 -- 使用表AUTO_INCREMENT `interface_info`
 --
 ALTER TABLE `interface_info`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键';
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键', AUTO_INCREMENT=29;
 
 --
 -- 使用表AUTO_INCREMENT `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id', AUTO_INCREMENT=1666439326650609672;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id', AUTO_INCREMENT=1666439326650609673;
 
 --
 -- 使用表AUTO_INCREMENT `user_interface_info`
 --
 ALTER TABLE `user_interface_info`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键';
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键', AUTO_INCREMENT=9;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

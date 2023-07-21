@@ -11,6 +11,7 @@ export default [
   { path: '/interface/me', name: '我的接口', icon: 'StarOutlined', component: './Interface/Me' },
   { path: '/interface/:id', name: '接口在线调用', component: './Interface', hideInMenu: true },
   { path: '/profile', name: '个人中心',  component: './Profile', icon: 'UserOutlined'},
+  { path: '/sdk', name: 'SDK文档',  component: './Sdk', icon: 'FileTextOutlined'},
   {
     path: '/admin',
     name: '管理页',
@@ -18,6 +19,7 @@ export default [
     access: 'canAdmin',
     routes: [
       { name: '接口管理', icon: 'table', path: '/admin/interface', component: './Admin/Interface' },
+      { name: '用户管理', icon: 'table', path: '/admin/user', component: './Admin/User' },
       { name: '接口统计', icon: 'analysis', path: '/admin/interface_statistic', component: './Admin/InterfaceStatistic' },
     ],
   },

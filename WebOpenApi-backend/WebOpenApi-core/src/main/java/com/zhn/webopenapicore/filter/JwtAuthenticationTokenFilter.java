@@ -44,8 +44,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         //获取token
         String token = httpServletRequest.getHeader("Access-Token");
         if (StrUtil.isEmpty(token)) {
-            // Token为空，发送401未授权的错误响应
-            httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            filterChain.doFilter(httpServletRequest,httpServletResponse);
             return;
         }
         //token存在则进行解析

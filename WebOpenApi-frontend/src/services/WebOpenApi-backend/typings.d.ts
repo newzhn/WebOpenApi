@@ -144,7 +144,7 @@ declare namespace API {
   };
 
   type UserVo = {
-    id?: number;
+    id: number;
     userAccount?: string;
     userName?: string;
     userAvatar?: string;
@@ -155,8 +155,6 @@ declare namespace API {
     accessKey?: string;
     secretKey?: string;
     createTime?: Date;
-    updateTime?: Date;
-    isDelete?: number;
   };
 
   type LoginUser = {

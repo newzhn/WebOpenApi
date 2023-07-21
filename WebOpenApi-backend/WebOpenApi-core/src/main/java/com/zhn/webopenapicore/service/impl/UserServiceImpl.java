@@ -84,8 +84,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         //密码加密
         String password = passwordEncoder.encode(user.getUserPassword());
         user.setUserPassword(password);
-        //默认角色为普通用户
-        user.setUserRole(UserConstant.DEFAULT_ROLE);
         //根据QQ获取昵称和头像
         QQUtil.setAvatarUrlAndNickname(user,restTemplate);
         return this.save(user);

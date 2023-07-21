@@ -467,7 +467,7 @@ const InterfaceInfo: React.FC = () => {
       <ProTable<API.InterfaceInfoVo, API.PageParams>
         headerTitle={'查询表格'}
         actionRef={actionRef}
-        rowKey="key"
+        rowKey="id"
         search={{
           labelWidth: 120,
         }}

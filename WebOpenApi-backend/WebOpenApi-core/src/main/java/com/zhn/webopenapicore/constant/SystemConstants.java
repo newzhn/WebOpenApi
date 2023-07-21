@@ -20,4 +20,9 @@ public interface SystemConstants {
      * 盐
      */
     String API_SALT = "openapi";
+
+    /**
+     * Knife4jAPI
+     */
+    String KNIFE4J_API = "/doc.html";
 }

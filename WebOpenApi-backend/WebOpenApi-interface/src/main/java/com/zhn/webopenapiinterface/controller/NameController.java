@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
  * @blog www.zhnblog.icu
  */
 @RestController
-@RequestMapping("/name")
+@RequestMapping("/test")
 public class NameController {
     @GetMapping("/get/{name}")
     public ApiResult getNameByGetRest(@PathVariable("name") String name) {

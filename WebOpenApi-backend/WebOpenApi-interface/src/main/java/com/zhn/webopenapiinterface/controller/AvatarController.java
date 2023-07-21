@@ -47,7 +47,7 @@ public class AvatarController {
             return ApiResult.fail("QQ号格式错误，请重新输入");
         }
         //拼接QQ号
-        String url = QQ_AVATAR_API + qqNumber;
+        String url = QQ_AVATAR_API + qqNumber + "&s=100";
         HashMap<String, Object> resultMap = new HashMap<>();
         resultMap.put("qqAvatar",url);
         return ApiResult.ok(resultMap,"获取QQ头像成功");
