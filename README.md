@@ -25,7 +25,7 @@
 
 ## 业务流程
 
-![image-20230721230331445](.\doc\image6.png)
+![image-20230721230331445](https://github.com/newzhn/WebOpenApi/blob/master/doc/image6.png)
 
 
 
@@ -202,12 +202,12 @@ class SdkTestApplicationTests {
 
 ## 项目展示
 
-![image-20230721225326627](.\doc\image1.png)
+![image-20230721225326627](https://github.com/newzhn/WebOpenApi/blob/master/doc/image1.png)
 
-![image-20230721225428031](.\doc\image2.png)
+![image-20230721225428031](https://github.com/newzhn/WebOpenApi/blob/master/doc/image2.png)
 
-![image-20230721225509948](.\doc\image3.png)
+![image-20230721225509948](https://github.com/newzhn/WebOpenApi/blob/master/doc/image3.png)
 
-![image-20230721225545856](.\doc\image4.png)
+![image-20230721225545856](https://github.com/newzhn/WebOpenApi/blob/master/doc/image4.png)
 
-![image-20230721225605155](.\doc\image5.png)
+![image-20230721225605155](https://github.com/newzhn/WebOpenApi/blob/master/doc/image5.png)
