@@ -1,5 +1,6 @@
 package com.zhn.webopenapiinterface.controller;
 
+import com.zhn.webopenapicommon.model.domain.User;
 import com.zhn.webopenapiinterface.model.ApiResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,5 +18,10 @@ public class NameController {
     @GetMapping("/get/{name}")
     public ApiResult getNameByGetRest(@PathVariable("name") String name) {
         return ApiResult.ok("/get/{name} 接口测试成功：" + name);
+    }
+
+    @PostMapping("/post/name")
+    public ApiResult getNameByPostRest(@RequestBody User user) {
+        return ApiResult.ok("/post name 接口测试成功：" + user.getUserName());
     }
 }

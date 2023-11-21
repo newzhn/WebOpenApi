@@ -63,14 +63,14 @@ public interface InterfaceService extends IService<InterfaceInfo> {
     Page<InterfaceInfoVo> getVoPage(InterfaceQueryRequest request);
 
     /**
-     * 接口下线服务
+     * 接口上线服务
      *
      * @param request the request
      */
     void onlineInterface(IdRequest request);
 
     /**
-     * 接口上线服务
+     * 接口下线服务
      *
      * @param request the request
      */
